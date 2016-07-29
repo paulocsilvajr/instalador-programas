@@ -37,7 +37,7 @@ class Instalador(tkinter.Tk):
     """ Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.
         O arquivo programas deve ter entradas no seguinte formato:
         #nome-programa
-        add-apt-repository ppa:repositorio -y; # incluido somente quando não está presente nos repositorios padrão.
+        add-apt-repository ppa:repositorio -y; # incluido somente quando não está presente nos repositórios padrão.
         apt install nome-programa -y; # 2 x ENTER"""
     def __init__(self):
         # Construtor(classe pai: tkinter.Tk) e configurações da janela.
@@ -121,7 +121,7 @@ class Instalador(tkinter.Tk):
 
         # Atualização necessária para o método bbox() retornar a dimensão e posição do formulário correta.
         self.update_idletasks()
-        # Centralizando formulário, deve ser invocado depois da declaração dos componentes para
+        # Centralizando formulário. Deve ser invocado depois da declaração dos componentes para
         # que a dimensão esteja apropriada. A dimensão está sendo gerada automaticamente para portar os
         # componentes na grade(grid).
         dimensao = self.bbox()  # dimensao[2]: width, dimensao[3]: height
@@ -204,7 +204,7 @@ class Instalador(tkinter.Tk):
                                 self.lbl_status['text'] = "Finalizada a %s de %s" % (tarefa.lower() + "ação", programa)
                     # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
                     if repositorio:
-                        print("Removendo repositório %s\n" % repositorio, comando)
+                        print("Removendo repositório %s\n" % repositorio)
                         return_code = subprocess.call(repositorio, shell=True)
                         print(return_code)
         else:
