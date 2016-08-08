@@ -3,10 +3,11 @@
 #Se parametro1 estiver vazio.
 if [ -z $1 ]; then
 	sudo python3 instalador.py;
+	# sudo python3 $0.py;
 else
 	if [ $1 = "-gk" ]; then
 		gksudo python3 instalador.py;
 	else
-		echo "Parâmetro inválido: $1"
+		echo "Parâmetro inválido: $1";
 	fi
 fi
