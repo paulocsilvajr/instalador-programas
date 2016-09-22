@@ -1,14 +1,15 @@
 # Instalador de Programas
 ### Desenvolvido no Ubuntu 16.04, Python3.5, Tkinter.
 
-Este repositório contém um software desenvolvido em python para instalar programas na distribuição Ubuntu. Seu objetivo é facilitar e agilizar o processo de instalar vários aplicativos ao mesmo tempo. Para isso, ele usa de uma lista previamente alimentada. 
+Este repositório contém um software desenvolvido em python para instalar programas na distribuição Ubuntu. Seu objetivo é facilitar e agilizar o processo de instalar vários aplicativos ao mesmo tempo. Para isso, ele usa de uma lista previamente alimentada.
 
-###Pré requisitos
+###Pré-requisitos
 
 Instalar o pacote do IDLE do python3. No Ubuntu 16.04 usar o comando abaixo.
 ```
 $ apt install idle-python3.5;
 ```
+###Arquivos
 
 ```
 instalador: Executável do programa. Pede senha do administrador no início.
