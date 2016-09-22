@@ -129,17 +129,23 @@ apt install rows -y;
 apt install plasma-nm -y;
 
 #redshift
-sudo apt install redshift redshift-gtk -y;
+apt install redshift redshift-gtk -y;
 
 #RAVEfinity - tema flat
-sudo add-apt-repository ppa:ravefinity-project/ppa -y ;
-sudo apt-get update;
-sudo apt-get install ambiance-flat-colors radiance-flat-colors -y;
+add-apt-repository ppa:ravefinity-project/ppa -y ;
+apt update;
+apt install ambiance-flat-colors radiance-flat-colors -y;
 
 #Paper icones
-sudo add-apt-repository ppa:snwh/pulp -y;
-sudo apt-get update;
-sudo apt-get install paper-icon-theme paper-gtk-theme -y;
+add-apt-repository ppa:snwh/pulp -y;
+apt update;
+apt install paper-icon-theme paper-gtk-theme -y;
 
 #speedtest
-sudo pip install speedtest-cli;
+pip install speedtest-cli -y;
+
+#htop
+apt install htop -y;
+
+#glances
+apt install glances -y;

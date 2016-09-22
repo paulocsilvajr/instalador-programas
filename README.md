@@ -3,6 +3,13 @@
 
 Este repositório contém um software desenvolvido em python para instalar programas na distribuição Ubuntu. Seu objetivo é facilitar e agilizar o processo de instalar vários aplicativos ao mesmo tempo. Para isso, ele usa de uma lista previamente alimentada. 
 
+###Pré requisitos
+
+Instalar o pacote do IDLE do python3. No Ubuntu 16.04 usar o comando abaixo.
+```
+$ apt install idle-python3.5;
+```
+
 ```
 instalador: Executável do programa. Pede senha do administrador no início.
 instalador.py: Arquivo python do programa. Para usá-lo como executável, deve-se executar com privilégios de adminstrador para o funcionamento correto.
