@@ -122,10 +122,7 @@ apt install spotify-client -y;
 #screenfetch
 apt install screenfetch -y;
 
-#rows
-apt install rows -y;
-
-#plasma-nm
+#plasma-nm(kde5-nm-connection-editor)
 apt install plasma-nm -y;
 
 #redshift
@@ -149,3 +146,11 @@ apt install htop -y;
 
 #glances
 apt install glances -y;
+
+#touchpad indicator
+add-apt-repository ppa:atareao/atareaocd -y;
+apt update;
+apt-get install touchpad-indicator -y;
+
+#guake terminal
+apt install guake guake-indicator -y;
