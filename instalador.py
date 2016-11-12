@@ -32,6 +32,9 @@ with open('programas') as f:
             else:
                 dic_programas[chave].append(texto)
 
+# ordenando o dicionário pela chave
+dic_programas = OrderedDict(sorted(dic_programas.items()))
+
 
 class Instalador(tkinter.Tk):
     """ Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.

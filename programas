@@ -67,7 +67,7 @@ pip3 install --upgrade virtualenv;
 apt install python3-mysql.connector -y;
 
 #python3-psycopg2
-apt-get install python3-psycopg2 -y
+apt install python3-psycopg2 -y
 
 #sublime-text-3
 add-apt-repository ppa:webupd8team/sublime-text-3 -y;
@@ -128,12 +128,12 @@ apt install plasma-nm -y;
 #redshift
 apt install redshift redshift-gtk -y;
 
-#RAVEfinity - tema flat
+#ravefinity - tema flat
 add-apt-repository ppa:ravefinity-project/ppa -y ;
 apt update;
 apt install ambiance-flat-colors radiance-flat-colors -y;
 
-#Paper icones
+#paper icones
 add-apt-repository ppa:snwh/pulp -y;
 apt update;
 apt install paper-icon-theme paper-gtk-theme -y;
@@ -147,10 +147,11 @@ apt install htop -y;
 #glances
 apt install glances -y;
 
-#touchpad indicator
-add-apt-repository ppa:atareao/atareaocd -y;
-apt update;
-apt-get install touchpad-indicator -y;
-
 #guake terminal
 apt install guake guake-indicator -y;
+
+#pokerth
+sudo add-apt-repository ppa:pkg-games/ppa -y;
+sudo apt update;
+sudo apt install pokerth;
+
