@@ -4,16 +4,10 @@
 from collections import OrderedDict
 import subprocess
 from time import sleep
-try:
-    import tkinter
-    from tkinter.messagebox import showerror, askyesno, showinfo
-    from tkinter import ttk
-except ImportError:
-    # Caso não esteja instalado o tkinter.
-    subprocess.call('apt install idle-python3* -y')
-    import tkinter
-    from tkinter.messagebox import showerror, askyesno, showinfo
-    from tkinter import ttk
+from sys import argv
+import tkinter
+from tkinter.messagebox import showerror, askyesno, showinfo
+from tkinter import ttk
 
 __author__ = "Paulo C. Silva Jr."
 
@@ -21,7 +15,8 @@ dic_programas = OrderedDict()
 
 # Captura de entradas em arquivo texto programas e criação de dic_programas
 chave = ""
-with open('programas') as f:
+diretorio = (argv[0].replace('instalador.py', ''))
+with open(diretorio + 'programas') as f:
     for linha in f:
         texto = linha.strip()
 
