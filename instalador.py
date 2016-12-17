@@ -8,6 +8,7 @@ from sys import argv
 import tkinter
 from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
+from os import popen
 
 __author__ = "Paulo C. Silva Jr."
 
@@ -92,29 +93,42 @@ class Instalador(tkinter.Tk):
         if not coluna:
             maior_linha += 1
 
+        self.item = 1
+
         txt_btn_marcar_todos = "Desmarcar todos" if self.marcar_todos else "Marcar todos"
         self.btn_marcar_todos = ttk.Button(text=txt_btn_marcar_todos, command=self.selecionar)
-        self.btn_marcar_todos.grid(row=maior_linha + 1,
+        self.btn_marcar_todos.grid(row=maior_linha + self.item,
                                    column=coluna,
                                    sticky=tkinter.W + tkinter.E,
                                    padx=2.5, pady=2.5)
 
+        self.item += 1
+        ttk.Button(text="Desmarcar instalados", style="C.TButton", underline=0,
+                   command=self.desmarcar_instalados).grid(row=maior_linha + self.item,
+                                                           column=0,
+                                                           columnspan=coluna + 1,
+                                                           sticky=tkinter.W + tkinter.E,
+                                                           padx=2.5, pady=2.5)
+
+        self.item += 1
         ttk.Button(text="Instalar", style="C.TButton", underline=0,
-                   command=self.instalar).grid(row=maior_linha + 2,
+                   command=self.instalar).grid(row=maior_linha + self.item,
                                                column=0,
                                                columnspan=coluna + 1,
                                                sticky=tkinter.W + tkinter.E,
                                                padx=2.5, pady=2.5)
 
+        self.item += 1
         ttk.Button(text="Desinstalar", style="D.TButton", underline=0,
-                   command=self.desinstalar).grid(row=maior_linha + 3,
+                   command=self.desinstalar).grid(row=maior_linha + self.item,
                                                   column=0,
                                                   columnspan=coluna + 1,
                                                   sticky=tkinter.W + tkinter.E,
                                                   padx=2.5, pady=2.5)
 
+        self.item += 1
         self.lbl_status = ttk.Label(self, text="Sempre execute este programa como administrador.")
-        self.lbl_status.grid(row=maior_linha + 4, column=0, columnspan=coluna + 1, sticky=tkinter.W + tkinter.E,
+        self.lbl_status.grid(row=maior_linha + self.item, column=0, columnspan=coluna + 1, sticky=tkinter.W + tkinter.E,
                              padx=5, pady=5)
 
         # Atualização necessária para o método bbox() retornar a dimensão e posição do formulário correta.
@@ -150,6 +164,27 @@ class Instalador(tkinter.Tk):
         :return: none. """
         self.instalacao(remover=True)
 
+    def desmarcar_instalados(self):
+        """ Ação do botão marcar instalados.
+         :return: none. """
+
+        self.lbl_status['text'] = "Desmarcando programas instalados."
+
+        for i, programa in enumerate(dic_programas):
+            esta_instalado = True
+
+            for comando in dic_programas[programa]:
+                if 'apt install' in comando:
+                    pacote = comando.replace('apt install ', '').replace(' -y;', '')
+
+                    if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
+                        esta_instalado = False
+
+                    print("Desinstalado:" if esta_instalado else "Instalado:", pacote)
+
+            self.checkbutton[i].set(esta_instalado)
+
+
     def instalacao(self, remover=False):
         """ Núcleo do programa instalador. Verifica quais programas estão marcados e instala/desinstala um a um.
         :param remover: Marcador para a função de desinstalar.
@@ -172,7 +207,7 @@ class Instalador(tkinter.Tk):
                             print(msg)
                             self.lbl_status['text'] = msg
                             # Sleep somente para atualizar self.lbl_status
-                            sleep(0.25)
+                            # sleep(0.25)
 
                             return_code = 0
                             if not remover:

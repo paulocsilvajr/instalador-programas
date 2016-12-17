@@ -20,7 +20,7 @@ apt update;
 apt install oracle-java8-installer -y;
 apt install oracle-java8-set-default -y;
 
-#ubuntu-make
+#ubuntu-make(umake)
 add-apt-repository ppa:ubuntu-desktop/ubuntu-make -y;
 apt update;
 apt install ubuntu-make -y;
@@ -31,8 +31,8 @@ umake ide pycharm;
 #ubuntu-make.eclipse
 umake ide eclipse;
 
-#netbeans
-apt install netbeans -y;
+#ubuntu-make.netbeans
+umake ide netbeans;
 
 #atom
 add-apt-repository ppa:webupd8team/atom -y;
@@ -62,8 +62,11 @@ apt install inxi -y;
 
 #python2.x e 3.x compl.
 apt install idle-python3.5 -y;
-apt install python-pip python-dev build-essential -y;
-apt install python3-pip python3-dev -y;
+apt install python-pip -y;
+apt install python-dev -y;
+apt install build-essential -y;
+apt install python3-pip -y;
+apt install python3-dev -y;
 pip3 install --upgrade virtualenv;
 pip2 install --upgrade pip;
 pip3 install --upgrade pip;
@@ -132,17 +135,20 @@ apt install screenfetch -y;
 apt install plasma-nm -y;
 
 #redshift
-apt install redshift redshift-gtk -y;
+apt install redshift -y;
+apt install redshift-gtk -y;
 
 #ravefinity - tema flat
 add-apt-repository ppa:ravefinity-project/ppa -y ;
 apt update;
-apt install ambiance-flat-colors radiance-flat-colors -y;
+apt install ambiance-flat-colors -y;
+apt install radiance-flat-colors -y;
 
 #paper icones
 add-apt-repository ppa:snwh/pulp -y;
 apt update;
-apt install paper-icon-theme paper-gtk-theme -y;
+apt install paper-icon-theme -y;
+apt install paper-gtk-theme -y;
 
 #pip2.speedtest
 pip2 install speedtest-cli;
@@ -154,7 +160,8 @@ apt install htop -y;
 apt install glances -y;
 
 #guake terminal
-apt install guake guake-indicator -y;
+apt install guake -y;
+apt install guake-indicator -y;
 
 #vim
 apt install vim -y;
