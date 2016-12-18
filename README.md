@@ -9,13 +9,14 @@ Instalar o pacote do IDLE do python3. No Ubuntu 16.04 usar o comando abaixo.
 ```
 $ apt install idle-python3*;
 ```
-Quando executado o programa pelo script 'instalador', é verificado se foi instalado o pacote idle-python3*, caso necessário é feito a instalação automatica.
+Quando executado o programa pelo script 'instalador', é verificado se foi instalado o pacote idle-python3*, caso necessário é feito a instalação automática.
 ###Arquivos
 
 ```
 instalador: Executável do programa. Pede senha do administrador no início.
 instalador.py: Arquivo python do programa. Para usá-lo como executável, deve-se executar com privilégios de adminstrador para o funcionamento correto.
 programas: Arquivo contendo as entradas de instalação de programas. Informações sobre formato na docstring da classe Instalador.
+isinstalled.sh: Script para verificar se pacote está instalado. Usado em instalador.py.
 ```
 
 ###Licença
