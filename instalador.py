@@ -3,7 +3,7 @@
 
 from collections import OrderedDict
 import subprocess
-from time import sleep
+# from time import sleep
 from sys import argv
 import tkinter
 from tkinter.messagebox import showerror, askyesno, showinfo
@@ -165,25 +165,33 @@ class Instalador(tkinter.Tk):
         self.instalacao(remover=True)
 
     def desmarcar_instalados(self):
-        """ Ação do botão marcar instalados.
+        """ Ação do botão marcar instalados. Analiza o sistema e desmarca os programas instalados.
          :return: none. """
 
         self.lbl_status['text'] = "Desmarcando programas instalados."
 
-        for i, programa in enumerate(dic_programas):
-            esta_instalado = True
+        if askyesno("Atenção", "Este processo pode demorar dependendo da quantidade de programas listados,"
+                               "\nContinuar?"):
+            for i, programa in enumerate(dic_programas):
+                esta_instalado = True
 
-            for comando in dic_programas[programa]:
-                if 'apt install' in comando:
-                    pacote = comando.replace('apt install ', '').replace(' -y;', '')
+                for comando in dic_programas[programa]:
+                    if 'apt install' in comando:
+                        pacote = comando.replace('apt install ', '').replace(' -y;', '')
 
-                    if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
-                        esta_instalado = False
+                        if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
+                            esta_instalado = False
+                        else:
+                            # caso algum pacote não esteja instalado, deixa marcado o combobox e sai do laço de
+                            # verificação dos pacotes referentes ao programa.
+                            esta_instalado = True
+                            break
 
-                    print("Desinstalado:" if esta_instalado else "Instalado:", pacote)
+                        # feedback visual no terminal
+                        print("Desinstalado:" if esta_instalado else "Instalado:", pacote)
 
-            self.checkbutton[i].set(esta_instalado)
-
+                # marca ou desmarca o programa de acordo com a análise feita do laço.
+                self.checkbutton[i].set(esta_instalado)
 
     def instalacao(self, remover=False):
         """ Núcleo do programa instalador. Verifica quais programas estão marcados e instala/desinstala um a um.
