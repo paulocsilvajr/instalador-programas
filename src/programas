@@ -25,13 +25,13 @@ add-apt-repository ppa:ubuntu-desktop/ubuntu-make -y;
 apt update;
 apt install ubuntu-make -y;
 
-#ubuntu-make.oracle-java8.pycharm
+#ubuntu-make:oracle-java8:pycharm
 umake ide pycharm;
 
-#ubuntu-make.oracle-java8.eclipse
+#ubuntu-make:oracle-java8:eclipse
 umake ide eclipse;
 
-#ubuntu-make.oracle-java8.netbeans
+#ubuntu-make:oracle-java8:netbeans
 umake ide netbeans;
 
 #atom
@@ -61,7 +61,7 @@ apt install emacs -y;
 #inxi
 apt install inxi -y;
 
-#python2/3
+#python2.x&3.x
 apt install idle-python3.5 -y;
 apt install python-pip -y;
 apt install python-dev -y;
@@ -73,10 +73,10 @@ pip2 install --upgrade pip;
 pip3 install --upgrade pip;
 apt install ipython3 -y;
 
-#python2/3.python3-mysql.connector
+#python2.x&3.x:python3-mysql.connector
 apt install python3-mysql.connector -y;
 
-#python2/3.python3-psycopg2
+#python2.x&3.x:python3-psycopg2
 apt install python3-psycopg2 -y;
 
 #sublime-text-3
@@ -151,7 +151,7 @@ apt update;
 apt install paper-icon-theme -y;
 apt install paper-gtk-theme -y;
 
-#python2/3.speedtest
+#python2.x&3.x:speedtest
 pip2 install speedtest-cli;
 
 #htop

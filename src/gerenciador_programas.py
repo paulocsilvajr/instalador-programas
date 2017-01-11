@@ -83,14 +83,14 @@ def verificar_programas_instalados(dic_programas: OrderedDict, diretorio: str=''
 
                 if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
                     marcar_para_instalar = False
+                    print('Instalado:   ', pacote)
                 else:
                     # caso algum pacote não esteja instalado, deixa marcado o combobox e sai do laço de
                     # verificação dos pacotes referentes ao programa.
                     marcar_para_instalar = True
-                    break
 
-                # feedback visual no terminal
-                print(("Desinstalado:" if marcar_para_instalar else "Instalado:"), pacote)
+                    print('Desinstalado:', pacote)
+                    break
 
         # marca ou desmarca o programa de acordo com a análise feita do laço.
         resultado.append(marcar_para_instalar)
@@ -145,6 +145,7 @@ def remover_repositorio(repositorio: str):
 
 
 if __name__ == '__main__':
+    # testes
     DIRETORIO = ''
     DIC_PROGRAMAS = gerar_dicionario_programas(DIRETORIO + 'programas')
     print(DIC_PROGRAMAS, DIC_PROGRAMAS.keys(), len(DIC_PROGRAMAS.keys()), sep='\n')

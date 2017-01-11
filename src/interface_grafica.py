@@ -7,15 +7,14 @@ import tkinter
 from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
 from collections import OrderedDict
-from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+try:
+    from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+except:
+    from gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 
 
 class Instalador(tkinter.Tk):
-    """ Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.
-        O arquivo programas deve ter entradas no seguinte formato:
-        #nome-programa
-        add-apt-repository ppa:repositorio -y; # incluido somente quando não está presente nos repositórios padrão.
-        apt install nome-programa -y; # 2 x ENTER"""
+    """ Interface gráfica do instaldor. """
     def __init__(self, dic_programas: OrderedDict, diretorio: str):
         # Construtor(classe pai: tkinter.Tk) e configurações da janela.
         super(Instalador, self).__init__()

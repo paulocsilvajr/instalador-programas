@@ -10,7 +10,7 @@ fi
 
 #Se parametro1 estiver vazio.
 if [ -z $1 ]; then
-	sudo python3 $0.py;
+	sudo python3 src/instalador.py $0;
 else
 	if [ $1 = "-gk" ];
 	then
@@ -22,7 +22,7 @@ else
 			sudo apt install gksu -y;
 		fi
 
-		gksudo python3 $0.py;
+		gksudo python3 src/instalador.py $0;
 	else
 		echo "Parâmetro inválido: $1";
 	fi

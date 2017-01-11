@@ -14,9 +14,11 @@ Quando executado o programa pelo script 'instalador', é verificado se foi insta
 
 ```
 instalador: Executável do programa. Pede senha do administrador no início.
-instalador.py: Arquivo python do programa. Para usá-lo como executável, deve-se executar com privilégios de adminstrador para o funcionamento correto.
-programas: Arquivo contendo as entradas de instalação de programas. Informações sobre formato na docstring da classe Instalador.
-isinstalled.sh: Script para verificar se pacote está instalado. Usado em instalador.py.
+src/instalador.py: Arquivo python principal do programa.
+src/programas: Arquivo contendo as entradas de instalação de programas. Informações sobre formato na docstring da módulo instalador.py.
+src/isinstalled.sh: Script para verificar se pacote está instalado. Usado em instalador.py.
+src/interface_grafica.py: Módulo contendo a interface gráfica do instalador.
+src/gerenciador_programas.py: Módulo com funções para gerenciar os programas. Módulo base para o instalador.py.
 ```
 
 ###Licença
