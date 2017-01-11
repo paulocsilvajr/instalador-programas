@@ -2,6 +2,7 @@
 
 from collections import OrderedDict
 from os import popen
+from subprocess import call
 
 
 def verificar_arquivo(nome_arquivo: str,
@@ -95,6 +96,52 @@ def verificar_programas_instalados(dic_programas: OrderedDict, diretorio: str=''
         resultado.append(marcar_para_instalar)
 
     return resultado
+
+
+def executar_comando(comando: str, shell=True):
+    """ Executa comandos no terminal linux.
+    :param comando: comando que será executado.
+    :param shell: retorno no shell.
+    :return: código de retorno da função call(). """
+    assert isinstance(comando, str), 'Parâmentro comando requer uma string.'
+
+    return call(comando, shell=shell)
+
+
+def instalar_programa(comando: str, remover=False):
+    """ Função para instalar e remover programas.
+    :param comando: instrução para instalação.
+    :param remover: True quando deseja remover ao invés de instalar.
+    :return: código de retorno e comando para remoção do repositório. """
+    repositorio = ''
+    return_code = 0
+
+    if not remover:
+        # Instalação
+        print(comando)
+        return_code = executar_comando(comando)
+    else:
+        # Desinstalação
+        if 'add-apt-repository' in comando:
+            repositorio = comando[:-1] + " --remove;"
+            comando = ""
+        elif 'apt install' in comando:
+            comando = comando.replace('apt install', 'apt remove')
+        else:
+            comando = ""
+
+        if comando:
+            print(comando)
+            return_code = executar_comando(comando)
+
+    return return_code, repositorio
+
+
+def remover_repositorio(repositorio: str):
+    """ Função para remover repositório.
+    :param repositorio: repositório gerado no retorno de instalar_programa.
+    :return: código de retorno. """
+    return executar_comando(repositorio)
 
 
 if __name__ == '__main__':
