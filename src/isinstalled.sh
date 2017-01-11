@@ -1,6 +1,6 @@
 #!/bin/bash
 
-verif=$(dpkg --get-selections|grep "^$1\b"|grep "\binstall");
+verif=$(dpkg --get-selections|grep "^$1\s"|grep "\sinstall");
 
 if [[ -n $verif ]];
 then

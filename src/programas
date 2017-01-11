@@ -47,6 +47,7 @@ apt install password-gorilla -y;
 
 #git
 apt install git -y;
+apt install git-cola -y;
 
 #gnucash
 apt install gnucash -y;
