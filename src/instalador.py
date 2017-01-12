@@ -18,12 +18,11 @@ apt install nome-programa -y; # 2 x ENTER
 """
 
 def capturar_diretorio():
-    return argv[1].replace('instalador.py', '')
+    return argv[0].replace('instalador.py', '')
 
 
 def main():
-    # diretorio = capturar_diretorio()
-    diretorio = '/home/paulo/pc/python/instalador-programas/src/'
+    diretorio = capturar_diretorio()
     dic_programas = gerar_dicionario_programas(diretorio + 'programas')
     Instalador(dic_programas, diretorio)
 

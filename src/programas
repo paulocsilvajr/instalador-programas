@@ -1,11 +1,11 @@
-#limpar apt
+#apt:limpar
 apt autoremove;
 apt autoclean;
 
-#atualizar programas
+#apt:atualizar programas
 apt update && apt upgrade -y;
 
-#atualizar sistema
+#apt:atualizar sistema
 apt update && apt dist-upgrade -y;
 
 #ubuntu-restricted-extras
@@ -166,4 +166,14 @@ apt install guake-indicator -y;
 
 #vim
 apt install vim -y;
+
+#timeshift
+add-apt-repository ppa:noobslab/apps -y;
+apt update;
+apt install timeshift -y;
+
+#systemback
+apt-add-repository ppa:nemh/systemback -y;
+apt update;
+apt install systemback -y;
 

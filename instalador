@@ -8,9 +8,13 @@ then
 	sudo apt install idle-python3* -y;
 fi
 
+path=$0;
+path="${path%/*}";
+path=$path/src/instalador.py;
+
 #Se parametro1 estiver vazio.
 if [ -z $1 ]; then
-	sudo python3 src/instalador.py $0;
+	sudo python3 $path;
 else
 	if [ $1 = "-gk" ];
 	then
