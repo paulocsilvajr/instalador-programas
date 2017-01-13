@@ -9,6 +9,10 @@ except ImportError:
     from gerenciador_programas import gerar_dicionario_programas
     from interface_grafica import Instalador
 
+__author__ = 'Paulo C. Silva Jr.'
+
+__version__ = '0.2.2'
+
 """
 Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.
 O arquivo programas deve ter entradas no seguinte formato:
