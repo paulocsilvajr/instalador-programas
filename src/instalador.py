@@ -1,6 +1,5 @@
 # coding: utf-8
 
-from collections import OrderedDict
 from sys import argv
 try:
     from src.gerenciador_programas import gerar_dicionario_programas
@@ -21,6 +20,7 @@ add-apt-repository ppa:repositorio -y; # incluido somente quando não está pres
 apt install nome-programa -y; # 2 x ENTER
 """
 
+
 def capturar_diretorio():
     return argv[0].replace('instalador.py', '')
 
@@ -32,5 +32,3 @@ def main():
 
 
 main()
-
-
