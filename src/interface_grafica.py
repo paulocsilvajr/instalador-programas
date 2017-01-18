@@ -1,5 +1,3 @@
-# coding: utf-8
-
 #!/usr/bin/python3
 # coding: utf-8
 
@@ -24,6 +22,7 @@ class Instalador(tkinter.Tk):
 
         style = ttk.Style()
         style.theme_use('clam')
+
         # Para adicionar novos estilos personalizados, deve-se manter o nome do componente.
         # Ex: C.TButton, D.TButton
         style.map("C.TButton",
@@ -32,6 +31,8 @@ class Instalador(tkinter.Tk):
         style.map("D.TButton",
                   foreground=[('pressed', 'black'), ('active', 'red')],
                   background=[('pressed', '!disabled', 'red'), ('active', 'darkgray')])
+        style.map("E.TCheckbutton",
+                  background=[('active', 'darkgray'), ('!active', 'white')])
 
         self.title('Instalador programas')
 
@@ -40,100 +41,101 @@ class Instalador(tkinter.Tk):
         self.marcar_todos = 1  # default 1.
 
         # Componentes do formulário.
-        lbl_mensagem = ttk.Label(self, text="Marque os programas que deseja instalar")
-        lbl_mensagem.grid(row=0, column=0, padx=5)
+        lbl_mensagem = ttk.Label(master=self, text="Marque os programas que deseja instalar")
+        lbl_mensagem.pack(side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
 
-        # Criação e posicionamento dos checkbuttons para cada chave de dic_programas.
-        coluna = 0
-        linha = 0
-        maior_linha = 0
+        # frame, scrollbar e text que serão o container dos checkbutton
+        frame1 = ttk.Frame(master=self)
+        frame1.pack(side=tkinter.TOP, fill=tkinter.BOTH, padx=5, pady=2.5, expand=1)
+
+        vsb = ttk.Scrollbar(master=frame1, orient=tkinter.VERTICAL)
+        text = tkinter.Text(master=frame1, height=20, yscrollcommand=vsb.set)
+        text.configure(background='white')
+
+        vsb.config(command=text.yview)
+        vsb.pack(side=tkinter.RIGHT, fill=tkinter.Y, padx=2)
+        text.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
+
+        # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
         self.checkbutton = []
         for i, ch in enumerate(self.dic_programas.keys()):
-            linha += 1
-
-            if linha % 20 == 0:
-                coluna += 1
-                linha = 1
-
-            if linha > maior_linha:
-                maior_linha = linha
-
             self.checkbutton.append(tkinter.IntVar())
             self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
-            ttk.Checkbutton(self, text=ch, offvalue=0, onvalue=1,
-                            variable=self.checkbutton[i]).grid(row=linha, column=coluna,
-                                                               sticky=tkinter.W,
-                                                               padx=5)
+            cb = ttk.Checkbutton(master=frame1, text=ch, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+            cb['style'] = 'E.TCheckbutton'
+            text.window_create(tkinter.END, window=cb)
+            text.insert(tkinter.END, '\n')
 
-        ttk.Button(text="Reverter seleção", command=self.reverter).grid(row=maior_linha + 1, column=0,
-                                                                        sticky=tkinter.W + tkinter.E,
-                                                                        columnspan=coluna if coluna else 1,
-                                                                        padx=2.5, pady=2.5)
+        text.configure(state='disabled')
 
-        # Se coluna == 0, portando uma única coluna de programas.
-        if not coluna:
-            maior_linha += 1
+        # frame para botões reverter seleção e desmarcar seleção que ficam lado a lado
+        frame2 = ttk.Frame(master=self)
+        frame2.pack(side=tkinter.TOP,
+                    fill=tkinter.X,
+                    padx=2.5,
+                    pady=2.5)
 
-        self.item = 1
+        ttk.Button(master=frame2, text='Reverter seleção', command=self.reverter).pack(side=tkinter.LEFT,
+                                                                                       fill=tkinter.X,
+                                                                                       padx=2.5,
+                                                                                       expand=1)
 
+        # Botões
         txt_btn_marcar_todos = "Desmarcar todos" if self.marcar_todos else "Marcar todos"
-        self.btn_marcar_todos = ttk.Button(text=txt_btn_marcar_todos, command=self.selecionar)
-        self.btn_marcar_todos.grid(row=maior_linha + self.item,
-                                   column=coluna,
-                                   sticky=tkinter.W + tkinter.E,
-                                   padx=2.5, pady=2.5)
+        self.btn_marcar_todos = ttk.Button(master=frame2, text=txt_btn_marcar_todos, command=self.selecionar)
+        self.btn_marcar_todos.pack(side=tkinter.RIGHT,
+                                   fill=tkinter.X,
+                                   padx=2.5,
+                                   expand=1)
 
-        self.item += 1
-        ttk.Button(text="Desmarcar instalados", style="C.TButton", underline=0,
-                   command=self.desmarcar_instalados).grid(row=maior_linha + self.item,
-                                                           column=0,
-                                                           columnspan=coluna + 1,
-                                                           sticky=tkinter.W + tkinter.E,
-                                                           padx=2.5, pady=2.5)
+        ttk.Button(master=self, text="Desmarcar instalados", style="C.TButton", underline=0,
+                   command=self.desmarcar_instalados).pack(side=tkinter.TOP,
+                                                           fill=tkinter.X,
+                                                           padx=5,
+                                                           pady=2.5)
 
-        self.item += 1
-        ttk.Button(text="Instalar", style="C.TButton", underline=0,
-                   command=self.instalar).grid(row=maior_linha + self.item,
-                                               column=0,
-                                               columnspan=coluna + 1,
-                                               sticky=tkinter.W + tkinter.E,
-                                               padx=2.5, pady=2.5)
+        ttk.Button(master=self, text="Instalar", style="C.TButton", underline=0,
+                   command=self.instalar).pack(side=tkinter.TOP,
+                                               fill=tkinter.X,
+                                               padx=5,
+                                               pady=2.5)
 
-        self.item += 1
-        ttk.Button(text="Desinstalar", style="D.TButton", underline=0,
-                   command=self.desinstalar).grid(row=maior_linha + self.item,
-                                                  column=0,
-                                                  columnspan=coluna + 1,
-                                                  sticky=tkinter.W + tkinter.E,
-                                                  padx=2.5, pady=2.5)
+        ttk.Button(master=self, text="Desinstalar", style="D.TButton", underline=0,
+                   command=self.desinstalar).pack(side=tkinter.TOP,
+                                                  fill=tkinter.X,
+                                                  padx=5,
+                                                  pady=2.5)
 
-        self.item += 1
         self.lbl_status = ttk.Label(self, text="Sempre execute este programa como administrador.")
-        self.lbl_status.grid(row=maior_linha + self.item, column=0, columnspan=coluna + 1, sticky=tkinter.W + tkinter.E,
-                             padx=5, pady=5)
+        self.lbl_status.pack(side=tkinter.TOP,
+                             fill=tkinter.X,
+                             padx=5,
+                             pady=2.5)
 
-        # Atualização necessária para o método bbox() retornar a dimensão e posição do formulário correta.
-        self.update_idletasks()
-        # Centralizando formulário. Deve ser invocado depois da declaração dos componentes para
-        # que a dimensão esteja apropriada. A dimensão está sendo gerada automaticamente para portar os
-        # componentes na grade(grid).
-        dimensao = self.bbox()  # dimensao[2]: width, dimensao[3]: height
-        self.wm_geometry('%dx%d-%d-%d' % (dimensao[2], dimensao[3],
-                                          (self.winfo_screenwidth() / 2) - (dimensao[2] / 2),
+        # Centralizando formulário.
+        dimensao = (500, 600)
+        self.wm_geometry('%dx%d-%d-%d' % (dimensao[0], dimensao[1],
+                                          (self.winfo_screenwidth() / 2) - (dimensao[0] / 2),
                                           self.winfo_screenheight()))
 
-        # Bloqueio de redimensionamento.
-        self.resizable(width=False, height=False)
+        # Definindo tamanho mínimo do formulário
+        self.minsize(400, 500)
 
         # Eventos do formulário.
-        self.bind('<Escape>', self.fechar)
+        self.bind('<Escape>', self.atalho_fechar)
+        self.protocol('WM_DELETE_WINDOW', self.fechar)
         self.bind('<Alt-i>', self.atalho_instalar)
+        self.bind('<Alt-d>', self.atalho_desintalar)
 
         # Loop do formulário.
         self.mainloop()
 
-    def fechar(self, event):
-        self.destroy()
+    def fechar(self):
+        if askyesno("Confirmação", "Deseja realmente fechar o instalador?"):
+            self.destroy()
+
+    def atalho_fechar(self, event):
+        self.fechar()
 
     def instalar(self):
         """ Ação do botão instalar.
@@ -220,3 +222,6 @@ class Instalador(tkinter.Tk):
 
     def atalho_instalar(self, event):
         self.instalar()
+
+    def atalho_desintalar(self, event):
+        self.desinstalar()
