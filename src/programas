@@ -177,6 +177,9 @@ apt-add-repository ppa:nemh/systemback -y;
 apt update;
 apt install systemback -y;
 
-#zsh & oh-my-zsh
+#curl
+apt install curl -y;
+
+#curl:zsh & oh-my-zsh
 apt install zsh -y;
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
