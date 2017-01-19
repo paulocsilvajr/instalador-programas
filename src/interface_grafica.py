@@ -5,6 +5,7 @@ import tkinter
 from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
 from collections import OrderedDict
+from re import findall
 try:
     from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 except:
@@ -58,11 +59,12 @@ class Instalador(tkinter.Tk):
 
         # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
         self.checkbutton = []
-        for i, ch in enumerate(self.dic_programas.keys()):
+        for i, chave in enumerate(self.dic_programas.keys()):
             self.checkbutton.append(tkinter.IntVar())
             self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
-            cb = ttk.Checkbutton(master=frame1, text=ch, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+            cb = ttk.Checkbutton(master=frame1, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
             cb['style'] = 'E.TCheckbutton'
+            cb.bind('<Button-1>', self.clique_checkbutton)
             text.window_create(tkinter.END, window=cb)
             text.insert(tkinter.END, '\n')
 
@@ -129,6 +131,19 @@ class Instalador(tkinter.Tk):
 
         # Loop do formulário.
         self.mainloop()
+
+    def clique_checkbutton(self, event):
+        programa = event.widget['text']
+        dependencias = programa.split(':')[:-1]
+
+        if dependencias:
+            for i, chave in enumerate(self.dic_programas.keys()):
+                descricao = findall('\(.+\)', chave)
+                if descricao:
+                    chave = chave.replace(descricao[0], '')
+
+                if chave in dependencias:
+                    self.checkbutton[i].set(1)
 
     def fechar(self):
         if askyesno("Confirmação", "Deseja realmente fechar o instalador?"):
