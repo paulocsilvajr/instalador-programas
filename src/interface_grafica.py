@@ -133,6 +133,9 @@ class Instalador(tkinter.Tk):
         self.mainloop()
 
     def clique_checkbutton(self, event):
+        """ Função para marcar as dependências dos pacotes.
+        :param event: Evento invocado, usado para identificar o componente(CheckButton) clicado.
+        :return: None. """
         programa = event.widget['text']
         dependencias = programa.split(':')[:-1]
 
@@ -146,25 +149,30 @@ class Instalador(tkinter.Tk):
                     self.checkbutton[i].set(1)
 
     def fechar(self):
+        """ Fecha o programa após confirmação.
+        :return: None. """
         if askyesno("Confirmação", "Deseja realmente fechar o instalador?"):
             self.destroy()
 
     def atalho_fechar(self, event):
+        """ Atalho para fechar o programa usado pelo .bind.
+        :param event: evento invocado
+        :return: None. """
         self.fechar()
 
     def instalar(self):
         """ Ação do botão instalar.
-        :return: none. """
+        :return: None. """
         self.instalacao()
 
     def desinstalar(self):
         """ Ação do botão desinstalar. Usa o parâmetro remover para ativar o recurso de desinstalação.
-        :return: none. """
+        :return: None. """
         self.instalacao(remover=True)
 
     def desmarcar_instalados(self):
         """ Ação do botão marcar instalados. Analiza o sistema e desmarca os programas instalados.
-         :return: none. """
+         :return: None. """
 
         self.lbl_status['text'] = "Desmarcando programas instalados."
 
@@ -179,7 +187,7 @@ class Instalador(tkinter.Tk):
     def instalacao(self, remover=False):
         """ Núcleo do programa instalador. Verifica quais programas estão marcados e instala/desinstala um a um.
         :param remover: Marcador para a função de desinstalar.
-        :return: none. """
+        :return: None. """
         tarefa = "Instal" if not remover else "Desinstal"
 
         # Variável temporária com os valores de self.checkbutton(status do chechbutton).
@@ -219,13 +227,13 @@ class Instalador(tkinter.Tk):
 
     def reverter(self):
         """ Reversão da marcação de programas.
-        :return: none. """
+        :return: None. """
         for i in range(len(self.checkbutton)):
             self.checkbutton[i].set(not self.checkbutton[i].get())
 
     def selecionar(self):
         """ Marcar ou desmarcar todos os programas.
-        :return: none. """
+        :return: None. """
         self.marcar_todos = not self.marcar_todos
         if self.marcar_todos:
             self.btn_marcar_todos['text'] = "Desmarcar todos"
@@ -236,7 +244,13 @@ class Instalador(tkinter.Tk):
             self.checkbutton[i].set(self.marcar_todos)
 
     def atalho_instalar(self, event):
+        """ Atalho para instalação, usado pelo .bind.
+        :param event: Evento invocado
+        :return: None. """
         self.instalar()
 
     def atalho_desintalar(self, event):
+        """ Atalho para desinstalação, usado pelo .bind.
+        :param event: Evento invocado
+        :return: None. """
         self.desinstalar()
