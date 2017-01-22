@@ -23,6 +23,7 @@ class Instalador(tkinter.Tk):
 
         style = ttk.Style()
         style.theme_use('clam')
+        style.configure('.', font=('Ubuntu', 12))
 
         # Para adicionar novos estilos personalizados, deve-se manter o nome do componente.
         # Ex: C.TButton, D.TButton
