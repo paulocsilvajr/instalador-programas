@@ -63,6 +63,7 @@ apt install inxi -y;
 
 #python2.x&3.x
 apt install idle-python3.5 -y;
+apt install tix -y;
 apt install python-pip -y;
 apt install python-dev -y;
 apt install build-essential -y;
