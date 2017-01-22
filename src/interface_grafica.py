@@ -21,20 +21,7 @@ class Instalador(tkinter.Tk):
         self.dic_programas = dic_programas
         self.diretorio = diretorio
 
-        style = ttk.Style()
-        style.theme_use('clam')
-        style.configure('.', font=('Ubuntu', 12))
-
-        # Para adicionar novos estilos personalizados, deve-se manter o nome do componente.
-        # Ex: C.TButton, D.TButton
-        style.map("C.TButton",
-                  foreground=[('pressed', 'red'), ('active', 'blue')],
-                  background=[('pressed', '!disabled', 'black'), ('active', 'darkgray')])
-        style.map("D.TButton",
-                  foreground=[('pressed', 'black'), ('active', 'red')],
-                  background=[('pressed', '!disabled', 'red'), ('active', 'darkgray')])
-        style.map("E.TCheckbutton",
-                  background=[('active', 'darkgray'), ('!active', 'white')])
+        self._style()
 
         self.title('Instalador programas')
 
@@ -43,77 +30,37 @@ class Instalador(tkinter.Tk):
         self.marcar_todos = 1  # default 1.
 
         # Componentes do formulário.
-        lbl_mensagem = ttk.Label(master=self, text="Marque os programas que deseja instalar")
-        lbl_mensagem.pack(side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
+        self._label(master=self, text="Marque os programas que deseja instalar")
 
-        # frame, scrollbar e text que serão o container dos checkbutton
-        frame1 = ttk.Frame(master=self)
-        frame1.pack(side=tkinter.TOP, fill=tkinter.BOTH, padx=5, pady=2.5, expand=1)
-
-        vsb = ttk.Scrollbar(master=frame1, orient=tkinter.VERTICAL)
-        text = tkinter.Text(master=frame1, height=20, yscrollcommand=vsb.set)
-        text.configure(background='white')
-
-        vsb.config(command=text.yview)
-        vsb.pack(side=tkinter.RIGHT, fill=tkinter.Y, padx=2)
-        text.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
-
-        # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
-        self.checkbutton = []
-        for i, chave in enumerate(self.dic_programas.keys()):
-            self.checkbutton.append(tkinter.IntVar())
-            self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
-            cb = ttk.Checkbutton(master=frame1, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
-            cb['style'] = 'E.TCheckbutton'
-            cb.bind('<Button-1>', self.clique_checkbutton)
-            text.window_create(tkinter.END, window=cb)
-            text.insert(tkinter.END, '\n')
-
-        text.configure(state='disabled')
+        # lista de programas com checkbuttons e scrollbar
+        self._lista_programas(master=self, side=tkinter.TOP, fill=tkinter.BOTH, expand=1,
+                              padx=5, pady=2.5)
 
         # frame para botões reverter seleção e desmarcar seleção que ficam lado a lado
-        frame2 = ttk.Frame(master=self)
-        frame2.pack(side=tkinter.TOP,
-                    fill=tkinter.X,
-                    padx=2.5,
-                    pady=2.5)
+        frame2 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
+                             padx=2.5, pady=2.5)
 
-        ttk.Button(master=frame2, text='Reverter seleção', command=self.reverter).pack(side=tkinter.LEFT,
-                                                                                       fill=tkinter.X,
-                                                                                       padx=2.5,
-                                                                                       expand=1)
+        self._button(master=frame2, text='Reverter seleção', command=self.reverter,
+                     side=tkinter.LEFT, fill=tkinter.X, padx=2.5, expand=1)
+
+        txt_btn_marcar_todos = "Desmarcar todos" if self.marcar_todos else "Marcar todos"
+        self.btn_marcar_todos = self._button(master=frame2, text=txt_btn_marcar_todos, command=self.selecionar,
+                                             side=tkinter.RIGHT, fill=tkinter.X, padx=2.5, expand=1)
 
         # Botões
-        txt_btn_marcar_todos = "Desmarcar todos" if self.marcar_todos else "Marcar todos"
-        self.btn_marcar_todos = ttk.Button(master=frame2, text=txt_btn_marcar_todos, command=self.selecionar)
-        self.btn_marcar_todos.pack(side=tkinter.RIGHT,
-                                   fill=tkinter.X,
-                                   padx=2.5,
-                                   expand=1)
+        self._button(master=self, text="Desmarcar instalados",
+                     command=self.desmarcar_instalados, style="C.TButton", underline=0,
+                     side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
 
-        ttk.Button(master=self, text="Desmarcar instalados", style="C.TButton", underline=0,
-                   command=self.desmarcar_instalados).pack(side=tkinter.TOP,
-                                                           fill=tkinter.X,
-                                                           padx=5,
-                                                           pady=2.5)
+        self._button(master=self, text="Instalar",
+                     command=self.instalar, style="C.TButton", underline=0,
+                     side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
 
-        ttk.Button(master=self, text="Instalar", style="C.TButton", underline=0,
-                   command=self.instalar).pack(side=tkinter.TOP,
-                                               fill=tkinter.X,
-                                               padx=5,
-                                               pady=2.5)
+        self._button(master=self, text="Desinstalar",
+                     command=self.desinstalar, style="D.TButton", underline=0,
+                     side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
 
-        ttk.Button(master=self, text="Desinstalar", style="D.TButton", underline=0,
-                   command=self.desinstalar).pack(side=tkinter.TOP,
-                                                  fill=tkinter.X,
-                                                  padx=5,
-                                                  pady=2.5)
-
-        self.lbl_status = ttk.Label(self, text="Sempre execute este programa como administrador.")
-        self.lbl_status.pack(side=tkinter.TOP,
-                             fill=tkinter.X,
-                             padx=5,
-                             pady=2.5)
+        self.lbl_status = self._label(master=self, text="Sempre execute este programa como administrador.")
 
         # Centralizando formulário.
         dimensao = (500, 600)
@@ -122,7 +69,7 @@ class Instalador(tkinter.Tk):
                                           self.winfo_screenheight()))
 
         # Definindo tamanho mínimo do formulário
-        self.minsize(400, 500)
+        self.minsize(400, 525)
 
         # Eventos do formulário.
         self.bind('<Escape>', self.atalho_fechar)
@@ -255,3 +202,62 @@ class Instalador(tkinter.Tk):
         :param event: Evento invocado
         :return: None. """
         self.desinstalar()
+
+    def _style(self):
+        style = ttk.Style()
+        style.theme_use('clam')
+        style.configure('.', font=('Ubuntu', 12))
+
+        # Para adicionar novos estilos personalizados, deve-se manter o nome do componente.
+        # Ex: C.TButton, D.TButton
+        style.map("C.TButton",
+                  foreground=[('pressed', 'red'), ('active', 'blue')],
+                  background=[('pressed', '!disabled', 'black'), ('active', 'darkgray')])
+        style.map("D.TButton",
+                  foreground=[('pressed', 'black'), ('active', 'red')],
+                  background=[('pressed', '!disabled', 'red'), ('active', 'darkgray')])
+        style.map("E.TCheckbutton",
+                  background=[('active', 'darkgray'), ('!active', 'white')])
+
+    def _label(self, master, text):
+        label = ttk.Label(master=master, text=text)
+        label.pack(side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
+        return label
+
+    def _frame(self, master, side, fill, expand=0, padx=0.0, pady=0.0):
+        frame = ttk.Frame(master=master)
+        frame.pack(side=side, fill=fill, expand=expand, padx=padx, pady=pady)
+        return frame
+
+    def _button(self, master, command, text, side, fill, expand=0, underline=None, style='TButton', padx=0.0, pady=0.0):
+        buttom = ttk.Button(master=master, text=text, command=command, style=style, underline=underline)
+        buttom.pack(side=side, fill=fill, expand=expand, padx=padx, pady=pady)
+        return buttom
+
+    def _lista_programas(self, master, side, fill, expand=0, padx=0.0, pady=0.0):
+        # frame, scrollbar e text que serão o container dos checkbutton
+        frame = self._frame(master=master, side=side, fill=fill, expand=expand,
+                            padx=padx, pady=pady)
+
+        vsb = ttk.Scrollbar(master=frame, orient=tkinter.VERTICAL)
+        text = tkinter.Text(master=frame, height=20, yscrollcommand=vsb.set)
+        text.configure(background='white')
+
+        vsb.config(command=text.yview)
+        vsb.pack(side=tkinter.RIGHT, fill=tkinter.Y, padx=2)
+        text.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
+
+        # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
+        self.checkbutton = []
+        for i, chave in enumerate(self.dic_programas.keys()):
+            self.checkbutton.append(tkinter.IntVar())
+            self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
+            cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+            cb['style'] = 'E.TCheckbutton'
+            cb.bind('<Button-1>', self.clique_checkbutton)
+            text.window_create(tkinter.END, window=cb)
+            text.insert(tkinter.END, '\n')
+
+        text.configure(state='disabled')
+
+        return frame
