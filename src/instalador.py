@@ -10,7 +10,7 @@ except ImportError:
 
 __author__ = 'Paulo C. Silva Jr.'
 
-__version__ = '0.3.0'
+__version__ = '0.3.2'
 
 """
 Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.
