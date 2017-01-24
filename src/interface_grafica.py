@@ -204,19 +204,19 @@ class Instalador(tkinter.Tk):
         self.desinstalar()
 
     def _style(self):
-        style = ttk.Style()
-        style.theme_use('clam')
-        style.configure('.', font=('Ubuntu', 12))
+        self.style = ttk.Style()
+        self.style.theme_use('clam')
+        self.style.configure('.', font=('Ubuntu', 12))
 
         # Para adicionar novos estilos personalizados, deve-se manter o nome do componente.
         # Ex: C.TButton, D.TButton
-        style.map("C.TButton",
+        self.style.map("C.TButton",
                   foreground=[('pressed', 'red'), ('active', 'blue')],
                   background=[('pressed', '!disabled', 'black'), ('active', 'darkgray')])
-        style.map("D.TButton",
+        self.style.map("D.TButton",
                   foreground=[('pressed', 'black'), ('active', 'red')],
                   background=[('pressed', '!disabled', 'red'), ('active', 'darkgray')])
-        style.map("E.TCheckbutton",
+        self.style.map("E.TCheckbutton",
                   background=[('active', 'darkgray'), ('!active', 'white')])
 
     def _label(self, master, text):
