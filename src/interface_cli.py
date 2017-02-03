@@ -34,8 +34,8 @@ def listar(dic_programas, diretorio, check):
         if str(i).endswith('1'):
             print('LISTA DE PROGRAMAS({0}-{1}) de {2}:\n'.format(i, i+9, len(dic_programas)))
 
-        print('    {0:0>{1}}: {2:.<50} INSTALAR({3})'.format(i, tamanho, chave,
-                                                            'Y' if check[i-1] else 'n'))
+        print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
+                                                               'Y' if check[i-1] else 'n'))
 
         if not i % 10:
             entrada = input('\nENTER para mais 10 itens ou q+ENTER para finalizar lista ').lower()
@@ -56,7 +56,7 @@ def filtrar(dic_programas, diretorio, check):
 def _marcar(check, marcar):
     limpar_tela()
 
-    print('Marcando todos os programas')
+    print('{}arcando todos os programas'.format('M' if marcar else 'Desm'))
     for i in range(len(check)):
         check[i] = marcar
 
@@ -71,25 +71,33 @@ def desmarcar_todos(dic_programas, diretorio, check):
     _marcar(check=check, marcar=0)
 
 
+def _definir_marca(dic_programas, check, codigo, simnao='[Y/n]'):
+    if check[codigo] == 0:
+        msg = 'Marcar'
+        marca = 1
+    else:
+        msg = 'Desmarcar'
+        marca = 0
+
+    resposta = input("{0} '{1}' {2}: ".format(msg, list(dic_programas.keys())[codigo], simnao))
+
+    if not resposta.lower().startswith('y'):
+        marca = not marca
+
+    check[codigo] = marca
+
+    return resposta
+
+
 def _marcar_item(dic_programas, diretorio, check):
     codigo = input('\nInforme o número do programa: ')
 
     if codigo.isdigit():
         codigo = int(codigo)
         if verificar_intervalo(codigo, 1, len(dic_programas)):
-            if check[codigo-1] == 0:
-                msg = 'Marcar'
-                marca = 1
-            else:
-                msg = 'Desmarcar'
-                marca = 0
-
-            resposta = input("{0} '{1}' [Y/n]: ".format(msg, list(dic_programas.keys())[codigo-1]))
-
-            if not resposta.lower().startswith('y'):
-                marca = not marca
-
-            check[codigo-1] = marca
+            _definir_marca(dic_programas=dic_programas,
+                           check=check,
+                           codigo=codigo-1)
 
 
 def marcar_especifico(dic_programas, diretorio, check):
@@ -114,7 +122,17 @@ def marcar_especifico(dic_programas, diretorio, check):
 
 
 def marcar_em_lista(dic_programas, diretorio, check):
-    print('marcando em lista de programas')
+    limpar_tela()
+
+    for i, chave in enumerate(dic_programas):
+        retorno = _definir_marca(dic_programas=dic_programas,
+                       check=check,
+                       codigo=i,
+                       simnao='[Y/n/q]')
+
+        if retorno.lower() == 'q':
+            pausar()
+            break
 
 
 def instalar(dic_programas, diretorio, check):
