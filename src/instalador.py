@@ -27,10 +27,20 @@ def capturar_diretorio():
     return argv[0].replace('instalador.py', '')
 
 
+def abrir_gui():
+    if len(argv) > 1:
+        if argv[1] == 'g':
+            return True
+    return False
+
+
 def main():
     diretorio = capturar_diretorio()
     dic_programas = gerar_dicionario_programas(diretorio + 'programas')
-    # InstaladorGUI(dic_programas, diretorio)
-    InstaladorCLI(dic_programas, diretorio)
+
+    if abrir_gui():
+        InstaladorGUI(dic_programas, diretorio)
+    else:
+        InstaladorCLI(dic_programas, diretorio)
 
 main()

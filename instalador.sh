@@ -16,7 +16,7 @@ path=$path/src/instalador.py;
 if [ -z $1 ]; then
 	sudo python3 $path;
 else
-	if [ $1 = "-gk" ];
+	if [ $1 = "-g" ];
 	then
 		#Verificação se o gksu/gksudo está instalado, caso negativo, instala automaticamente.
 		verif_gksu=$(dpkg --get-selections|grep "^gksu"|grep "\binstall");
@@ -26,7 +26,7 @@ else
 			sudo apt install gksu -y;
 		fi
 
-		gksudo python3 $path;
+		gksudo python3 $path g;
 	else
 		echo "Parâmetro inválido: $1";
 	fi
