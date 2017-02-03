@@ -2,6 +2,7 @@
 
 from collections import OrderedDict
 from os import system
+from re import findall
 try:
     from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 except ImportError:
@@ -71,6 +72,19 @@ def filtrar(dic_programas, diretorio, check):
     pausar()
 
 
+def _marcar_dependencias(programa, dic_programas, check):
+    dependencias = programa.split(':')[:-1]
+
+    if dependencias:
+        for i, chave in enumerate(dic_programas.keys()):
+            descricao = findall('\(.+\)', chave)
+            if descricao:
+                chave = chave.replace(descricao[0], '')
+
+            if chave in dependencias:
+                check[i] = 1
+
+
 def _marcar(check, marcar):
     limpar_tela()
 
@@ -101,6 +115,10 @@ def _definir_marca(dic_programas, check, codigo, simnao='[Y/n]'):
 
     if not resposta.lower().startswith('y'):
         marca = not marca
+
+    _marcar_dependencias(programa=list(dic_programas.keys())[codigo],
+                         dic_programas=dic_programas,
+                         check=check)
 
     check[codigo] = marca
 
@@ -155,6 +173,22 @@ def marcar_em_lista(dic_programas, diretorio, check):
             break
 
 
+def desmarcar_instalados(dic_programas, diretorio, check):
+    limpar_tela()
+
+    print("Desmarcando programas instalados.")
+
+    if input("Este processo pode demorar dependendo da quantidade de programas listados,"
+             "\nContinuar[Y,n]? ").lower() == 'y':
+        marcacoes = verificar_programas_instalados(dic_programas, diretorio)
+
+        for i, marcar in enumerate(marcacoes):
+            # marca ou desmarca o programa de acordo com a análise feita do laço.
+            check[i] = marcar
+
+        pausar()
+
+
 def instalar(dic_programas, diretorio, check, remover=False):
     limpar_tela()
 
@@ -188,6 +222,7 @@ def instalar(dic_programas, diretorio, check, remover=False):
     else:
         print('Marque programas para {}ar'.format(tarefa))
         pausar()
+
 
 def desinstalar(dic_programas, diretorio, check):
     instalar(dic_programas, diretorio, check, remover=True)
@@ -229,8 +264,9 @@ def main(dic_programas: OrderedDict, diretorio: str):
     4 - Marcar por filtro
     5 - Marcar específico
     6 - Marcar em lista
-    7 - Instalar
-    8 - Desinstalar
+    7 - Desmarcar programas instalados
+    8 - Instalar
+    9 - Desinstalar
     0 - Sair
 
     : '''
@@ -241,8 +277,9 @@ def main(dic_programas: OrderedDict, diretorio: str):
                4: filtrar,
                5: marcar_especifico,
                6: marcar_em_lista,
-               7: instalar,
-               8: desinstalar}
+               7: desmarcar_instalados,
+               8: instalar,
+               9: desinstalar}
 
     check = [1] * len(dic_programas)
 
