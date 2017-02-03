@@ -4,7 +4,7 @@ from collections import OrderedDict
 from os import system
 try:
     from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
-except:
+except ImportError:
     from gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 
 
