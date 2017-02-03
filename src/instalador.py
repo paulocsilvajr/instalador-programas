@@ -3,10 +3,10 @@
 from sys import argv
 try:
     from src.gerenciador_programas import gerar_dicionario_programas
-    from src.interface_grafica import Instalador
+    from src.interface_gui import Instalador
 except ImportError:
     from gerenciador_programas import gerar_dicionario_programas
-    from interface_grafica import Instalador
+    from interface_gui import Instalador
 
 __author__ = 'Paulo C. Silva Jr.'
 
