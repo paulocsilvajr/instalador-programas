@@ -3,10 +3,10 @@
 from sys import argv
 try:
     from src.gerenciador_programas import gerar_dicionario_programas
-    from src.interface_gui import Instalador
+    from src.interface_gui import Instalador as InstaladorGUI
 except ImportError:
     from gerenciador_programas import gerar_dicionario_programas
-    from interface_gui import Instalador
+    from interface_gui import Instalador as InstaladorGUI
 
 __author__ = 'Paulo C. Silva Jr.'
 
@@ -28,7 +28,7 @@ def capturar_diretorio():
 def main():
     diretorio = capturar_diretorio()
     dic_programas = gerar_dicionario_programas(diretorio + 'programas')
-    Instalador(dic_programas, diretorio)
+    InstaladorGUI(dic_programas, diretorio)
 
 
 main()
