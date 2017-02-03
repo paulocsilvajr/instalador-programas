@@ -249,6 +249,7 @@ class Instalador(tkinter.Tk):
         vsb = ttk.Scrollbar(master=frame, orient=tkinter.VERTICAL)
         text = tkinter.Text(master=frame, height=20, yscrollcommand=vsb.set)
         text.configure(background='white')
+        text.configure(border=0)
 
         vsb.config(command=text.yview)
         vsb.pack(side=tkinter.RIGHT, fill=tkinter.Y, padx=2)
