@@ -28,6 +28,7 @@ def pausar(mensagem='\nENTER para continuar '):
 
 
 def listar(dic_programas, diretorio, check):
+    """ Listagem de todos os programas com as check( Yes/no ) de cada um. """
     limpar_tela()
 
     tamanho = len(str(len(dic_programas)))
@@ -73,6 +74,7 @@ def filtrar(dic_programas, diretorio, check):
 
 
 def _marcar_dependencias(programa, dic_programas, check):
+    """ Marca das dependências do programa para instalar. """
     dependencias = programa.split(':')[:-1]
 
     if dependencias:
@@ -86,6 +88,7 @@ def _marcar_dependencias(programa, dic_programas, check):
 
 
 def _marcar(check, marcar):
+    """ Função usada em marcar_todos e desmarcar_todos para modificar o estado de cada posição de check. """
     limpar_tela()
 
     print('{}arcando todos os programas'.format('M' if marcar else 'Desm'))
@@ -116,9 +119,10 @@ def _definir_marca(dic_programas, check, codigo, simnao='[Y/n]'):
     if not resposta.lower().startswith('y'):
         marca = not marca
 
-    _marcar_dependencias(programa=list(dic_programas.keys())[codigo],
-                         dic_programas=dic_programas,
-                         check=check)
+    if marca:
+        _marcar_dependencias(programa=list(dic_programas.keys())[codigo],
+                             dic_programas=dic_programas,
+                             check=check)
 
     check[codigo] = marca
 
@@ -137,6 +141,7 @@ def _marcar_item(dic_programas, diretorio, check):
 
 
 def marcar_especifico(dic_programas, diretorio, check):
+    """ Função para marcar um programa com código específico para instalar/remover. """
     txt_menu = '''Marcar programas especificos:
 
     1 - Listar programas
@@ -160,6 +165,7 @@ def marcar_especifico(dic_programas, diretorio, check):
 
 
 def marcar_em_lista(dic_programas, diretorio, check):
+    """ Função para marcar quais programas serão instalados/removidos de acordo com a lista de programas. """
     limpar_tela()
 
     for i, chave in enumerate(dic_programas):
@@ -190,6 +196,7 @@ def desmarcar_instalados(dic_programas, diretorio, check):
 
 
 def instalar(dic_programas, diretorio, check, remover=False):
+    """ Função para instalar/desinstalar os programas. """
     limpar_tela()
 
     tarefa = "Instal" if not remover else "Desinstal"
@@ -225,6 +232,7 @@ def instalar(dic_programas, diretorio, check, remover=False):
 
 
 def desinstalar(dic_programas, diretorio, check):
+    """ Função para desinstalar os programas. Usa a função instalar com o parametro remover=True. """
     instalar(dic_programas, diretorio, check, remover=True)
 
 
@@ -234,6 +242,17 @@ def opcao_invalida(escolha):
 
 
 def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
+    """ Função para apresentar os menus da interface, com verificação de intervalo.
+    :param texto: Opção para o menu, usar números para representar-las.
+    :param mensagem_fim: Mensagem quando vai para a opção 0(sair).
+    :param funcoes: Dicionário de funções que serão invocadas.
+    :param inicio: Menor valor as opções, geralmente o 0.
+    :param fim: Maior valor das opçoes.
+    :param kwargs: Parâmetros das funções:
+                        dic_programas,
+                        diretorio,
+                        check
+    :return: None. """
     while True:
         limpar_tela()
         escolha = input(texto)
@@ -256,6 +275,7 @@ def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
 
 
 def main(dic_programas: OrderedDict, diretorio: str):
+    """ Função inicial e principal do CLI, contendo as opções de manipulação dos programas. """
     tela_inicial = '''INSTALADOR DE PROGRAMAS
 
     1 - Listar
@@ -281,6 +301,7 @@ def main(dic_programas: OrderedDict, diretorio: str):
                8: instalar,
                9: desinstalar}
 
+    # variável que representa os programas marcados
     check = [1] * len(dic_programas)
 
     menu(texto=tela_inicial,
@@ -294,4 +315,8 @@ def main(dic_programas: OrderedDict, diretorio: str):
 
 
 def instalador(dic_programas: OrderedDict, diretorio: str):
+    """ Função que captura as variáveis enviadas pelo instalador.py
+    :param dic_programas: Dicionário de programas ordenado.
+    :param diretorio: Diretório usado pela função desmarcar_intalados.
+    :return: None. """
     main(dic_programas=dic_programas, diretorio=diretorio)
