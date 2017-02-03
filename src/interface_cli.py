@@ -32,7 +32,12 @@ def listar(dic_programas, diretorio, check):
     tamanho = len(str(len(dic_programas)))
     for i, chave in enumerate(dic_programas, start=1):
         if str(i).endswith('1'):
-            print('LISTA DE PROGRAMAS({0}-{1}) de {2}:\n'.format(i, i+9, len(dic_programas)))
+            ultimo = i+9
+            quantidade = len(dic_programas)
+            if ultimo > quantidade:
+                ultimo = quantidade
+
+            print('LISTA DE PROGRAMAS({0}-{1}) de {2}:\n'.format(i, ultimo, quantidade))
 
         print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
                                                                'Y' if check[i-1] else 'n'))
@@ -50,7 +55,20 @@ def listar(dic_programas, diretorio, check):
 
 
 def filtrar(dic_programas, diretorio, check):
-    print('filtrando programas')
+    limpar_tela()
+
+    filtro = input('Informe o nome do programa: ')
+
+    programas_filtro = tuple(k for k in dic_programas.keys() if filtro in k)
+
+    for i, chave in enumerate(dic_programas):
+        if chave in programas_filtro:
+            _definir_marca(dic_programas=dic_programas,
+                           check=check,
+                           codigo=i,
+                           simnao='[Y/n/q]')
+
+    pausar()
 
 
 def _marcar(check, marcar):
@@ -142,29 +160,34 @@ def instalar(dic_programas, diretorio, check, remover=False):
 
     tarefa = "Instal" if not remover else "Desinstal"
 
-    print('{}ando programas:'.format(tarefa), end='')
+    if sum(check):
+        if input('Deseja realmente {0}ar os {1} programas marcados[Y/n]: '.format(tarefa, sum(check))).lower() == 'y':
 
-    for i, programa in enumerate(dic_programas):
-        repositorio = ""
-        if check[i]:
-            for comando in dic_programas[programa]:
-                msg = tarefa + "ando " + programa
-                print('\n\n{}'.format(msg))
+            print('{}ando programas:'.format(tarefa), end='')
 
-                return_code, repositorio = instalar_programa(comando, remover)
+            for i, programa in enumerate(dic_programas):
+                repositorio = ""
+                if check[i]:
+                    for comando in dic_programas[programa]:
+                        msg = tarefa + "ando " + programa
+                        print('\n\n{}'.format(msg))
 
-                print(return_code)
+                        return_code, repositorio = instalar_programa(comando, remover)
 
-                if return_code:
-                    print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
-        # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
-        if repositorio:
-            print("Removendo repositório %s\n" % repositorio)
-            return_code = remover_repositorio(repositorio)
-            print(return_code)
+                        print(return_code)
 
-    pausar()
+                        if return_code:
+                            print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
+                # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
+                if repositorio:
+                    print("Removendo repositório %s\n" % repositorio)
+                    return_code = remover_repositorio(repositorio)
+                    print(return_code)
 
+            pausar()
+    else:
+        print('Marque programas para {}ar'.format(tarefa))
+        pausar()
 
 def desinstalar(dic_programas, diretorio, check):
     instalar(dic_programas, diretorio, check, remover=True)
@@ -201,9 +224,9 @@ def main(dic_programas: OrderedDict, diretorio: str):
     tela_inicial = '''INSTALADOR DE PROGRAMAS
 
     1 - Listar
-    2 - Filtrar
-    3 - Marcar todos
-    4 - Desmarcar todos
+    2 - Marcar todos
+    3 - Desmarcar todos
+    4 - Marcar por filtro
     5 - Marcar específico
     6 - Marcar em lista
     7 - Instalar
@@ -213,9 +236,9 @@ def main(dic_programas: OrderedDict, diretorio: str):
     : '''
 
     funcoes = {1: listar,
-               2: filtrar,
-               3: marcar_todos,
-               4: desmarcar_todos,
+               2: marcar_todos,
+               3: desmarcar_todos,
+               4: filtrar,
                5: marcar_especifico,
                6: marcar_em_lista,
                7: instalar,
