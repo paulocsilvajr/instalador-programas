@@ -116,6 +116,8 @@ def marcar_especifico(dic_programas, diretorio, check):
     menu(texto=txt_menu,
          mensagem_fim='',
          funcoes=funcoes,
+         inicio=0,
+         fim=2,
          dic_programas=dic_programas,
          diretorio=diretorio,
          check=check)
@@ -126,21 +128,46 @@ def marcar_em_lista(dic_programas, diretorio, check):
 
     for i, chave in enumerate(dic_programas):
         retorno = _definir_marca(dic_programas=dic_programas,
-                       check=check,
-                       codigo=i,
-                       simnao='[Y/n/q]')
+                                 check=check,
+                                 codigo=i,
+                                 simnao='[Y/n/q]')
 
         if retorno.lower() == 'q':
             pausar()
             break
 
 
-def instalar(dic_programas, diretorio, check):
-    print('instalando programas')
+def instalar(dic_programas, diretorio, check, remover=False):
+    limpar_tela()
+
+    tarefa = "Instal" if not remover else "Desinstal"
+
+    print('{}ando programas:'.format(tarefa), end='')
+
+    for i, programa in enumerate(dic_programas):
+        repositorio = ""
+        if check[i]:
+            for comando in dic_programas[programa]:
+                msg = tarefa + "ando " + programa
+                print('\n\n{}'.format(msg))
+
+                return_code, repositorio = instalar_programa(comando, remover)
+
+                print(return_code)
+
+                if return_code:
+                    print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
+        # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
+        if repositorio:
+            print("Removendo repositório %s\n" % repositorio)
+            return_code = remover_repositorio(repositorio)
+            print(return_code)
+
+    pausar()
 
 
 def desinstalar(dic_programas, diretorio, check):
-    print('desinstalalando programas')
+    instalar(dic_programas, diretorio, check, remover=True)
 
 
 def opcao_invalida(escolha):
@@ -148,7 +175,7 @@ def opcao_invalida(escolha):
     pausar()
 
 
-def menu(texto, mensagem_fim, funcoes, **kwargs):
+def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
     while True:
         limpar_tela()
         escolha = input(texto)
@@ -156,7 +183,7 @@ def menu(texto, mensagem_fim, funcoes, **kwargs):
         if escolha.isdigit():
             escolha = int(escolha)
 
-            if verificar_intervalo(escolha, 0, 6):
+            if verificar_intervalo(escolha, inicio, fim):
 
                 if escolha == 0:
                     limpar_tela()
@@ -199,6 +226,8 @@ def main(dic_programas: OrderedDict, diretorio: str):
     menu(texto=tela_inicial,
          mensagem_fim='\n\nEND OF LINE.\n',
          funcoes=funcoes,
+         inicio=0,
+         fim=8,
          dic_programas=dic_programas,
          diretorio=diretorio,
          check=check)
@@ -206,4 +235,3 @@ def main(dic_programas: OrderedDict, diretorio: str):
 
 def instalador(dic_programas: OrderedDict, diretorio: str):
     main(dic_programas=dic_programas, diretorio=diretorio)
-
