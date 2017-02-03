@@ -80,6 +80,11 @@ class Instalador(tkinter.Tk):
         # Loop do formulário.
         self.mainloop()
 
+    def _posicao_programa(self, programa):
+        for i, chave in enumerate(self.dic_programas.keys()):
+            if chave == programa:
+                return i
+
     def clique_checkbutton(self, event):
         """ Função para marcar as dependências dos pacotes.
         :param event: Evento invocado, usado para identificar o componente(CheckButton) clicado.
@@ -87,14 +92,16 @@ class Instalador(tkinter.Tk):
         programa = event.widget['text']
         dependencias = programa.split(':')[:-1]
 
-        if dependencias:
-            for i, chave in enumerate(self.dic_programas.keys()):
-                descricao = findall('\(.+\)', chave)
-                if descricao:
-                    chave = chave.replace(descricao[0], '')
+        # se o programa NÃO está marcado, verifica dependencias.
+        if not self.checkbutton[self._posicao_programa(programa)].get():
+            if dependencias:
+                for i, chave in enumerate(self.dic_programas.keys()):
+                    descricao = findall('\(.+\)', chave)
+                    if descricao:
+                        chave = chave.replace(descricao[0], '')
 
-                if chave in dependencias:
-                    self.checkbutton[i].set(1)
+                    if chave in dependencias:
+                        self.checkbutton[i].set(1)
 
     def fechar(self):
         """ Fecha o programa após confirmação.
