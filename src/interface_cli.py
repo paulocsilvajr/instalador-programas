@@ -3,6 +3,7 @@
 from collections import OrderedDict
 from os import system
 from re import findall
+
 try:
     from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 except ImportError:
@@ -28,35 +29,48 @@ def pausar(mensagem='\nENTER para continuar '):
 
 
 def listar(dic_programas, diretorio, check):
-    """ Listagem de todos os programas com as check( Yes/no ) de cada um. """
+    """ Listagem de todos os programas com as check/marcação( Sim/no ) de cada um. """
     limpar_tela()
 
+    somente_marcados = False
+    if not all(check) and any(check):
+        somente_marcados = True if input('Listar somente marcados[S/n]: ').lower() == 's' else False
+        limpar_tela()
+
     tamanho = len(str(len(dic_programas)))
+    quantidade = len(dic_programas)
+
     for i, chave in enumerate(dic_programas, start=1):
-        if str(i).endswith('1'):
-            ultimo = i+9
-            quantidade = len(dic_programas)
-            if ultimo > quantidade:
-                ultimo = quantidade
+        if somente_marcados:
+            if i == 1:
+                print('LISTA DE PROGRAMAS MARCADOS({})'.format(sum(check)))
 
-            print('LISTA DE PROGRAMAS({0}-{1}) de {2}:\n'.format(i, ultimo, quantidade))
+            if check[i - 1] == 1:
+                print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
+                                                                       'S' if check[i - 1] else 'n'))
+        else:
+            if str(i).endswith('1'):
+                ultimo = i + 9
+                if ultimo > quantidade:
+                    ultimo = quantidade
 
-        print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
-                                                               'Y' if check[i-1] else 'n'))
+                print('LISTA DE PROGRAMAS({0}-{1}) de {2}:\n'.format(i, ultimo, quantidade))
 
-        if not i % 10:
-            entrada = input('\nENTER para mais 10 itens ou q+ENTER para finalizar lista ').lower()
+            print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
+                                                               'S' if check[i - 1] else 'n'))
+            if not i % 10:
+                entrada = input('\nENTER para mais 10 itens ou q+ENTER para finalizar lista ').lower()
 
-            if entrada == 'q':
-                break
+                if entrada == 'q':
+                    break
 
-            limpar_tela()
+                limpar_tela()
 
         if i == len(dic_programas):
             pausar()
 
 
-def filtrar(dic_programas, diretorio, check):
+def marcar_por_filtro(dic_programas, diretorio, check):
     limpar_tela()
 
     filtro = input('Informe o nome do programa: ')
@@ -68,7 +82,7 @@ def filtrar(dic_programas, diretorio, check):
             _definir_marca(dic_programas=dic_programas,
                            check=check,
                            codigo=i,
-                           simnao='[Y/n/q]')
+                           simnao='[S/n/q]')
 
     pausar()
 
@@ -106,7 +120,7 @@ def desmarcar_todos(dic_programas, diretorio, check):
     _marcar(check=check, marcar=0)
 
 
-def _definir_marca(dic_programas, check, codigo, simnao='[Y/n]'):
+def _definir_marca(dic_programas, check, codigo, simnao='[S/n]'):
     if check[codigo] == 0:
         msg = 'Marcar'
         marca = 1
@@ -116,7 +130,7 @@ def _definir_marca(dic_programas, check, codigo, simnao='[Y/n]'):
 
     resposta = input("{0} '{1}' {2}: ".format(msg, list(dic_programas.keys())[codigo], simnao))
 
-    if not resposta.lower().startswith('y'):
+    if not resposta.lower().startswith('s'):
         marca = not marca
 
     if marca:
@@ -137,7 +151,7 @@ def _marcar_item(dic_programas, diretorio, check):
         if verificar_intervalo(codigo, 1, len(dic_programas)):
             _definir_marca(dic_programas=dic_programas,
                            check=check,
-                           codigo=codigo-1)
+                           codigo=codigo - 1)
 
 
 def marcar_especifico(dic_programas, diretorio, check):
@@ -172,7 +186,7 @@ def marcar_em_lista(dic_programas, diretorio, check):
         retorno = _definir_marca(dic_programas=dic_programas,
                                  check=check,
                                  codigo=i,
-                                 simnao='[Y/n/q]')
+                                 simnao='[S/n/q]')
 
         if retorno.lower() == 'q':
             pausar()
@@ -185,7 +199,7 @@ def desmarcar_instalados(dic_programas, diretorio, check):
     print("Desmarcando programas instalados.")
 
     if input("Este processo pode demorar dependendo da quantidade de programas listados,"
-             "\nContinuar[Y,n]? ").lower() == 'y':
+             "\nContinuar[S/n]? ").lower() == 's':
         marcacoes = verificar_programas_instalados(dic_programas, diretorio)
 
         for i, marcar in enumerate(marcacoes):
@@ -201,8 +215,12 @@ def instalar(dic_programas, diretorio, check, remover=False):
 
     tarefa = "Instal" if not remover else "Desinstal"
 
-    if sum(check):
-        if input('Deseja realmente {0}ar os {1} programas marcados[Y/n]: '.format(tarefa, sum(check))).lower() == 'y':
+    quant_programas = sum(check)
+    if quant_programas:
+        if input('Deseja realmente {0}ar {1} marcados[S/n]: '.
+                 format(tarefa.lower(),
+                        'os {} programas'.format(quant_programas) if quant_programas > 1 else 'programa')) \
+                .lower() == 's':
 
             print('{}ando programas:'.format(tarefa), end='')
 
@@ -227,7 +245,7 @@ def instalar(dic_programas, diretorio, check, remover=False):
 
             pausar()
     else:
-        print('Marque programas para {}ar'.format(tarefa))
+        print('Marque programas para {}ar'.format(tarefa.lower()))
         pausar()
 
 
@@ -294,7 +312,7 @@ def main(dic_programas: OrderedDict, diretorio: str):
     funcoes = {1: listar,
                2: marcar_todos,
                3: desmarcar_todos,
-               4: filtrar,
+               4: marcar_por_filtro,
                5: marcar_especifico,
                6: marcar_em_lista,
                7: desmarcar_instalados,
@@ -308,7 +326,7 @@ def main(dic_programas: OrderedDict, diretorio: str):
          mensagem_fim='\n\nEND OF LINE.\n',
          funcoes=funcoes,
          inicio=0,
-         fim=8,
+         fim=9,
          dic_programas=dic_programas,
          diretorio=diretorio,
          check=check)
