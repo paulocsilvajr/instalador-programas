@@ -8,8 +8,8 @@ Conceder privilégio de execução ao script 'instalador.sh'.
 Instalar os pacotes: IDLE do python3 e gksu.
 No Ubuntu 16.04 usar os comandos abaixo:
 ```
-$ apt install idle-python3*;
-$ apt install gksu;
+# apt install idle-python3*;
+# apt install gksu;
 ```
 Quando executado o programa pelo script 'instalador.sh', é verificado se os programas informados nos requisitos foram instalados, caso necessário é feito a instalação automática.
 
