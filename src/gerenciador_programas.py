@@ -6,7 +6,7 @@ from subprocess import call
 
 
 def verificar_arquivo(nome_arquivo: str,
-                      comandos_gerenciadores: tuple=('apt', 'umake', 'pip2', 'pip3', 'add-apt-repository', 'sh')):
+                      comandos_gerenciadores: tuple=('apt', 'umake', 'pip2', 'pip3', 'add-apt-repository', 'sh', 'update-rc.d', 'service')):
     """ Verificador das entradas usados para instalar programas.
     :param nome_arquivo: nome do arquivo com lista de programas.
     :param comandos_gerenciadores: Nome dos gerenciadores de pacote, gerenciador de repositório e outros.

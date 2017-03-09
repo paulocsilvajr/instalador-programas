@@ -184,3 +184,9 @@ apt install curl -y;
 #git:curl:zsh & oh-my-zsh
 apt install zsh -y;
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
+
+#docker
+apt install docker.io -y;
+apt install docker-compose -y;
+update-rc.d docker defaults;
+service docker start;
