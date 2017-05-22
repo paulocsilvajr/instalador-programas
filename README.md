@@ -3,7 +3,7 @@
 
 Este repositório contém um software desenvolvido em python para instalar programas na distribuição Ubuntu. Seu objetivo é facilitar e agilizar o processo de instalar vários aplicativos ao mesmo tempo. Para isso, ele usa de uma lista previamente alimentada.
 
-###Pré-requisitos
+### Pré-requisitos
 Conceder privilégio de execução ao script 'instalador.sh'.
 Instalar os pacotes: IDLE do python3 e gksu.
 No Ubuntu 16.04 usar os comandos abaixo:
@@ -13,7 +13,7 @@ No Ubuntu 16.04 usar os comandos abaixo:
 ```
 Quando executado o programa pelo script 'instalador.sh', é verificado se os programas informados nos requisitos foram instalados, caso necessário é feito a instalação automática.
 
-###Arquivos
+### Arquivos
 
 ```
 instalador.sh: Executável do programa. Pede senha do administrador no início. Usar parâmetro -g para GUI.
@@ -25,10 +25,10 @@ src/interface_cli.py: Módulo contendo a interface de linha de comando do instal
 src/gerenciador_programas.py: Módulo com funções para gerenciar os programas. Módulo base para o instalador.py.
 ```
 
-###Licença
+### Licença
 
 [Licença GPL](https://github.com/paulocsilvajr/instalador-programas/blob/master/license_gpl.txt), arquivo em anexo no repositório.
 
-###Contato
+### Contato
 
 Paulo Carvalho da Silva Junior - pauluscave@gmail.com
