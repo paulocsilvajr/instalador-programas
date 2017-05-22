@@ -190,3 +190,9 @@ apt install docker.io -y;
 apt install docker-compose -y;
 update-rc.d docker defaults;
 service docker start;
+
+#retroarch
+add-apt-repository ppa:libretro/stable -y;
+apt update;
+apt install retroarch -y;
+
