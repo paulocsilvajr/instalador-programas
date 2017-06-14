@@ -184,6 +184,7 @@ apt install curl -y;
 #git:curl:zsh & oh-my-zsh
 apt install zsh -y;
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
+chown -R $USER $(ls -a ~ | grep 'zsh');
 
 #docker
 apt install docker.io -y;
@@ -195,4 +196,8 @@ service docker start;
 add-apt-repository ppa:libretro/stable -y;
 apt update;
 apt install retroarch -y;
+
+#latex & texstudio
+apt install texlive texlive-latex-extra texlive-lang-portuguese -y;
+apt install texstudio -y;
 
