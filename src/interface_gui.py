@@ -6,6 +6,7 @@ from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
 from collections import OrderedDict
 from re import findall
+
 try:
     from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 except ImportError:
@@ -14,6 +15,7 @@ except ImportError:
 
 class Instalador(tkinter.Tk):
     """ Interface gráfica do instaldor. """
+
     def __init__(self, dic_programas: OrderedDict, diretorio: str):
         # Construtor(classe pai: tkinter.Tk) e configurações da janela.
         super(Instalador, self).__init__()
@@ -23,7 +25,7 @@ class Instalador(tkinter.Tk):
 
         self._style()
 
-        self.title('Instalador programas')
+        self.title('Instalador de programas')
 
         # Por padrão, quando inicializado, todos os programas estão marcados.
         # Para mudar o padrão, mude o atributo marcar_todos por 0.
@@ -40,6 +42,7 @@ class Instalador(tkinter.Tk):
         frame2 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
                              padx=2.5, pady=2.5)
 
+        # botões de seleção
         self._button(master=frame2, text='Reverter seleção', command=self.reverter,
                      side=tkinter.LEFT, fill=tkinter.X, padx=2.5, expand=1)
 
@@ -47,7 +50,7 @@ class Instalador(tkinter.Tk):
         self.btn_marcar_todos = self._button(master=frame2, text=txt_btn_marcar_todos, command=self.selecionar,
                                              side=tkinter.RIGHT, fill=tkinter.X, padx=2.5, expand=1)
 
-        # Botões
+        # Botões de controle de instalação
         self._button(master=self, text="Desmarcar instalados",
                      command=self.desmarcar_instalados, style="C.TButton", underline=0,
                      side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
@@ -213,18 +216,19 @@ class Instalador(tkinter.Tk):
     def _style(self):
         self.style = ttk.Style()
         self.style.theme_use('clam')
+        # self.style.theme_use('classic')
         self.style.configure('.', font=('Ubuntu', 12))
 
         # Para adicionar novos estilos personalizados, deve-se manter o nome do componente.
         # Ex: C.TButton, D.TButton
         self.style.map("C.TButton",
-                  foreground=[('pressed', 'red'), ('active', 'blue')],
-                  background=[('pressed', '!disabled', 'black'), ('active', 'darkgray')])
+                       foreground=[('pressed', 'red'), ('active', 'blue')],
+                       background=[('pressed', '!disabled', 'black'), ('active', 'darkgray')])
         self.style.map("D.TButton",
-                  foreground=[('pressed', 'black'), ('active', 'red')],
-                  background=[('pressed', '!disabled', 'red'), ('active', 'darkgray')])
+                       foreground=[('pressed', 'black'), ('active', 'red')],
+                       background=[('pressed', '!disabled', 'red'), ('active', 'darkgray')])
         self.style.map("E.TCheckbutton",
-                  background=[('active', 'darkgray'), ('!active', 'white')])
+                       background=[('active', 'darkgray'), ('!active', 'white')])
 
     def _label(self, master, text):
         label = ttk.Label(master=master, text=text)

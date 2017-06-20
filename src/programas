@@ -1,6 +1,6 @@
 #apt:limpar
-apt autoremove;
-apt autoclean;
+apt autoremove -y;
+apt autoclean -y;
 
 #apt:atualizar programas
 apt update && apt upgrade -y;
@@ -200,4 +200,8 @@ apt install retroarch -y;
 #latex & texstudio
 apt install texlive texlive-latex-extra texlive-lang-portuguese -y;
 apt install texstudio -y;
+
+#ssh-server
+apt install openssh-server -y;
+service ssh start;
 

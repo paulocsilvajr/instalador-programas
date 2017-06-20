@@ -71,7 +71,7 @@ def verificar_programas_instalados(dic_programas: OrderedDict, diretorio: str=''
     :param diretorio: diretorio para execução do script isinstalled.sh.
     :return: Lista com valores booleano. True: programa desintalado, False: programa instalado.
              Usado para marcar checkbox de instalação. """
-    assert isinstance(dic_programas, (OrderedDict)), 'Parâmentro dic_programas requer um OrderedDict'
+    assert isinstance(dic_programas, OrderedDict), 'Parâmentro dic_programas requer um OrderedDict'
 
     resultado = []
 
