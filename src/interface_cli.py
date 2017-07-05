@@ -20,6 +20,15 @@ def limpar_tela():
     system('clear')
 
 
+def carregar_logo():
+    f = open('src/logo', mode='r')
+    logo = ''
+    for linha in f:
+        logo += linha
+
+    return logo
+
+
 def pausar(mensagem='\nENTER para continuar '):
     while True:
         entrada = input(mensagem)
@@ -294,7 +303,8 @@ def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
 
 def main(dic_programas: OrderedDict, diretorio: str):
     """ Função inicial e principal do CLI, contendo as opções de manipulação dos programas. """
-    tela_inicial = '''INSTALADOR DE PROGRAMAS
+    logo = carregar_logo()
+    tela_inicial = logo + '''\nDesenvolvido por Paulo C. Silva Jr
 
     1 - Listar
     2 - Marcar todos

@@ -205,3 +205,9 @@ apt install texstudio -y;
 apt install openssh-server -y;
 service ssh start;
 
+#oneko
+apt install oneko -y;
+
+#figlet(texto em caracteres ASCII)
+apt install figlet -y;
+
