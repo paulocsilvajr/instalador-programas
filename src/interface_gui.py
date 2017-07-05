@@ -40,7 +40,7 @@ class Instalador(tkinter.Tk):
         frame1 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
                              padx=2.5, pady=2.5)
         campo_pesquisa = self._edit(master=frame1)
-        self.pesquisa_default = 'Pesquise um nome de programa'
+        self.pesquisa_default = 'Filtre por um nome de programa'
         self.texto_pesquisa.set(self.pesquisa_default)
 
         self._button(master=frame1, text='Pesquisar', command=self.pesquisar, underline=0,
@@ -269,8 +269,12 @@ class Instalador(tkinter.Tk):
         self.style = ttk.Style()
         # self.style.theme_use('classic')
         self.style.theme_use('clam')
+
+        cor_fundo = 'lightgray'
+        # cor de fundo do tkinter.tk
+        super().configure(background=cor_fundo)
         # self.style.configure('.', font=('Ubuntu', 12))  # ou
-        self.style.configure('.', font=self.fonte)
+        self.style.configure('.', font=self.fonte, background=cor_fundo)  # cor de fundo do ttk
         # temas disponíveis
         # print(self.style.theme_names())
 
