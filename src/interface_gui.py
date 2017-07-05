@@ -22,6 +22,8 @@ class Instalador(tkinter.Tk):
 
         self.dic_programas = dic_programas
         self.diretorio = diretorio
+        self.texto_pesquisa = tkinter.StringVar()
+        self.fonte = 'Ubuntu 12'
 
         self._style()
 
@@ -34,8 +36,19 @@ class Instalador(tkinter.Tk):
         # Componentes do formulário.
         self._label(master=self, text="Marque os programas que deseja instalar")
 
+        # edit para pesquisa e botão pesquisar
+        frame1 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
+                             padx=2.5, pady=2.5)
+        campo_pesquisa = self._edit(master=frame1)
+        self.pesquisa_default = 'Pesquise um nome de programa'
+        self.texto_pesquisa.set(self.pesquisa_default)
+
+        self._button(master=frame1, text='Pesquisar', command=self.pesquisar, underline=0,
+                     side=tkinter.LEFT, fill=tkinter.Y, padx=2.5, expand=0)
+
+
         # lista de programas com checkbuttons e scrollbar
-        self._lista_programas(master=self, side=tkinter.TOP, fill=tkinter.BOTH, expand=1,
+        self.frame_programas, self.text_programas = self._lista_programas(master=self, side=tkinter.TOP, fill=tkinter.BOTH, expand=1,
                               padx=5, pady=2.5)
 
         # frame para botões reverter seleção e desmarcar seleção que ficam lado a lado
@@ -79,6 +92,9 @@ class Instalador(tkinter.Tk):
         self.protocol('WM_DELETE_WINDOW', self.fechar)
         self.bind('<Alt-i>', self.atalho_instalar)
         self.bind('<Alt-d>', self.atalho_desintalar)
+        self.bind('<Alt-p>', self.atalho_pesquisar)
+        campo_pesquisa.bind('<Return>', self.atalho_pesquisar)
+        campo_pesquisa.bind('<Button-1>', self.limpar_pesquisa)
 
         # Loop do formulário.
         self.mainloop()
@@ -87,6 +103,42 @@ class Instalador(tkinter.Tk):
         for i, chave in enumerate(self.dic_programas.keys()):
             if chave == programa:
                 return i
+
+    def limpar_pesquisa(self, event=None):
+        self.texto_pesquisa.set('')
+
+    def pesquisar(self):
+        filtro = self.texto_pesquisa.get()
+
+        if filtro == self.pesquisa_default:
+            filtro = ''
+
+        self.text_programas.configure(state='normal')
+        self.text_programas.delete('1.0', tkinter.END)
+
+        if not filtro:
+            filtro = 'Todos'
+
+            self.adicionar_check_programas(self.frame_programas, self.text_programas, self.dic_programas.keys())
+        else:
+            pass
+            dic_temp = []
+
+            for programa in self.dic_programas.keys():
+                if filtro in programa:
+                    dic_temp.append(programa)
+
+            self.adicionar_check_programas(self.frame_programas, self.text_programas, dic_temp)
+
+        self.text_programas.configure(state='disabled')
+
+        self.limpar_pesquisa()
+
+        self.lbl_status['text'] = 'Filtro: ' + filtro
+
+
+    def atalho_pesquisar(self, event):
+        self.pesquisar()
 
     def clique_checkbutton(self, event):
         """ Função para marcar as dependências dos pacotes.
@@ -215,9 +267,12 @@ class Instalador(tkinter.Tk):
 
     def _style(self):
         self.style = ttk.Style()
-        self.style.theme_use('clam')
         # self.style.theme_use('classic')
-        self.style.configure('.', font=('Ubuntu', 12))
+        self.style.theme_use('clam')
+        # self.style.configure('.', font=('Ubuntu', 12))  # ou
+        self.style.configure('.', font=self.fonte)
+        # temas disponíveis
+        # print(self.style.theme_names())
 
         # Para adicionar novos estilos personalizados, deve-se manter o nome do componente.
         # Ex: C.TButton, D.TButton
@@ -229,6 +284,11 @@ class Instalador(tkinter.Tk):
                        background=[('pressed', '!disabled', 'red'), ('active', 'darkgray')])
         self.style.map("E.TCheckbutton",
                        background=[('active', 'darkgray'), ('!active', 'white')])
+
+    def _edit(self, master):
+        edit = ttk.Entry(master=master, textvariable=self.texto_pesquisa, width=40, font=self.fonte)
+        edit.pack(side=tkinter.LEFT, fill=tkinter.BOTH, padx=2.5)
+        return edit
 
     def _label(self, master, text):
         label = ttk.Label(master=master, text=text)
@@ -260,16 +320,21 @@ class Instalador(tkinter.Tk):
         text.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
 
         # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
-        self.checkbutton = []
-        for i, chave in enumerate(self.dic_programas.keys()):
-            self.checkbutton.append(tkinter.IntVar())
-            self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
-            cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
-            cb['style'] = 'E.TCheckbutton'
-            cb.bind('<Button-1>', self.clique_checkbutton)
-            text.window_create(tkinter.END, window=cb)
-            text.insert(tkinter.END, '\n')
+        self.adicionar_check_programas(frame, text, self.dic_programas.keys())
 
         text.configure(state='disabled')
 
-        return frame
+        return frame, text
+
+    def adicionar_check_programas(self, frame, text, programas):
+        self.checkbutton = []
+        for i, chave in enumerate(programas):
+            self.checkbutton.append(tkinter.IntVar())
+            self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
+
+            cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+            cb['style'] = 'E.TCheckbutton'
+            cb.bind('<Button-1>', self.clique_checkbutton)
+
+            text.window_create(tkinter.END, window=cb)
+            text.insert(tkinter.END, '\n')

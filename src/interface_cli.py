@@ -20,8 +20,8 @@ def limpar_tela():
     system('clear')
 
 
-def carregar_logo():
-    f = open('src/logo', mode='r')
+def carregar_logo(diretorio):
+    f = open(diretorio + 'logo', mode='r')
     logo = ''
     for linha in f:
         logo += linha
@@ -303,8 +303,11 @@ def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
 
 def main(dic_programas: OrderedDict, diretorio: str):
     """ Função inicial e principal do CLI, contendo as opções de manipulação dos programas. """
-    logo = carregar_logo()
-    tela_inicial = logo + '''\nDesenvolvido por Paulo C. Silva Jr
+    logo = carregar_logo(diretorio)
+    tela_inicial = logo + '''\nInterface para o apt para facilitar a instalação de programas 
+em distribuições baseadas no Ubuntu.
+
+Desenvolvido por Paulo C. Silva Jr
 
     1 - Listar
     2 - Marcar todos
