@@ -14,9 +14,13 @@ except ImportError:
 
 
 class Instalador(tkinter.Tk):
-    """ Interface gráfica do instaldor. """
+    """ Interface gráfica do instalador. """
 
     def __init__(self, dic_programas: OrderedDict, diretorio: str):
+        """ Construtor da interface gráfica do programa. A criação dos componentes foram extraídos em
+        métodos para melhorar a legibilidade do código.
+        :param dic_programas: Dicionário de programas gerado a partir do arquivo src/programas.
+        :param diretorio: Diretório base do programa. """
         # Construtor(classe pai: tkinter.Tk) e configurações da janela.
         super(Instalador, self).__init__()
 
@@ -48,11 +52,10 @@ class Instalador(tkinter.Tk):
         self._button(master=frame1, text='Pesquisar', command=self.pesquisar, underline=0,
                      side=tkinter.LEFT, fill=tkinter.Y, padx=2.5, expand=0)
 
-
         # lista de programas com checkbuttons e scrollbar
         self.frame_programas, self.text_programas = \
-            self._lista_programas(master=self, side=tkinter.TOP, fill=tkinter.BOTH, expand=1,
-                                  padx=5, pady=2.5)
+            self._listar_programas(master=self, side=tkinter.TOP, fill=tkinter.BOTH, expand=1,
+                                   padx=5, pady=2.5)
 
         # frame para botões reverter seleção e desmarcar seleção que ficam lado a lado
         frame2 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
@@ -103,15 +106,16 @@ class Instalador(tkinter.Tk):
         # Loop do formulário.
         self.mainloop()
 
-    def _posicao_programa(self, programa):
-        for i, chave in enumerate(self.dic_programas.keys()):
-            if chave == programa:
-                return i
-
     def limpar_pesquisa(self, event=None):
+        """ Limpeza do campo de pesquisa.
+        :param event: Evento invocado, opcional.
+        :return: None. """
         self.texto_pesquisa.set('')
 
     def pesquisar(self):
+        """ Método para efetuar a pesquisa dos programas,
+        filtrando a lista de acordo com o informado no campo de pesquisa.
+        :return: None. """
         filtro = self.texto_pesquisa.get()
 
         if filtro == self.pesquisa_default:
@@ -123,7 +127,7 @@ class Instalador(tkinter.Tk):
         if not filtro:
             filtro = 'Todos'
 
-            self.adicionar_check_programas(self.frame_programas, self.text_programas, self.dic_programas.keys())
+            self._adicionar_check_programas(self.frame_programas, self.text_programas, self.dic_programas.keys())
         else:
             pass
             dic_temp = []
@@ -132,16 +136,13 @@ class Instalador(tkinter.Tk):
                 if filtro in programa:
                     dic_temp.append(programa)
 
-            self.adicionar_check_programas(self.frame_programas, self.text_programas, dic_temp)
+            self._adicionar_check_programas(self.frame_programas, self.text_programas, dic_temp)
 
         self.text_programas.configure(state='disabled')
 
         self.limpar_pesquisa()
 
         self.lbl_status['text'] = 'Filtro: ' + filtro
-
-    def atalho_pesquisar(self, event):
-        self.pesquisar()
 
     def clique_checkbutton(self, event):
         """ Função para marcar as dependências dos pacotes.
@@ -258,20 +259,39 @@ class Instalador(tkinter.Tk):
 
     def atalho_instalar(self, event):
         """ Atalho para instalação, usado pelo .bind.
-        :param event: Evento invocado
+        :param event: Evento invocado.
         :return: None. """
         self.instalar()
 
     def atalho_desintalar(self, event):
         """ Atalho para desinstalação, usado pelo .bind.
-        :param event: Evento invocado
+        :param event: Evento invocado.
         :return: None. """
         self.desinstalar()
 
     def atalho_desmarcar_instalados(self, event):
+        """ Atalho para desmarcar instalados, usado pelo .bind.
+        :param event: Evento invocado.
+        :return: None. """
         self.desmarcar_instalados()
 
+    def atalho_pesquisar(self, event):
+        """ Atalho para pesquisar, usado pelo .bind.
+        :param event: Evento invocado.
+        :return: None. """
+        self.pesquisar()
+
+    def _posicao_programa(self, programa):
+        """ Retorna a posição do programa de acordo com o nome informado e a lista de programas,
+        :param programa: Nome do programa
+        :return: Posição correspondente. """
+        for i, chave in enumerate(self.dic_programas.keys()):
+            if chave == programa:
+                return i
+
     def _style(self):
+        """ Definição dos estilos do programa, tanto do tkinter(tk) quanto do ttk.
+        :return: None. """
         self.style = ttk.Style()
         # self.style.theme_use('classic')
         self.style.theme_use('clam')
@@ -296,26 +316,64 @@ class Instalador(tkinter.Tk):
                        background=[('active', 'darkgray'), ('!active', 'white')])
 
     def _edit(self, master, textvariable):
+        """ Definição e criação do componente ttk.Entry.
+        :param master: Componente pai.
+        :param textvariable: Variável responsável pelo conteúdo do ENTRY.
+        :return: ENTRY configurado. """
         edit = ttk.Entry(master=master, textvariable=textvariable, width=40, font=self.fonte)
         edit.pack(side=tkinter.LEFT, fill=tkinter.BOTH, padx=2.5)
         return edit
 
     def _label(self, master, text):
+        """ Definição e criação do componente ttk.Label.
+        :param master: Componente pai.
+        :param text: Texto exibido pelo componente.
+        :return: LABEL configurado. """
         label = ttk.Label(master=master, text=text)
         label.pack(side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
         return label
 
     def _frame(self, master, side, fill, expand=0, padx=0.0, pady=0.0):
+        """ Definição e criação do componente ttk.Frame.
+        :param master: Componente pai.
+        :param side: Tipo de alinhamento.
+        :param fill: Tipo de preenchimento.
+        :param expand: Expansão do compomente, valores: 0(default) ->NÃO, 1 -> SIM; opcional.
+        :param padx: Borda x; opcional.
+        :param pady: Borda y; opcional.
+        :return: FRAME configurado. """
         frame = ttk.Frame(master=master)
         frame.pack(side=side, fill=fill, expand=expand, padx=padx, pady=pady)
         return frame
 
     def _button(self, master, command, text, side, fill, expand=0, underline=None, style='TButton', padx=0.0, pady=0.0):
+        """ Definição e criação do componente ttk.Button.
+        :param master: Conpomente pai.
+        :param command: Função invocada no evento de click. Informar somente o nome da função.
+        :param text: Texto exibido pelo componente.
+        :param side: Tipo de alinhamento.
+        :param fill: Tipo de preenchimento.
+        :param expand: Expansão do compomente, valores: 0(default) ->NÃO, 1 -> SIM; opcional.
+        :param underline: Posição da letra sublinhada; opcional.
+        :param style: Estilo do componente; opcional.
+        :param padx: Borda x; opcional.
+        :param pady: Borda y; opcional.
+        :return: BUTTOM configurado. """
         buttom = ttk.Button(master=master, text=text, command=command, style=style, underline=underline)
         buttom.pack(side=side, fill=fill, expand=expand, padx=padx, pady=pady)
         return buttom
 
-    def _lista_programas(self, master, side, fill, expand=0, padx=0.0, pady=0.0):
+    def _listar_programas(self, master, side, fill, expand=0, padx=0.0, pady=0.0):
+        """ Criação e definição da lista de programas.
+        Formado por: ttk.Frame, tkinter.Text, ttk.Scrollbar e
+        ttk.CheckButton(método _adicionar_check_programas).
+        :param master: Conponente pai.
+        :param side: Tipo de alinhamento.
+        :param fill: Tipo de preenchimento.
+        :param expand: Expansão do compomente, valores: 0(default) ->NÃO, 1 -> SIM; opcional.
+        :param padx: Borda x; opcional.
+        :param pady: Borda y; opcional.
+        :return: FRAME e TEXT configurado. """
         # frame, scrollbar e text que serão o container dos checkbutton
         frame = self._frame(master=master, side=side, fill=fill, expand=expand,
                             padx=padx, pady=pady)
@@ -330,13 +388,19 @@ class Instalador(tkinter.Tk):
         text.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
 
         # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
-        self.adicionar_check_programas(frame, text, self.dic_programas.keys())
+        self._adicionar_check_programas(frame, text, self.dic_programas.keys())
 
         text.configure(state='disabled')
 
         return frame, text
 
-    def adicionar_check_programas(self, frame, text, programas):
+    def _adicionar_check_programas(self, frame, text, programas):
+        """ Método complementar de _listar_programas, usado na criação dos checkbuttons de programas.
+        Também utilizado no método pesquisar para filtrar a lista de programas.
+        :param frame: Frame criado no método _listar_programas
+        :param text: Text criado no método _listar_programas
+        :param programas: Lista de programas.
+        :return: None. """
         self.checkbutton = []
         for i, chave in enumerate(programas):
             self.checkbutton.append(tkinter.IntVar())
