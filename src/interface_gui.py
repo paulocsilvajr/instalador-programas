@@ -23,6 +23,8 @@ class Instalador(tkinter.Tk):
         self.dic_programas = dic_programas
         self.diretorio = diretorio
         self.texto_pesquisa = tkinter.StringVar()
+        self.checkbutton = []  # lista de checkbox para os programas
+
         self.fonte = 'Ubuntu 12'
 
         self._style()
@@ -31,7 +33,7 @@ class Instalador(tkinter.Tk):
 
         # Por padrão, quando inicializado, todos os programas estão marcados.
         # Para mudar o padrão, mude o atributo marcar_todos por 0.
-        self.marcar_todos = 1  # default 1.
+        self.marcar_todos = 0  # default 1.
 
         # Componentes do formulário.
         self._label(master=self, text="Marque os programas que deseja instalar")
@@ -39,7 +41,7 @@ class Instalador(tkinter.Tk):
         # edit para pesquisa e botão pesquisar
         frame1 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
                              padx=2.5, pady=2.5)
-        campo_pesquisa = self._edit(master=frame1)
+        campo_pesquisa = self._edit(master=frame1, textvariable=self.texto_pesquisa)
         self.pesquisa_default = 'Filtre por um nome de programa'
         self.texto_pesquisa.set(self.pesquisa_default)
 
@@ -48,8 +50,9 @@ class Instalador(tkinter.Tk):
 
 
         # lista de programas com checkbuttons e scrollbar
-        self.frame_programas, self.text_programas = self._lista_programas(master=self, side=tkinter.TOP, fill=tkinter.BOTH, expand=1,
-                              padx=5, pady=2.5)
+        self.frame_programas, self.text_programas = \
+            self._lista_programas(master=self, side=tkinter.TOP, fill=tkinter.BOTH, expand=1,
+                                  padx=5, pady=2.5)
 
         # frame para botões reverter seleção e desmarcar seleção que ficam lado a lado
         frame2 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
@@ -65,7 +68,7 @@ class Instalador(tkinter.Tk):
 
         # Botões de controle de instalação
         self._button(master=self, text="Desmarcar instalados",
-                     command=self.desmarcar_instalados, style="C.TButton", underline=0,
+                     command=self.desmarcar_instalados, style="C.TButton", underline=1,
                      side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
 
         self._button(master=self, text="Instalar",
@@ -92,6 +95,7 @@ class Instalador(tkinter.Tk):
         self.protocol('WM_DELETE_WINDOW', self.fechar)
         self.bind('<Alt-i>', self.atalho_instalar)
         self.bind('<Alt-d>', self.atalho_desintalar)
+        self.bind('<Alt-e>', self.atalho_desmarcar_instalados)
         self.bind('<Alt-p>', self.atalho_pesquisar)
         campo_pesquisa.bind('<Return>', self.atalho_pesquisar)
         campo_pesquisa.bind('<Button-1>', self.limpar_pesquisa)
@@ -135,7 +139,6 @@ class Instalador(tkinter.Tk):
         self.limpar_pesquisa()
 
         self.lbl_status['text'] = 'Filtro: ' + filtro
-
 
     def atalho_pesquisar(self, event):
         self.pesquisar()
@@ -265,6 +268,9 @@ class Instalador(tkinter.Tk):
         :return: None. """
         self.desinstalar()
 
+    def atalho_desmarcar_instalados(self, event):
+        self.desmarcar_instalados()
+
     def _style(self):
         self.style = ttk.Style()
         # self.style.theme_use('classic')
@@ -289,8 +295,8 @@ class Instalador(tkinter.Tk):
         self.style.map("E.TCheckbutton",
                        background=[('active', 'darkgray'), ('!active', 'white')])
 
-    def _edit(self, master):
-        edit = ttk.Entry(master=master, textvariable=self.texto_pesquisa, width=40, font=self.fonte)
+    def _edit(self, master, textvariable):
+        edit = ttk.Entry(master=master, textvariable=textvariable, width=40, font=self.fonte)
         edit.pack(side=tkinter.LEFT, fill=tkinter.BOTH, padx=2.5)
         return edit
 
