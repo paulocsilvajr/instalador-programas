@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import tkinter
+from operator import concat
 from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
 from collections import OrderedDict
@@ -152,8 +153,10 @@ class Instalador(tkinter.Tk):
         programa = event.widget['text']
         dependencias = programa.split(':')[:-1]
 
+        posicao = self._posicao_programa(programa)
+
         # se o programa NÃO está marcado, verifica dependencias.
-        if not self.checkbutton[self._posicao_programa(programa)].get():
+        if not self.checkbutton[posicao].get():
             if dependencias:
                 for i, chave in enumerate(self.dic_programas.keys()):
                     descricao = findall('\(.+\)', chave)
@@ -405,18 +408,20 @@ class Instalador(tkinter.Tk):
         # self.checkbutton = []  # lista de checkbutton está sendo zerada no metodo __init__.
 
         for i, chave in enumerate(programas):
-            self.checkbutton.append(tkinter.IntVar())
-
-            # se o método for invocado no __init__, é executado atribuído
+            # se o método for invocado no __init__, é executado atribuindo
             # a marcação padrão(self.marcas_todos), caso contrário,
             # é atribuído a marcação já feita pelo usuário(método pesquisar)
             if inicio:
+                self.checkbutton.append(tkinter.IntVar())
                 self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
-            else:
-                condicao = self.checkbutton[i].get()
-                self.checkbutton[i].set(condicao)
 
-            cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+                cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+            else:
+                posicao = self._posicao_programa(chave)
+
+                cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0,
+                                     onvalue=1, variable=self.checkbutton[posicao])
+
             cb['style'] = 'E.TCheckbutton'
             cb.bind('<Button-1>', self.clique_checkbutton)
 
