@@ -127,7 +127,8 @@ class Instalador(tkinter.Tk):
         if not filtro:
             filtro = 'Todos'
 
-            self._adicionar_check_programas(self.frame_programas, self.text_programas, self.dic_programas.keys())
+            self._adicionar_check_programas(self.frame_programas, self.text_programas,
+                                            self.dic_programas.keys(), inicio=False)
         else:
             pass
             dic_temp = []
@@ -136,7 +137,7 @@ class Instalador(tkinter.Tk):
                 if filtro in programa:
                     dic_temp.append(programa)
 
-            self._adicionar_check_programas(self.frame_programas, self.text_programas, dic_temp)
+            self._adicionar_check_programas(self.frame_programas, self.text_programas, dic_temp, inicio=False)
 
         self.text_programas.configure(state='disabled')
 
@@ -394,17 +395,26 @@ class Instalador(tkinter.Tk):
 
         return frame, text
 
-    def _adicionar_check_programas(self, frame, text, programas):
+    def _adicionar_check_programas(self, frame, text, programas, inicio=True):
         """ Método complementar de _listar_programas, usado na criação dos checkbuttons de programas.
         Também utilizado no método pesquisar para filtrar a lista de programas.
         :param frame: Frame criado no método _listar_programas
         :param text: Text criado no método _listar_programas
         :param programas: Lista de programas.
         :return: None. """
-        self.checkbutton = []
+        # self.checkbutton = []  # lista de checkbutton está sendo zerada no metodo __init__.
+
         for i, chave in enumerate(programas):
             self.checkbutton.append(tkinter.IntVar())
-            self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
+
+            # se o método for invocado no __init__, é executado atribuído
+            # a marcação padrão(self.marcas_todos), caso contrário,
+            # é atribuído a marcação já feita pelo usuário(método pesquisar)
+            if inicio:
+                self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
+            else:
+                condicao = self.checkbutton[i].get()
+                self.checkbutton[i].set(condicao)
 
             cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
             cb['style'] = 'E.TCheckbutton'
