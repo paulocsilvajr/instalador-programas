@@ -5,16 +5,17 @@ Este repositório contém um software desenvolvido em python para instalar progr
 
 ### Pré-requisitos
 Conceder privilégio de execução ao script 'instalador.sh'.
-Instalar os pacotes: IDLE do python3.
+Instalar o pacote IDLE do python3.
 No Ubuntu 16.04 usar os comandos abaixo:
 ```
 # apt install idle-python3*;
 ```
-Quando executado o programa pelo script 'instalador.sh', é verificado se os programas informados nos requisitos foram instalados, caso necessário é feito a instalação automática.
+Quando executado o programa pelo script 'instalador.sh', é verificado se o programa informado nos requisitos foram instalados, caso necessário é feito a instalação automática.
 
 ### Arquivos
 
 ```
+install.sh: Instalador para o programa ser executado diretamente pelo terminal.
 instalador.sh: Executável do programa. Pede senha do administrador no início. Usar parâmetro -g para GUI.
 src/instalador.py: Arquivo python principal do programa.
 src/programas: Arquivo contendo as entradas de instalação de programas. Informações sobre formato na docstring da módulo instalador.py.
