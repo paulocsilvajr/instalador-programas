@@ -58,7 +58,7 @@ apt install tree -y;
 #emacs
 apt install emacs -y;
 
-#inxi
+#inxi(informações do sistema)
 apt install inxi -y;
 
 #python2.x&3.x
@@ -130,7 +130,7 @@ apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D2C19886;
 apt update;
 apt install spotify-client -y;
 
-#screenfetch
+#screenfetch(informações do sistema)
 apt install screenfetch -y;
 
 #plasma-nm(kde5-nm-connection-editor)
@@ -140,13 +140,13 @@ apt install plasma-nm -y;
 apt install redshift -y;
 apt install redshift-gtk -y;
 
-#ravefinity - tema flat
+#ravefinity(tema flat)
 add-apt-repository ppa:ravefinity-project/ppa -y ;
 apt update;
 apt install ambiance-flat-colors -y;
 apt install radiance-flat-colors -y;
 
-#paper icones
+#paper-icons
 add-apt-repository ppa:snwh/pulp -y;
 apt update;
 apt install paper-icon-theme -y;
@@ -155,25 +155,25 @@ apt install paper-gtk-theme -y;
 #python2.x&3.x:speedtest
 pip2 install speedtest-cli;
 
-#htop
+#htop(visualizador de processos)
 apt install htop -y;
 
-#glances
+#glances(monitor do sistema)
 apt install glances -y;
 
-#guake terminal
+#guake(terminal)
 apt install guake -y;
 apt install guake-indicator -y;
 
 #vim
 apt install vim -y;
 
-#timeshift
+#timeshift(restauração do sistema)
 add-apt-repository ppa:noobslab/apps -y;
 apt update;
 apt install timeshift -y;
 
-#systemback
+#systemback(restauração do sistema)
 apt-add-repository ppa:nemh/systemback -y;
 apt update;
 apt install systemback -y;
@@ -205,9 +205,15 @@ apt install texstudio -y;
 apt install openssh-server -y;
 service ssh start;
 
-#oneko
+#oneko(mascote)
 apt install oneko -y;
 
 #figlet(texto em caracteres ASCII)
 apt install figlet -y;
+
+#sl(Steam Locomotive)
+apt install sl -y;
+
+#lynx(navegador em modo texto)
+apt install lynx -y;
 
