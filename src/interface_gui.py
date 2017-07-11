@@ -45,7 +45,7 @@ class Instalador(tkinter.Tk):
 
         # edit para pesquisa e botão pesquisar
         frame1 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
-                             padx=2.5, pady=2.5)
+                             padx=1.5, pady=2.5)
         campo_pesquisa = self._edit(master=frame1, textvariable=self.texto_pesquisa)
         self.pesquisa_default = 'Filtre por um nome de programa'
         self.texto_pesquisa.set(self.pesquisa_default)
@@ -60,7 +60,7 @@ class Instalador(tkinter.Tk):
 
         # frame para botões reverter seleção e desmarcar seleção que ficam lado a lado
         frame2 = self._frame(master=self, side=tkinter.TOP, fill=tkinter.X,
-                             padx=2.5, pady=2.5)
+                             padx=1.5, pady=2.5)
 
         # botões de seleção
         self._button(master=frame2, text='Reverter seleção', command=self.reverter,
@@ -334,7 +334,7 @@ class Instalador(tkinter.Tk):
         :param text: Texto exibido pelo componente.
         :return: LABEL configurado. """
         label = ttk.Label(master=master, text=text)
-        label.pack(side=tkinter.TOP, fill=tkinter.X, padx=5, pady=2.5)
+        label.pack(side=tkinter.TOP, fill=tkinter.X, padx=2.5, pady=2.5)
         return label
 
     def _frame(self, master, side, fill, expand=0, padx=0.0, pady=0.0):
