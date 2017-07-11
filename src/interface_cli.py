@@ -9,6 +9,69 @@ try:
 except ImportError:
     from gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 
+# Marcação inicial dos programas, quando 1, todos ficam marcados,
+# enquanto 0, todos desmarcados.
+MARCAR_TODOS = 0
+
+
+def _definir_marca(dic_programas, check, codigo, simnao='[S/n]'):
+    if check[codigo] == 0:
+        msg = 'Marcar'
+        marca = 1
+    else:
+        msg = 'Desmarcar'
+        marca = 0
+
+    resposta = input("{0} '{1}' {2}: ".format(msg, list(dic_programas.keys())[codigo], simnao))
+
+    if not resposta.lower().startswith('s'):
+        marca = not marca
+
+    if marca:
+        _marcar_dependencias(programa=list(dic_programas.keys())[codigo],
+                             dic_programas=dic_programas,
+                             check=check)
+
+    check[codigo] = marca
+
+    return resposta
+
+
+def _marcar_item(dic_programas, diretorio, check):
+    codigo = input('\nInforme o número do programa: ')
+
+    if codigo.isdigit():
+        codigo = int(codigo)
+        if verificar_intervalo(codigo, 1, len(dic_programas)):
+            _definir_marca(dic_programas=dic_programas,
+                           check=check,
+                           codigo=codigo - 1)
+
+
+def _marcar_dependencias(programa, dic_programas, check):
+    """ Marca das dependências do programa para instalar. """
+    dependencias = programa.split(':')[:-1]
+
+    if dependencias:
+        for i, chave in enumerate(dic_programas.keys()):
+            descricao = findall('\(.+\)', chave)
+            if descricao:
+                chave = chave.replace(descricao[0], '')
+
+            if chave in dependencias:
+                check[i] = 1
+
+
+def _marcar(check, marcar):
+    """ Função usada em marcar_todos e desmarcar_todos para modificar o estado de cada posição de check. """
+    limpar_tela()
+
+    print('{}arcando todos os programas'.format('M' if marcar else 'Desm'))
+    for i in range(len(check)):
+        check[i] = marcar
+
+    pausar()
+
 
 def verificar_intervalo(valor: int, inicio: int, fim: int):
     if inicio <= valor <= fim:
@@ -21,6 +84,9 @@ def limpar_tela():
 
 
 def carregar_logo(diretorio):
+    """ Carrega o logo em ASCII de acordo com arquivo logo.
+    :param diretorio: Path default do arquivo.
+    :return: logo em modo texto. """
     f = open(diretorio + 'logo', mode='r')
     logo = ''
     for linha in f:
@@ -66,7 +132,7 @@ def listar(dic_programas, diretorio, check):
                 print('LISTA DE PROGRAMAS({0}-{1}) de {2}:\n'.format(i, ultimo, quantidade))
 
             print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
-                                                               'S' if check[i - 1] else 'n'))
+                                                                   'S' if check[i - 1] else 'n'))
             if not i % 10:
                 entrada = input('\nENTER para mais 10 itens ou q+ENTER para finalizar lista ').lower()
 
@@ -88,35 +154,13 @@ def marcar_por_filtro(dic_programas, diretorio, check):
 
     for i, chave in enumerate(dic_programas):
         if chave in programas_filtro:
-            _definir_marca(dic_programas=dic_programas,
-                           check=check,
-                           codigo=i,
-                           simnao='[S/n/q]')
+            retorno = _definir_marca(dic_programas=dic_programas,
+                                     check=check,
+                                     codigo=i,
+                                     simnao='[S/n/q]')
 
-    pausar()
-
-
-def _marcar_dependencias(programa, dic_programas, check):
-    """ Marca das dependências do programa para instalar. """
-    dependencias = programa.split(':')[:-1]
-
-    if dependencias:
-        for i, chave in enumerate(dic_programas.keys()):
-            descricao = findall('\(.+\)', chave)
-            if descricao:
-                chave = chave.replace(descricao[0], '')
-
-            if chave in dependencias:
-                check[i] = 1
-
-
-def _marcar(check, marcar):
-    """ Função usada em marcar_todos e desmarcar_todos para modificar o estado de cada posição de check. """
-    limpar_tela()
-
-    print('{}arcando todos os programas'.format('M' if marcar else 'Desm'))
-    for i in range(len(check)):
-        check[i] = marcar
+            if retorno.lower() == 'q':
+                break
 
     pausar()
 
@@ -127,40 +171,6 @@ def marcar_todos(dic_programas, diretorio, check):
 
 def desmarcar_todos(dic_programas, diretorio, check):
     _marcar(check=check, marcar=0)
-
-
-def _definir_marca(dic_programas, check, codigo, simnao='[S/n]'):
-    if check[codigo] == 0:
-        msg = 'Marcar'
-        marca = 1
-    else:
-        msg = 'Desmarcar'
-        marca = 0
-
-    resposta = input("{0} '{1}' {2}: ".format(msg, list(dic_programas.keys())[codigo], simnao))
-
-    if not resposta.lower().startswith('s'):
-        marca = not marca
-
-    if marca:
-        _marcar_dependencias(programa=list(dic_programas.keys())[codigo],
-                             dic_programas=dic_programas,
-                             check=check)
-
-    check[codigo] = marca
-
-    return resposta
-
-
-def _marcar_item(dic_programas, diretorio, check):
-    codigo = input('\nInforme o número do programa: ')
-
-    if codigo.isdigit():
-        codigo = int(codigo)
-        if verificar_intervalo(codigo, 1, len(dic_programas)):
-            _definir_marca(dic_programas=dic_programas,
-                           check=check,
-                           codigo=codigo - 1)
 
 
 def marcar_especifico(dic_programas, diretorio, check):
@@ -333,7 +343,7 @@ Desenvolvido por Paulo C. Silva Jr
                9: desinstalar}
 
     # variável que representa os programas marcados
-    check = [1] * len(dic_programas)
+    check = [MARCAR_TODOS] * len(dic_programas)
 
     menu(texto=tela_inicial,
          mensagem_fim='\n\nEND OF LINE.\n',

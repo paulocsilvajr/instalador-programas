@@ -22,6 +22,18 @@ install_idle_python(){
     fi
 }
 
+help(){
+      echo "Instalador de programas para distribuições baseadas em Ubuntu."
+      echo "Interface padrão: cli(terminal)"
+      echo
+      echo "Sintaxe: $0 [-h --help -g]"
+      echo "-h --help      Ajuda"
+      echo "-g             Interface gráfica"
+      echo
+      echo "Autor: Paulo C. Silva Junior"
+      echo "Github: paulocsilvajr"
+}
+
 # Se parametro1 estiver vazio.
 if [ -z $1 ]; then
     is_root
@@ -30,16 +42,8 @@ if [ -z $1 ]; then
 else
     case $1 in
         "-h"|"--help")
-              echo "Instalador de programas para distribuições baseadas em Ubuntu."
-              echo "Interface padrão: cli(terminal)"
-              echo
-              echo "Sintaxe: $0 [-h --help -g]"
-              echo "-h --help      Ajuda"
-              echo "-g             Interface gráfica"
-              echo
-              echo "Autor: Paulo C. Silva Junior"
-              echo "Github: paulocsilvajr"
-              ;;
+            help
+            ;;
         "-g")
             is_root
             
