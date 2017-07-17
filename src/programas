@@ -25,14 +25,17 @@ add-apt-repository ppa:ubuntu-desktop/ubuntu-make -y;
 apt update;
 apt install ubuntu-make -y;
 
-#ubuntu-make:oracle-java8:pycharm
+#ubuntu-make:oracle-java8:pycharm(IDE Python)
 umake ide pycharm;
 
-#ubuntu-make:oracle-java8:eclipse
+#ubuntu-make:oracle-java8:eclipse(IDE Java)
 umake ide eclipse;
 
-#ubuntu-make:oracle-java8:netbeans
+#ubuntu-make:oracle-java8:netbeans(IDE Java)
 umake ide netbeans;
+
+#ubuntu-make:oracle-java8:idea(IDE Java)
+umake ide idea;
 
 #atom
 add-apt-repository ppa:webupd8team/atom -y;

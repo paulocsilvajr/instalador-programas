@@ -128,6 +128,8 @@ def instalar_programa(comando: str, remover=False):
             comando = ""
         elif 'apt install' in comando:
             comando = comando.replace('apt install', 'apt remove')
+        elif 'umake' in comando:
+            comando = comando.replace('umake', 'umake -r')
         else:
             comando = ""
 
