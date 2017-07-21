@@ -25,7 +25,7 @@ add-apt-repository ppa:ubuntu-desktop/ubuntu-make -y;
 apt update;
 apt install ubuntu-make -y;
 
-#ubuntu-make:oracle-java8:pycharm(IDE Python)
+#ubuntu-make:oracle-java8:python2.x&3.x:pycharm(IDE Python)
 umake ide pycharm;
 
 #ubuntu-make:oracle-java8:eclipse(IDE Java)

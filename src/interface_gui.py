@@ -415,11 +415,11 @@ class Instalador(tkinter.Tk):
                 self.checkbutton.append(tkinter.IntVar())
                 self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
 
-                cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+                cb = ttk.Checkbutton(master=text, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
             else:
                 posicao = self._posicao_programa(chave)
 
-                cb = ttk.Checkbutton(master=frame, text=chave, offvalue=0,
+                cb = ttk.Checkbutton(master=text, text=chave, offvalue=0,
                                      onvalue=1, variable=self.checkbutton[posicao])
 
             cb['style'] = 'E.TCheckbutton'
