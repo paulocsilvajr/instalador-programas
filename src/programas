@@ -220,3 +220,6 @@ apt install sl -y;
 #lynx(navegador em modo texto)
 apt install lynx -y;
 
+#steam
+apt install steam -y;
+
