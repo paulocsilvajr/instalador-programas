@@ -188,6 +188,7 @@ apt install curl -y;
 apt install zsh -y;
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
 chown -R $USER $(ls -a ~ | grep 'zsh');
+apt install grc -y;
 
 #docker
 apt install docker.io -y;
@@ -223,3 +224,5 @@ apt install lynx -y;
 #steam
 apt install steam -y;
 
+#cmatrix
+apt install cmatrix -y;
