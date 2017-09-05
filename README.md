@@ -10,7 +10,7 @@ No Ubuntu 16.04 usar os comandos abaixo:
 ```
 # apt install idle-python3*;
 ```
-Quando executado o programa pelo script 'instalador.sh', é verificado se o programa informado nos requisitos foram instalados, caso necessário é feito a instalação automática.
+Quando executado o programa pelo script 'instalador.sh', é verificado se o programa informado nos requisitos foi instalado, caso necessário, é feito a instalação automática.
 
 ### Arquivos
 
