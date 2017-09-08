@@ -231,3 +231,6 @@ apt install cmatrix -y;
 apt-add-repository ppa:fish-shell/release-2 -y;
 apt-get update;
 apt-get install fish -y;
+
+#psensor
+apt install psensor -y;
