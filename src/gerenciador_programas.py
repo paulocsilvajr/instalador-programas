@@ -4,10 +4,22 @@ from collections import OrderedDict
 from os import popen
 from subprocess import call
 
+COMANDOS = (
+    'apt',
+    'umake',
+    'pip2',
+    'pip3',
+    'add-apt-repository',
+    'sh',
+    'update-rc.d',
+    'service',
+    'chown',
+    'git'
+)
+
 
 def verificar_arquivo(nome_arquivo: str,
-                      comandos_gerenciadores: tuple=('apt', 'umake', 'pip2', 'pip3', 'add-apt-repository',
-                                                     'sh', 'update-rc.d', 'service', 'chown')):
+                      comandos_gerenciadores: tuple = COMANDOS):
     """ Verificador das entradas usados para instalar programas.
     :param nome_arquivo: nome do arquivo com lista de programas.
     :param comandos_gerenciadores: Nome dos gerenciadores de pacote, gerenciador de repositório e outros.
@@ -29,7 +41,10 @@ def verificar_arquivo(nome_arquivo: str,
                 cont['conteudo'] += 1
             else:
                 if cont['cabecalho'] != 1 and cont['conteudo'] < 1:
-                    raise ValueError('Conteúdo do arquivo {0} está inválido, linha {1} à {2}'.
+                    raise ValueError('Conteúdo do arquivo {0} está inválido, linha {1} à {2}.\n'
+                                     'Verifique se o comando está listado na constant COMANDOS de'
+                                     'gerenciador_programas.py\n'
+                                     'e se todas as linhas de instalação finalizam com ;'.
                                      format(nome_arquivo, cont_linha_cabecalho, cont_linha))
                 else:
                     cont['cabecalho'] = 0
@@ -65,7 +80,7 @@ def gerar_dicionario_programas(nome_arquivo: str):
     return OrderedDict(sorted(dic_programas.items()))
 
 
-def verificar_programas_instalados(dic_programas: OrderedDict, diretorio: str=''):
+def verificar_programas_instalados(dic_programas: OrderedDict, diretorio: str = ''):
     """ Verifica se os programas informados em dic_programas estão instalados.
     :param dic_programas: Dicionário de programas.
     :param diretorio: diretorio para execução do script isinstalled.sh.
