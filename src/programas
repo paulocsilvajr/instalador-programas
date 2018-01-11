@@ -235,7 +235,13 @@ apt-get install fish -y;
 #psensor
 apt install psensor -y;
 
-#vim:ultimate-vimrc(Awesome version)
+#vim:git:ultimate-vimrc(Awesome version)
 git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
 sh ~/.vim_runtime/install_awesome_vimrc.sh;
 chown -R $USER $(ls -a $HOME | grep 'vim');
+
+#etcher(gravador imagem em sdcard/pendrive)
+echo "deb https://dl.bintray.com/resin-io/debian stable etcher" | sudo tee /etc/apt/sources.list.d/etcher.list;
+apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 379CE192D401AB61;
+apt-get update;
+apt install etcher-electron -y;
