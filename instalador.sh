@@ -1,8 +1,8 @@
 #!/bin/bash
 
-path=$0
-path="${path%/*}"
-path=$path/src/instalador.py
+CAMINHO=$0
+CAMINHO="${CAMINHO%/*}"
+CAMINHO=$CAMINHO/src/instalador.py
 
 is_root(){
     # Verificação se o programa foi executado como root
@@ -38,7 +38,7 @@ help(){
 if [ -z $1 ]; then
     is_root
 
-    python3 $path
+    python3 $CAMINHO
 else
     case $1 in
         "-h"|"--help")
@@ -49,7 +49,7 @@ else
             
             install_idle_python
 
-            python3 $path g
+            python3 $CAMINHO g
             ;;
         *)
             echo "Parâmetro inválido: $1, -h para ajuda."

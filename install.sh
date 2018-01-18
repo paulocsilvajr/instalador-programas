@@ -1,7 +1,7 @@
 #!/bin/bash
 
-destino=/usr/bin/
-nome_programa="instalador-programas"
+DESTINO=/usr/bin/
+NOME_PROGRAMA="instalador-programas"
 
 is_root(){
     if [ "$(id -u)" != "0" ]; then
@@ -11,11 +11,11 @@ is_root(){
 }
 
 make_program(){
-    echo $PWD/instalador.sh '$1' > $nome_programa 
+    echo $PWD/instalador.sh '$1' > $NOME_PROGRAMA
 
     # move o programa para /usr/bin, definição de permissão e 
     # mensagem de confirmação
-    mv -vi $nome_programa $destino$nome_programa && chmod 755 /$destino$nome_programa && echo "Reinicie o terminal para utilizar o programa" $nome_programa
+    mv -vi $NOME_PROGRAMA $DESTINO$NOME_PROGRAMA && chmod 755 -v $DESTINO$NOME_PROGRAMA && echo "Reinicie o terminal para utilizar o programa" $NOME_PROGRAMA
 }
 
 help(){
