@@ -57,8 +57,6 @@ def verifica_arquivo(nome_arquivo):
                 else:
                     pacote = linha[1]
 
-                print('>>>', pacote)
-
                 assert pacote not in pacotes, 'Pacote {} duplicado, verificar linha {}'.format(pacote, i + 1)
 
                 pacotes.append(pacote)
