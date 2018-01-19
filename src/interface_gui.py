@@ -2,16 +2,8 @@
 # coding: utf-8
 
 import tkinter
-# from operator import concat
 from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
-from collections import OrderedDict
-from re import findall
-
-# try:
-#     from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
-# except ImportError:
-#     from gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
 
 try:
     from src.gerenciador_programas import verifica_programas_instalados
@@ -152,27 +144,6 @@ class Instalador(tkinter.Tk):
 
         self.lbl_status['text'] = 'Filtro: ' + filtro
 
-    # def clique_checkbutton(self, event):
-    #     """ Função para marcar as dependências dos pacotes.
-    #     :param event: Evento invocado, usado para identificar o componente(CheckButton) clicado.
-    #     :return: None. """
-    #     # programa = event.widget['text']
-    #     # dependencias = programa.split(':')[:-1]
-    #     #
-    #     # posicao = self._posicao_programa(programa)
-    #     #
-    #     # # se o programa NÃO está marcado, verifica dependencias.
-    #     # if not self.checkbutton[posicao].get():
-    #     #     if dependencias:
-    #     #         for i, chave in enumerate(self.dic_programas.keys()):
-    #     #             descricao = findall('\(.+\)', chave)
-    #     #             if descricao:
-    #     #                 chave = chave.replace(descricao[0], '')
-    #     #
-    #     #             if chave in dependencias:
-    #     #                 self.checkbutton[i].set(1)
-    #     pass
-
     def fechar(self):
         """ Fecha o programa após confirmação.
         :return: None. """
@@ -203,7 +174,7 @@ class Instalador(tkinter.Tk):
 
         if askyesno("Atenção", "Este processo pode demorar dependendo da quantidade de programas listados,"
                                "\nContinuar?"):
-            marcacoes = verifica_programas_instalados(self.dic_programas, self.diretorio)
+            marcacoes = verifica_programas_instalados(self.lista_programas, self.diretorio)
 
             for i, marcar in enumerate(marcacoes):
                 # marca ou desmarca o programa de acordo com a análise feita do laço.
@@ -230,18 +201,8 @@ class Instalador(tkinter.Tk):
                             return_code = programa.remove()
                         else:
                             return_code = programa.install()
-                        # for comando in self.dic_programas[programa]:
-                        #     msg = tarefa + "ando " + programa
-                        #     print(msg)
-                        #     self.lbl_status['text'] = msg
-                        #     # Sleep somente para atualizar self.lbl_status
-                        #     # sleep(0.25)
-                        #
-                        #     return_code, repositorio = instalar_programa(comando, remover)
-                        #
-                        #     print(return_code)
+
                         msg = tarefa + "ando " + programa.descricao
-                        # print(msg)
                         self.lbl_status['text'] = msg
                         # Sleep somente para atualizar self.lbl_status
                         # sleep(0.25)
@@ -251,11 +212,6 @@ class Instalador(tkinter.Tk):
                                       (tarefa + "ação", programa.descricao))
                         else:
                             self.lbl_status['text'] = "Finalizada a %s de %s" % (tarefa.lower() + "ação", programa.descricao)
-                    # # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
-                    # if repositorio:
-                    #     print("Removendo repositório %s\n" % repositorio)
-                    #     return_code = remover_repositorio(repositorio)
-                    #     print(return_code)
         else:
             showinfo("Atenção", "Marque pelo menos um item para %sar" % tarefa.lower())
 
@@ -440,7 +396,6 @@ class Instalador(tkinter.Tk):
                                      onvalue=1, variable=self.checkbutton[posicao])
 
             cb['style'] = 'E.TCheckbutton'
-            # cb.bind('<Button-1>', self.clique_checkbutton)
 
             text.window_create(tkinter.END, window=cb)
             text.insert(tkinter.END, '\n')

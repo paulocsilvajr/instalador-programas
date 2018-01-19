@@ -35,9 +35,8 @@ def log(pacote: str, comando: str, codigo):
 
 
 def executa_comando(pacote: str, comando: str, shell: bool) -> int:
+    print("{}: {}".format(pacote, comando))
     # codigo = call(comando, shell=shell)
-    print("Instalando {}: {}".format(pacote, comando))
-
     codigo = 0
 
     log(pacote, comando, codigo)
@@ -49,10 +48,6 @@ def gera_lista_programas(nome_arquivo: str) -> list:
     lista_programas = list()
 
     with open(nome_arquivo) as f:
-        descricao = ''
-        apt = False
-        pacote = ''
-
         programa = Programa()
 
         for linha in f:
@@ -105,29 +100,13 @@ def verifica_programas_instalados(lista_programas: list, diretorio: str = ''):
     :param diretorio: diretorio para execução do script isinstalled.sh.
     :return: Lista com valores booleano. True: programa desintalado, False: programa instalado.
              Usado para marcar checkbox de instalação. """
-    assert isinstance(lista, lista_programas), 'Parâmentro lista_programas requer uma lista contendo Programas'
+    assert isinstance(lista_programas, list), 'Parâmentro lista_programas requer uma lista contendo Programas'
 
     resultado = []
 
-    # for i, programa in enumerate(dic_programas):
     for programa in lista_programas:
-        marcar_para_instalar = True
         pacote = programa.pacote
 
-        # for comando in dic_programas[programa]:
-        #     if 'apt install' in comando:
-        #         pacote = comando.replace('apt install ', '').replace(' -y;', '')
-        #
-        #         if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
-        #             marcar_para_instalar = False
-        #             print('Instalado:   ', pacote)
-        #         else:
-        #             # caso algum pacote não esteja instalado, deixa marcado o combobox e sai do laço de
-        #             # verificação dos pacotes referentes ao programa.
-        #             marcar_para_instalar = True
-        #
-        #             print('Desinstalado:', pacote)
-        #             break
         if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
             marcar_para_instalar = False
             print('Instalado:   ', pacote)
