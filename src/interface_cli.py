@@ -5,16 +5,16 @@ from os import system
 from re import findall
 
 try:
-    from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+    from src.gerenciador_programas import verifica_programas_instalados
 except ImportError:
-    from gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+    from gerenciador_programas import verifica_programas_instalados
 
 # Marcação inicial dos programas, quando 1, todos ficam marcados,
 # enquanto 0, todos desmarcados.
 MARCAR_TODOS = 0
 
 
-def _definir_marca(dic_programas, check, codigo, simnao='[S/n]'):
+def _definir_marca(lista_programas, check, codigo, simnao='[S/n]'):
     if check[codigo] == 0:
         msg = 'Marcar'
         marca = 1
@@ -22,44 +22,44 @@ def _definir_marca(dic_programas, check, codigo, simnao='[S/n]'):
         msg = 'Desmarcar'
         marca = 0
 
-    resposta = input("{0} '{1}' {2}: ".format(msg, list(dic_programas.keys())[codigo], simnao))
+    resposta = input("{0} '{1}' {2}: ".format(msg, lista_programas[codigo], simnao))
 
     if not resposta.lower().startswith('s'):
         marca = not marca
 
-    if marca:
-        _marcar_dependencias(programa=list(dic_programas.keys())[codigo],
-                             dic_programas=dic_programas,
-                             check=check)
+    # if marca:
+    #     _marcar_dependencias(programa=lista_programas.keys())[codigo],
+    #                          dic_programas=dic_programas,
+    #                          check=check)
 
     check[codigo] = marca
 
     return resposta
 
 
-def _marcar_item(dic_programas, diretorio, check):
+def _marcar_item(lista_programas, diretorio, check):
     codigo = input('\nInforme o número do programa: ')
 
     if codigo.isdigit():
         codigo = int(codigo)
-        if verificar_intervalo(codigo, 1, len(dic_programas)):
-            _definir_marca(dic_programas=dic_programas,
+        if verificar_intervalo(codigo, 1, len(lista_programas)):
+            _definir_marca(lista_programas=lista_programas,
                            check=check,
                            codigo=codigo - 1)
 
 
-def _marcar_dependencias(programa, dic_programas, check):
-    """ Marca das dependências do programa para instalar. """
-    dependencias = programa.split(':')[:-1]
-
-    if dependencias:
-        for i, chave in enumerate(dic_programas.keys()):
-            descricao = findall('\(.+\)', chave)
-            if descricao:
-                chave = chave.replace(descricao[0], '')
-
-            if chave in dependencias:
-                check[i] = 1
+# def _marcar_dependencias(programa, lista_programas, check):
+#     """ Marca das dependências do programa para instalar. """
+#     dependencias = programa.split(':')[:-1]
+#
+#     if dependencias:
+#         for i, chave in enumerate(lista_programas):
+#             descricao = findall('\(.+\)', chave)
+#             if descricao:
+#                 chave = chave.replace(descricao[0], '')
+#
+#             if chave in dependencias:
+#                 check[i] = 1
 
 
 def _marcar(check, marcar):
@@ -103,7 +103,7 @@ def pausar(mensagem='\nENTER para continuar '):
             break
 
 
-def listar(dic_programas, diretorio, check):
+def listar(lista_programas, diretorio, check):
     """ Listagem de todos os programas com as check/marcação( Sim/no ) de cada um. """
     limpar_tela()
 
@@ -112,16 +112,16 @@ def listar(dic_programas, diretorio, check):
         somente_marcados = True if input('Listar somente marcados[S/n]: ').lower() == 's' else False
         limpar_tela()
 
-    tamanho = len(str(len(dic_programas)))
-    quantidade = len(dic_programas)
+    tamanho = len(str(len(lista_programas)))
+    quantidade = len(lista_programas)
 
-    for i, chave in enumerate(dic_programas, start=1):
+    for i, programa in enumerate(lista_programas, start=1):
         if somente_marcados:
             if i == 1:
                 print('LISTA DE PROGRAMAS MARCADOS({})'.format(sum(check)))
 
             if check[i - 1] == 1:
-                print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
+                print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, programa.descricao,
                                                                        'S' if check[i - 1] else 'n'))
         else:
             if str(i).endswith('1'):
@@ -131,7 +131,7 @@ def listar(dic_programas, diretorio, check):
 
                 print('LISTA DE PROGRAMAS({0}-{1}) de {2}:\n'.format(i, ultimo, quantidade))
 
-            print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, chave,
+            print('    {0:0>{1}}: {2:.<50} INSTALAR( {3} )'.format(i, tamanho, programa.descricao,
                                                                    'S' if check[i - 1] else 'n'))
             if not i % 10:
                 entrada = input('\nENTER para mais 10 itens ou q+ENTER para finalizar lista ').lower()
@@ -141,20 +141,20 @@ def listar(dic_programas, diretorio, check):
 
                 limpar_tela()
 
-        if i == len(dic_programas):
+        if i == len(lista_programas):
             pausar()
 
 
-def marcar_por_filtro(dic_programas, diretorio, check):
+def marcar_por_filtro(lista_programas, diretorio, check):
     limpar_tela()
 
     filtro = input('Informe o nome do programa: ')
 
-    programas_filtro = tuple(k for k in dic_programas.keys() if filtro in k)
+    programas_filtro = tuple(k.descricao.lower() for k in lista_programas if filtro.lower() in k.descricao.lower())
 
-    for i, chave in enumerate(dic_programas):
-        if chave in programas_filtro:
-            retorno = _definir_marca(dic_programas=dic_programas,
+    for i, programa in enumerate(lista_programas):
+        if programa.descricao.lower() in programas_filtro:
+            retorno = _definir_marca(lista_programas=lista_programas,
                                      check=check,
                                      codigo=i,
                                      simnao='[S/n/q]')
@@ -165,15 +165,15 @@ def marcar_por_filtro(dic_programas, diretorio, check):
     pausar()
 
 
-def marcar_todos(dic_programas, diretorio, check):
+def marcar_todos(lista_programas, diretorio, check):
     _marcar(check=check, marcar=1)
 
 
-def desmarcar_todos(dic_programas, diretorio, check):
+def desmarcar_todos(lista_programas, diretorio, check):
     _marcar(check=check, marcar=0)
 
 
-def marcar_especifico(dic_programas, diretorio, check):
+def marcar_especifico(lista_programas, diretorio, check):
     """ Função para marcar um programa com código específico para instalar/remover. """
     txt_menu = '''Marcar programas especificos:
 
@@ -192,17 +192,17 @@ def marcar_especifico(dic_programas, diretorio, check):
          funcoes=funcoes,
          inicio=0,
          fim=2,
-         dic_programas=dic_programas,
+         lista_programas=lista_programas,
          diretorio=diretorio,
          check=check)
 
 
-def marcar_em_lista(dic_programas, diretorio, check):
+def marcar_em_lista(lista_programas, diretorio, check):
     """ Função para marcar quais programas serão instalados/removidos de acordo com a lista de programas. """
     limpar_tela()
 
-    for i, chave in enumerate(dic_programas):
-        retorno = _definir_marca(dic_programas=dic_programas,
+    for i, programa in enumerate(lista_programas):
+        retorno = _definir_marca(lista_programas=lista_programas,
                                  check=check,
                                  codigo=i,
                                  simnao='[S/n/q]')
@@ -212,14 +212,14 @@ def marcar_em_lista(dic_programas, diretorio, check):
             break
 
 
-def desmarcar_instalados(dic_programas, diretorio, check):
+def desmarcar_instalados(lista_programas, diretorio, check):
     limpar_tela()
 
     print("Desmarcando programas instalados.")
 
     if input("Este processo pode demorar dependendo da quantidade de programas listados,"
              "\nContinuar[S/n]? ").lower() == 's':
-        marcacoes = verificar_programas_instalados(dic_programas, diretorio)
+        marcacoes = verifica_programas_instalados(lista_programas, diretorio)
 
         for i, marcar in enumerate(marcacoes):
             # marca ou desmarca o programa de acordo com a análise feita do laço.
@@ -228,7 +228,7 @@ def desmarcar_instalados(dic_programas, diretorio, check):
         pausar()
 
 
-def instalar(dic_programas, diretorio, check, remover=False):
+def instalar(lista_programas, diretorio, check, remover=False):
     """ Função para instalar/desinstalar os programas. """
     limpar_tela()
 
@@ -238,29 +238,37 @@ def instalar(dic_programas, diretorio, check, remover=False):
     if quant_programas:
         if input('Deseja realmente {0}ar {1} marcados[S/n]: '.
                  format(tarefa.lower(),
-                        'os {} programas'.format(quant_programas) if quant_programas > 1 else 'programa')) \
+                        'os {} programas'.format(quant_programas) if quant_programas > 1 else 'o programa')) \
                 .lower() == 's':
 
-            print('{}ando programas:'.format(tarefa), end='')
+            print('{}ando programas:'.format(tarefa))
 
-            for i, programa in enumerate(dic_programas):
+            for i, programa in enumerate(lista_programas):
                 repositorio = ""
                 if check[i]:
-                    for comando in dic_programas[programa]:
-                        msg = tarefa + "ando " + programa
-                        print('\n\n{}'.format(msg))
+                    if remover:
+                        return_code = programa.remove()
+                    else:
+                        return_code = programa.install()
 
-                        return_code, repositorio = instalar_programa(comando, remover)
+                    if any(return_code):
+                        print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
 
-                        print(return_code)
-
-                        if return_code:
-                            print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
-                # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
-                if repositorio:
-                    print("Removendo repositório %s\n" % repositorio)
-                    return_code = remover_repositorio(repositorio)
-                    print(return_code)
+                #     for comando in dic_programas[programa]:
+                #         msg = tarefa + "ando " + programa
+                #         print('\n\n{}'.format(msg))
+                #
+                #         return_code, repositorio = instalar_programa(comando, remover)
+                #
+                #         print(return_code)
+                #
+                #         if return_code:
+                #             print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
+                # # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
+                # if repositorio:
+                #     print("Removendo repositório %s\n" % repositorio)
+                #     return_code = remover_repositorio(repositorio)
+                #     print(return_code)
 
             pausar()
     else:
@@ -268,9 +276,9 @@ def instalar(dic_programas, diretorio, check, remover=False):
         pausar()
 
 
-def desinstalar(dic_programas, diretorio, check):
+def desinstalar(lista_programas, diretorio, check):
     """ Função para desinstalar os programas. Usa a função instalar com o parametro remover=True. """
-    instalar(dic_programas, diretorio, check, remover=True)
+    instalar(lista_programas, diretorio, check, remover=True)
 
 
 def opcao_invalida(escolha):
@@ -311,7 +319,7 @@ def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
             opcao_invalida(escolha)
 
 
-def main(dic_programas: OrderedDict, diretorio: str):
+def main(lista_programas: list, diretorio: str):
     """ Função inicial e principal do CLI, contendo as opções de manipulação dos programas. """
     logo = carregar_logo(diretorio)
     tela_inicial = logo + '''\nInterface para o apt para facilitar a instalação de programas 
@@ -343,21 +351,21 @@ Desenvolvido por Paulo C. Silva Jr
                9: desinstalar}
 
     # variável que representa os programas marcados
-    check = [MARCAR_TODOS] * len(dic_programas)
+    check = [MARCAR_TODOS] * len(lista_programas)
 
     menu(texto=tela_inicial,
          mensagem_fim='\n\nEND OF LINE.\n',
          funcoes=funcoes,
          inicio=0,
          fim=9,
-         dic_programas=dic_programas,
+         lista_programas=lista_programas,
          diretorio=diretorio,
          check=check)
 
 
-def instalador(dic_programas: OrderedDict, diretorio: str):
+def instalador(lista_programas: list, diretorio: str):
     """ Função que captura as variáveis enviadas pelo instalador.py
     :param dic_programas: Dicionário de programas ordenado.
     :param diretorio: Diretório usado pela função desmarcar_intalados.
     :return: None. """
-    main(dic_programas=dic_programas, diretorio=diretorio)
+    main(lista_programas=lista_programas, diretorio=diretorio)
