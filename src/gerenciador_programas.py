@@ -1,171 +1,233 @@
-# coding: utf-8
-
-from collections import OrderedDict
-from os import popen
 from subprocess import call
+from datetime import datetime
 
-COMANDOS = (
-    'apt',
-    'umake',
-    'pip2',
-    'pip3',
-    'add-apt-repository',
-    'sh',
-    'update-rc.d',
-    'service',
-    'chown',
-    'git'
-)
+DESCRICAO = '#'
+PACOTE = 'pacote'
+APT = 'apt'
+EXTRA_INSTALL = 'install'
+EXTRA_REMOVE = 'remove'
+PPA = 'ppa'
+DEPENDENCIA = 'dependencia'
 
+SEPARADOR = '::'
 
-def verificar_arquivo(nome_arquivo: str,
-                      comandos_gerenciadores: tuple = COMANDOS):
-    """ Verificador das entradas usados para instalar programas.
-    :param nome_arquivo: nome do arquivo com lista de programas.
-    :param comandos_gerenciadores: Nome dos gerenciadores de pacote, gerenciador de repositório e outros.
-    :return: ValueError: caso encontre algum erro, None: caso arquivo esteja correto. """
-    assert isinstance(nome_arquivo, str), 'Parâmetro nome_arquivo requer uma string.'
+LISTA_CHAVES = [
+    DESCRICAO,
+    PACOTE,
+    APT,
+    EXTRA_INSTALL,
+    EXTRA_REMOVE,
+    PPA,
+    DEPENDENCIA
+]
 
-    with open(nome_arquivo) as f:
-        cont_linha = 0
-        cont_linha_cabecalho = 0
-        cont = {'cabecalho': 0, 'conteudo': 0}
-        for linha in f:
-            cont_linha += 1
-            linha = linha.strip()
-
-            if linha.startswith('#'):
-                cont['cabecalho'] += 1
-                cont_linha_cabecalho = cont_linha
-            elif linha.startswith(comandos_gerenciadores) and linha.endswith(';'):
-                cont['conteudo'] += 1
-            else:
-                if cont['cabecalho'] != 1 and cont['conteudo'] < 1:
-                    raise ValueError('Conteúdo do arquivo {0} está inválido, linha {1} à {2}.\n'
-                                     'Verifique se o comando está listado na constant COMANDOS de'
-                                     'gerenciador_programas.py\n'
-                                     'e se todas as linhas de instalação finalizam com ;'.
-                                     format(nome_arquivo, cont_linha_cabecalho, cont_linha))
-                else:
-                    cont['cabecalho'] = 0
-                    cont['conteudo'] = 0
+ARQUIVO_LOG = 'log'
 
 
-def gerar_dicionario_programas(nome_arquivo: str):
-    """ Gerador de dicionário de programas baseado no arquivo informado.
-    :param nome_arquivo: Nome do arquivo com lista de programas.
-    :return: Dicionário usado para instalação de programas. """
-    assert isinstance(nome_arquivo, str), 'Parâmetro nome_arquivo requer uma string.'
+def log(pacote: str, comando: str, codigo):
+    agora = datetime.now().strftime("%Y%m%d:%H%M%S")
+    mensagem = '{} {}: {} [{}]'.format(agora, pacote, comando, codigo)
 
-    # verificação do arquivo base
-    verificar_arquivo(nome_arquivo)
+    with open(ARQUIVO_LOG, 'a') as f:
+        f.write(mensagem + '\n')
 
-    dic_programas = OrderedDict()
+
+def executa_comando(pacote: str, comando: str, shell: bool) -> int:
+    # codigo = call(comando, shell=shell)
+    print("Instalando {}: {}".format(pacote, comando))
+
+    codigo = 0
+
+    log(pacote, comando, codigo)
+
+    return codigo
+
+
+def gera_lista_programas(nome_arquivo: str) -> list:
+    lista_programas = list()
 
     with open(nome_arquivo) as f:
-        chave = ''
+        descricao = ''
+        apt = False
+        pacote = ''
+
+        programa = Programa()
+
         for linha in f:
-            # recortando laterais com espaços
-            linha = linha.strip()
+            linha = linha.strip().split(SEPARADOR)
 
-            if linha:
-                # se inicia com #
-                if linha.startswith('#'):
-                    chave = linha[1:]
-                    dic_programas[chave] = []
+            chave = linha[0]
+
+            if chave.startswith(DESCRICAO):
+                descricao = chave[1:]
+
+                programa.descricao = descricao
+
+            elif chave == PACOTE:
+                if linha[1] == APT:
+                    apt = True
+                    pacote = linha[2]
                 else:
-                    dic_programas[chave].append(linha)
+                    apt = False
+                    pacote = linha[1]
 
-    # ordenando o dicionário pela chave
-    return OrderedDict(sorted(dic_programas.items()))
+                programa.apt = apt
+                programa.pacote = pacote
 
+            elif chave == DEPENDENCIA:
+                for pacote in linha[1:]:
+                    dep_programa = list(filter(lambda prog: prog.pacote == pacote, lista_programas))[0]
+                    programa.dependencias = dep_programa
 
-def verificar_programas_instalados(dic_programas: OrderedDict, diretorio: str = ''):
-    """ Verifica se os programas informados em dic_programas estão instalados.
-    :param dic_programas: Dicionário de programas.
-    :param diretorio: diretorio para execução do script isinstalled.sh.
-    :return: Lista com valores booleano. True: programa desintalado, False: programa instalado.
-             Usado para marcar checkbox de instalação. """
-    assert isinstance(dic_programas, OrderedDict), 'Parâmentro dic_programas requer um OrderedDict'
+            elif chave == EXTRA_INSTALL:
+                programa.extra_install = linha[1]
 
-    resultado = []
+            elif chave == EXTRA_REMOVE:
+                programa.extra_remove = linha[1]
 
-    for i, programa in enumerate(dic_programas):
-        marcar_para_instalar = True
+            elif chave == PPA:
+                programa.ppa = linha[1]
 
-        for comando in dic_programas[programa]:
-            if 'apt install' in comando:
-                pacote = comando.replace('apt install ', '').replace(' -y;', '')
+            elif not chave:
+                lista_programas.append(programa)
+                programa = Programa()
 
-                if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
-                    marcar_para_instalar = False
-                    print('Instalado:   ', pacote)
-                else:
-                    # caso algum pacote não esteja instalado, deixa marcado o combobox e sai do laço de
-                    # verificação dos pacotes referentes ao programa.
-                    marcar_para_instalar = True
-
-                    print('Desinstalado:', pacote)
-                    break
-
-        # marca ou desmarca o programa de acordo com a análise feita do laço.
-        resultado.append(marcar_para_instalar)
-
-    return resultado
+    return lista_programas
 
 
-def executar_comando(comando: str, shell=True):
-    """ Executa comandos no terminal linux.
-    :param comando: comando que será executado.
-    :param shell: retorno no shell.
-    :return: código de retorno da função call(). """
-    assert isinstance(comando, str), 'Parâmentro comando requer uma string.'
+class Programa:
+    def __init__(self):
+        self.__descricao = ''
+        self.__pacote = ''
+        self.__install = list()
+        self.__remove = list()
+        self.__ppa = str()
+        self.__dependencias = list()
+        self.__apt = False
 
-    return call(comando, shell=shell)
+    @property
+    def descricao(self) -> str:
+        return self.__descricao
 
+    @descricao.setter
+    def descricao(self, descricao: str):
+        self.__descricao = descricao
 
-def instalar_programa(comando: str, remover=False):
-    """ Função para instalar e remover programas.
-    :param comando: instrução para instalação.
-    :param remover: True quando deseja remover ao invés de instalar.
-    :return: código de retorno e comando para remoção do repositório. """
-    repositorio = ''
-    return_code = 0
+    @property
+    def pacote(self) -> str:
+        return self.__pacote
 
-    if not remover:
-        # Instalação
-        print(comando)
-        return_code = executar_comando(comando)
-    else:
-        # Desinstalação
-        if 'add-apt-repository' in comando:
-            repositorio = comando[:-1] + " --remove;"
-            comando = ""
-        elif 'apt install' in comando:
-            comando = comando.replace('apt install', 'apt remove')
-        elif 'umake' in comando:
-            comando = comando.replace('umake', 'umake -r')
-        else:
-            comando = ""
+    @pacote.setter
+    def pacote(self, pacote: str):
+        self.__pacote = pacote
 
-        if comando:
-            print(comando)
-            return_code = executar_comando(comando)
+        if self.__apt:
+            self.__install.append(self._apt_install())
+            self.__remove.append(self._apt_remove())
 
-    return return_code, repositorio
+    @property
+    def apt(self) -> bool:
+        return self.__apt
 
+    @apt.setter
+    def apt(self, apt: bool):
+        self.__apt = apt
 
-def remover_repositorio(repositorio: str):
-    """ Função para remover repositório.
-    :param repositorio: repositório gerado no retorno de instalar_programa.
-    :return: código de retorno. """
-    return executar_comando(repositorio)
+    @property
+    def dependencias(self):
+        return self.__dependencias[:]
+
+    @dependencias.setter
+    def dependencias(self, dependencia):
+        self.__dependencias.append(dependencia)
+
+    @property
+    def ppa(self) -> str:
+        return self.__ppa
+
+    @ppa.setter
+    def ppa(self, ppa):
+        self.__ppa = ppa
+
+    @property
+    def extra_install(self):
+        return self.__install[:]
+
+    @extra_install.setter
+    def extra_install(self, extra: str):
+        self.__install.append(extra)
+
+    @property
+    def extra_remove(self):
+        return self.__remove[:]
+
+    @extra_remove.setter
+    def extra_remove(self, extra: str):
+        self.__remove.append(extra)
+
+    def _apt_install(self) -> str:
+        return 'apt install {} -y;'.format(self.__pacote)
+
+    def _apt_remove(self) -> str:
+        return 'apt remove {} -y;'.format(self.__pacote)
+
+    def _apt_update(self) -> str:
+        return 'apt update;'
+
+    def _add_ppa(self) -> str:
+        return 'add-apt-repository {} -y;'.format(self.__ppa)
+
+    def _del_ppa(self) -> str:
+        return 'add-apt-repository {} -r -y;'.format(self.__ppa)
+
+    def install(self, shell=True) -> list:
+        cod_retorno = list()
+
+        if self.__dependencias:
+            for programa in self.__dependencias:
+                codigo = programa.install()
+                cod_retorno.extend(codigo)
+
+        if self.__ppa:
+            codigo = executa_comando(self.__pacote, self._add_ppa(), shell)
+            cod_retorno.append(codigo)
+
+            codigo = executa_comando(self.__pacote, self._apt_update(), shell)
+            cod_retorno.append(codigo)
+
+        for comando in self.__install:
+            codigo = executa_comando(self.__pacote, comando, shell)
+            cod_retorno.append(codigo)
+
+        return cod_retorno
+
+    def remove(self, shell=True) -> list:
+        cod_retorno = list()
+
+        for comando in reversed(self.__remove):
+            codigo = executa_comando(self.__pacote, comando, shell)
+            cod_retorno.append(codigo)
+
+        if self.__ppa:
+            codigo = executa_comando(self.__pacote, self._del_ppa(), shell)
+            cod_retorno.append(codigo)
+
+            codigo = executa_comando(self.__pacote, self._apt_update(), shell)
+            cod_retorno.append(codigo)
+
+        return cod_retorno
+
+    def __str__(self):
+        return self.__descricao
 
 
 if __name__ == '__main__':
-    # testes
-    DIRETORIO = ''
-    DIC_PROGRAMAS = gerar_dicionario_programas(DIRETORIO + 'programas')
-    print(DIC_PROGRAMAS, DIC_PROGRAMAS.keys(), len(DIC_PROGRAMAS.keys()), sep='\n')
-    resultado = verificar_programas_instalados(DIC_PROGRAMAS, '/home/paulo/pc/python/instalador-programas/src/')
-    print(resultado, len(resultado), sep='\n')
+    lista = gera_lista_programas('../programas.novo')
+
+    for i in lista:
+        i.install()
+        print()
+        i.remove()
+        print('----------------------------')
+
+    pass
