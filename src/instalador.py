@@ -2,13 +2,13 @@
 
 from sys import argv
 try:
-    from src.gerenciador_programas import gerar_dicionario_programas
+    from src.gerenciador_programas import gera_lista_programas
     from src.interface_gui import Instalador as InstaladorGUI
-    from src.interface_cli import instalador as InstaladorCLI
+    # from src.interface_cli import instalador as InstaladorCLI
 except ImportError:
-    from gerenciador_programas import gerar_dicionario_programas
+    from gerenciador_programas import gera_lista_programas
     from interface_gui import Instalador as InstaladorGUI
-    from interface_cli import instalador as InstaladorCLI
+    # from interface_cli import instalador as InstaladorCLI
 
 __author__ = 'Paulo C. Silva Jr.'
 
@@ -36,11 +36,12 @@ def abrir_gui():
 
 def main():
     diretorio = capturar_diretorio()
-    dic_programas = gerar_dicionario_programas(diretorio + 'programas')
+    lista_programas = gera_lista_programas(diretorio + 'programas')
 
     if abrir_gui():
-        InstaladorGUI(dic_programas, diretorio)
+        InstaladorGUI(lista_programas, diretorio)
     else:
-        InstaladorCLI(dic_programas, diretorio)
+        pass
+        # InstaladorCLI(lista_programas, diretorio)
 
 main()

@@ -1,5 +1,7 @@
 from subprocess import call
 from datetime import datetime
+from os import popen
+from operator import attrgetter
 
 DESCRICAO = '#'
 PACOTE = 'pacote'
@@ -92,7 +94,54 @@ def gera_lista_programas(nome_arquivo: str) -> list:
                 lista_programas.append(programa)
                 programa = Programa()
 
+    lista_programas.sort(key=attrgetter('descricao'))
+
     return lista_programas
+
+
+def verifica_programas_instalados(lista_programas: list, diretorio: str = ''):
+    """ Verifica se os programas informados em dic_programas estão instalados.
+    :param dic_programas: Dicionário de programas.
+    :param diretorio: diretorio para execução do script isinstalled.sh.
+    :return: Lista com valores booleano. True: programa desintalado, False: programa instalado.
+             Usado para marcar checkbox de instalação. """
+    assert isinstance(lista, lista_programas), 'Parâmentro lista_programas requer uma lista contendo Programas'
+
+    resultado = []
+
+    # for i, programa in enumerate(dic_programas):
+    for programa in lista_programas:
+        marcar_para_instalar = True
+        pacote = programa.pacote
+
+        # for comando in dic_programas[programa]:
+        #     if 'apt install' in comando:
+        #         pacote = comando.replace('apt install ', '').replace(' -y;', '')
+        #
+        #         if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
+        #             marcar_para_instalar = False
+        #             print('Instalado:   ', pacote)
+        #         else:
+        #             # caso algum pacote não esteja instalado, deixa marcado o combobox e sai do laço de
+        #             # verificação dos pacotes referentes ao programa.
+        #             marcar_para_instalar = True
+        #
+        #             print('Desinstalado:', pacote)
+        #             break
+        if popen(diretorio + 'isinstalled.sh ' + pacote).readlines():
+            marcar_para_instalar = False
+            print('Instalado:   ', pacote)
+        else:
+            # caso algum pacote não esteja instalado, deixa marcado o combobox e sai do laço de
+            # verificação dos pacotes referentes ao programa.
+            marcar_para_instalar = True
+
+            print('Desinstalado:', pacote)
+
+        # marca ou desmarca o programa de acordo com a análise feita do laço.
+        resultado.append(marcar_para_instalar)
+
+    return resultado
 
 
 class Programa:

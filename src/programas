@@ -1,247 +1,268 @@
-#apt:limpar
-apt autoremove -y;
-apt autoclean -y;
+#Limpar apt
+pacote::apt0
+install::apt autoremove -y;
+install::apt autoclean -y;
 
-#apt:atualizar programas
-apt update && apt upgrade -y;
+#Atualizar programas
+pacote::apt1
+install::apt update && apt upgrade -y;
 
-#apt:atualizar sistema
-apt update && apt dist-upgrade -y;
+#Atualizar o sistema
+pacote::apt2
+install::apt update && apt dist-upgrade -y;
 
-#ubuntu-restricted-extras
-apt install ubuntu-restricted-extras -y;
+#Ubuntu restricted extras
+pacote::apt::ubuntu-restricted-extras
 
-#calibre
-apt install calibre -y;
+#Calibre
+pacote::apt::calibre
 
-#oracle-java8
-add-apt-repository ppa:webupd8team/java -y;
-apt update;
-apt install oracle-java8-installer -y;
-apt install oracle-java8-set-default -y;
+#Calibre KDE
+pacote::calibre
+install::sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()";
 
-#ubuntu-make(umake)
-add-apt-repository ppa:ubuntu-desktop/ubuntu-make -y;
-apt update;
-apt install ubuntu-make -y;
+#Java 8
+pacote::apt::oracle-java8-installer
+ppa::ppa:webupd8team/java
+install::apt install oracle-java8-set-default -y;
+remove::apt remove oracle-java8-set-default -y;
 
-#ubuntu-make:oracle-java8:python2.x&3.x:pycharm(IDE Python)
-umake ide pycharm;
+#Python 2 e 3
+pacote::python
+install::apt install idle-python3.5 -y;
+install::apt install tix -y;
+install::apt install python-pip -y;
+install::apt install python-dev -y;
+install::apt install build-essential -y;
+install::apt install python3-pip -y;
+install::apt install python3-dev -y;
+install::pip3 install --upgrade virtualenv;
+install::pip2 install --upgrade pip;
+install::pip3 install --upgrade pip;
+install::apt install ipython3 -y;
 
-#ubuntu-make:oracle-java8:eclipse(IDE Java)
-umake ide eclipse;
+#Ubuntu Make(umake)
+pacote::apt::ubuntu-make
+ppa::ppa:ubuntu-desktop/ubuntu-make
 
-#ubuntu-make:oracle-java8:netbeans(IDE Java)
-umake ide netbeans;
+#Pycharm CE(IDE Python)
+pacote::pycharm
+dependencia::ubuntu-make::oracle-java8-installer::python
+install::umake ide pycharm;
+remove::umake ide pycharm -r;
 
-#ubuntu-make:oracle-java8:idea(IDE Java)
-umake ide idea;
+#Eclipse(IDE Java)
+pacote::eclipse
+dependencia::ubuntu-make::oracle-java8-installer
+install::umake ide eclipse;
+remove::umake ide eclipse -r;
 
-#atom
-add-apt-repository ppa:webupd8team/atom -y;
-apt update;
-apt install atom -y;
+#NetBeans(IDE Java)
+pacote::netbeans
+dependencia::ubuntu-make::oracle-java8-installer
+install::umake ide netbeans;
+remove::umake ide netbeans -r;
 
-#dia
-apt install dia -y;
+#Intellij Idea CE(IDE Java)
+pacote::idea
+dependencia::ubuntu-make::oracle-java8-installer
+install::umake ide idea;
+remove::umake ide idea -r;
 
-#password-gorilla
-apt install password-gorilla -y;
+#Atom
+pacote::apt::atom
+ppa::ppa:webupd8team/atom
 
-#git
-apt install git -y;
-apt install git-cola -y;
+#Dia
+pacote::apt::dia
 
-#gnucash
-apt install gnucash -y;
+#Password gorilla
+pacote::apt::password-gorilla
+
+#GIT
+pacote::apt::git
+
+#git-cola(GIT GUI)
+pacote::apt::git-cola
+dependencia::git
+
+#GnuCash
+pacote::apt::gnucash
 
 #tree
-apt install tree -y;
+pacote::apt::tree
 
 #emacs
-apt install emacs -y;
+pacote::apt:emacs
 
 #inxi(informações do sistema)
-apt install inxi -y;
+pacote::apt::inxi
 
-#python2.x&3.x
-apt install idle-python3.5 -y;
-apt install tix -y;
-apt install python-pip -y;
-apt install python-dev -y;
-apt install build-essential -y;
-apt install python3-pip -y;
-apt install python3-dev -y;
-pip3 install --upgrade virtualenv;
-pip2 install --upgrade pip;
-pip3 install --upgrade pip;
-apt install ipython3 -y;
+#python3-mysql.connector
+pacote::python3-mysql.connector
+dependencia::python
 
-#python2.x&3.x:python3-mysql.connector
-apt install python3-mysql.connector -y;
+#python3-psycopg2
+pacote::python3-psycopg2
+dependencia::python
 
-#python2.x&3.x:python3-psycopg2
-apt install python3-psycopg2 -y;
-
-#sublime-text-3
-add-apt-repository ppa:webupd8team/sublime-text-3 -y;
-apt update;
-apt install sublime-text-installer -y;
+#Sublime-text-3
+pacote::apt::sublime-text-installer
+ppa::ppa:webupd8team/sublime-text-3
 
 #brackets
-add-apt-repository ppa:webupd8team/brackets -y;
-apt update;
-apt install brackets -y;
+pacote::apt::brackets
+ppa::ppa:webupd8team/brackets
 
 #clipit
-apt install clipit -y;
+pacote::apt::clipit
 
-#compizconfig & unity-tweak
-apt install compizconfig-settings-manager -y;
-apt install unity-tweak-tool -y;
+#compizconfig
+pacote::apt::compizconfig-settings-manager
+
+#unity-tweak
+pacote::apt::unity-tweak-tool
 
 #preload
-apt install preload -y;
+pacote::apt::preload
 
 #virtualbox
-apt install virtualbox -y;
+pacote::apt::virtualbox
 
 #geany
-apt install geany -y;
+pacote::apt::geany
 
 #gparted
-apt install gparted -y;
+pacote::apt::gparted
 
 #gimp
-apt install gimp -y;
+pacote::apt::gimp
 
 #vlc
-apt install vlc -y;
+pacote::apt::vlc
 
 #blender
-apt install blender -y;
+pacote::apt::blender
 
 #synapse
-apt install synapse -y;
+pacote::apt::synapse
 
 #indicator-keylock
-apt install indicator-keylock -y;
+pacote::apt::indicator-keylock
 
-#spotify-client
-sh -c "echo 'deb http://repository.spotify.com stable non-free' >> /etc/apt/sources.list.d/spotify.list";
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D2C19886;
-apt update;
-apt install spotify-client -y;
+#Spotify
+pacote::spotify-cliente
+install::sh -c "echo 'deb http://repository.spotify.com stable non-free' >> /etc/apt/sources.list.d/spotify.list";
+install::apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D2C19886;
+install::apt update;
+install::apt install spotify-client -y;
+remove::apt remove spotify-client -y;
 
 #screenfetch(informações do sistema)
-apt install screenfetch -y;
+pacote::apt::screenfetch
 
 #plasma-nm(kde5-nm-connection-editor)
-apt install plasma-nm -y;
+pacote::apt::plasma-nm
 
 #redshift
-apt install redshift -y;
-apt install redshift-gtk -y;
+pacote::apt::redshift
+install::apt install redshift-gtk -y;
 
-#ravefinity(tema flat)
-add-apt-repository ppa:ravefinity-project/ppa -y ;
-apt update;
-apt install ambiance-flat-colors -y;
-apt install radiance-flat-colors -y;
-
-#paper-icons
-add-apt-repository ppa:snwh/pulp -y;
-apt update;
-apt install paper-icon-theme -y;
-apt install paper-gtk-theme -y;
-
-#python2.x&3.x:speedtest
-pip2 install speedtest-cli;
+#speedtest(teste de velocidade internet pelo terminal)
+pacote::speedtest-cli
+dependencia::python
+install::pip2 install speedtest-cli;
+remove::pip2 uninstall speedtest-cli;
 
 #htop(visualizador de processos)
-apt install htop -y;
+pacote::apt::htop
 
 #glances(monitor do sistema)
-apt install glances -y;
+pacote::apt::glances
 
 #guake(terminal)
-apt install guake -y;
-apt install guake-indicator -y;
+pacote::apt::guake
+install::apt install guake-indicator -y;
+remove::apt remove guake-indicator -y;
 
 #vim
-apt install vim -y;
+pacote::apt::vim
 
 #timeshift(restauração do sistema)
-add-apt-repository ppa:noobslab/apps -y;
-apt update;
-apt install timeshift -y;
+pacote::apt::timeshift
+ppa::ppa:noobslab/apps
 
 #systemback(restauração do sistema)
-apt-add-repository ppa:nemh/systemback -y;
-apt update;
-apt install systemback -y;
+pacote::apt::systemback
+ppa::ppa:nemh/systemback
 
 #curl
-apt install curl -y;
+pacote::apt::curl
 
-#git:curl:zsh & oh-my-zsh(ZShell)
-apt install zsh -y;
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
-chown -R $USER $(ls -a $HOME | grep 'zsh');
-apt install grc -y;
+#ZSH & oh-my-zsh(ZShell)
+pacote::apt::zsh
+dependencia::git::curl
+install::sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
+install::chown -R $USER $(ls -a $HOME | grep 'zsh');
+install::apt install grc -y;
+remove::apt remove grc -y;
 
 #docker
-apt install docker.io -y;
-apt install docker-compose -y;
-update-rc.d docker defaults;
-service docker start;
+pacote::apt::docker.io
+install::apt install docker-compose -y;
+install::update-rc.d docker defaults;
+install::service docker start;
+remove::service docker stop;
+remove::apt remove docker-compose -y;
 
 #retroarch
-add-apt-repository ppa:libretro/stable -y;
-apt update;
-apt install retroarch -y;
+pacote::apt::retroarch
+ppa::ppa:libretro/stable
 
 #latex & texstudio
-apt install texlive texlive-latex-extra texlive-lang-portuguese -y;
-apt install texstudio -y;
+pacote::apt::texlive texlive-latex-extra texlive-lang-portuguese texstudio
 
 #ssh-server
-apt install openssh-server -y;
-service ssh start;
+pacote::apt::openssh-server
+install::service ssh start;
+remove::service ssh stop;
 
 #oneko(mascote)
-apt install oneko -y;
+pacote::apt::oneko
 
 #figlet(texto em caracteres ASCII)
-apt install figlet -y;
+pacote::apt::figlet
 
 #sl(Steam Locomotive)
-apt install sl -y;
+pacote::apt::sl
 
 #lynx(navegador em modo texto)
-apt install lynx -y;
+pacote::apt::lynx
 
 #steam
-apt install steam -y;
+pacote::apt::steam
 
 #cmatrix
-apt install cmatrix -y;
+pacote::apt::cmatrix
 
 #fish(Friendly Interactive Shell)
-apt-add-repository ppa:fish-shell/release-2 -y;
-apt-get update;
-apt-get install fish -y;
+pacote::apt::fish
+ppa::ppa:fish-shell/release-2
 
 #psensor
-apt install psensor -y;
+pacote::apt::psensor
 
-#vim:git:ultimate-vimrc(Awesome version)
-git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
-sh ~/.vim_runtime/install_awesome_vimrc.sh;
-chown -R $USER $(ls -a $HOME | grep 'vim');
+#ultimate-vimrc(Awesome version)
+pacote::ultimate-vimrc
+dependencia::vim::git
+install::git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
+install::sh ~/.vim_runtime/install_awesome_vimrc.sh;
+install::chown -R $USER $(ls -a $HOME | grep 'vim');
 
 #etcher(gravador imagem em sdcard/pendrive)
-echo "deb https://dl.bintray.com/resin-io/debian stable etcher" | sudo tee /etc/apt/sources.list.d/etcher.list;
-apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 379CE192D401AB61;
-apt-get update;
-apt install etcher-electron -y;
+pacote::etcher
+install::echo "deb https://dl.bintray.com/resin-io/debian stable etcher" | sudo tee /etc/apt/sources.list.d/etcher.list;
+install::apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 379CE192D401AB61;
+install::apt-get update;
+install::apt install etcher-electron -y;
+remove::apt remove etcher-electron -y;

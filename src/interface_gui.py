@@ -2,22 +2,27 @@
 # coding: utf-8
 
 import tkinter
-from operator import concat
+# from operator import concat
 from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
 from collections import OrderedDict
 from re import findall
 
+# try:
+#     from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+# except ImportError:
+#     from gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+
 try:
-    from src.gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+    from src.gerenciador_programas import verifica_programas_instalados
 except ImportError:
-    from gerenciador_programas import verificar_programas_instalados, instalar_programa, remover_repositorio
+    from gerenciador_programas import verifica_programas_instalados
 
 
 class Instalador(tkinter.Tk):
     """ Interface gráfica do instalador. """
 
-    def __init__(self, dic_programas: OrderedDict, diretorio: str):
+    def __init__(self, lista_programas: list, diretorio: str):
         """ Construtor da interface gráfica do programa. A criação dos componentes foram extraídos em
         métodos para melhorar a legibilidade do código.
         :param dic_programas: Dicionário de programas gerado a partir do arquivo src/programas.
@@ -25,7 +30,7 @@ class Instalador(tkinter.Tk):
         # Construtor(classe pai: tkinter.Tk) e configurações da janela.
         super(Instalador, self).__init__()
 
-        self.dic_programas = dic_programas
+        self.lista_programas = lista_programas
         self.diretorio = diretorio
         self.texto_pesquisa = tkinter.StringVar()
         self.checkbutton = []  # lista de checkbox para os programas
@@ -129,16 +134,17 @@ class Instalador(tkinter.Tk):
             filtro = 'Todos'
 
             self._adicionar_check_programas(self.frame_programas, self.text_programas,
-                                            self.dic_programas.keys(), inicio=False)
+                                            self.lista_programas, inicio=False)
         else:
             pass
             dic_temp = []
 
-            for programa in self.dic_programas.keys():
-                if filtro in programa:
+            for programa in self.lista_programas:
+                if filtro.lower() in programa.descricao.lower():
                     dic_temp.append(programa)
 
-            self._adicionar_check_programas(self.frame_programas, self.text_programas, dic_temp, inicio=False)
+            self._adicionar_check_programas(self.frame_programas, self.text_programas,
+                                            dic_temp, inicio=False)
 
         self.text_programas.configure(state='disabled')
 
@@ -146,25 +152,26 @@ class Instalador(tkinter.Tk):
 
         self.lbl_status['text'] = 'Filtro: ' + filtro
 
-    def clique_checkbutton(self, event):
-        """ Função para marcar as dependências dos pacotes.
-        :param event: Evento invocado, usado para identificar o componente(CheckButton) clicado.
-        :return: None. """
-        programa = event.widget['text']
-        dependencias = programa.split(':')[:-1]
-
-        posicao = self._posicao_programa(programa)
-
-        # se o programa NÃO está marcado, verifica dependencias.
-        if not self.checkbutton[posicao].get():
-            if dependencias:
-                for i, chave in enumerate(self.dic_programas.keys()):
-                    descricao = findall('\(.+\)', chave)
-                    if descricao:
-                        chave = chave.replace(descricao[0], '')
-
-                    if chave in dependencias:
-                        self.checkbutton[i].set(1)
+    # def clique_checkbutton(self, event):
+    #     """ Função para marcar as dependências dos pacotes.
+    #     :param event: Evento invocado, usado para identificar o componente(CheckButton) clicado.
+    #     :return: None. """
+    #     # programa = event.widget['text']
+    #     # dependencias = programa.split(':')[:-1]
+    #     #
+    #     # posicao = self._posicao_programa(programa)
+    #     #
+    #     # # se o programa NÃO está marcado, verifica dependencias.
+    #     # if not self.checkbutton[posicao].get():
+    #     #     if dependencias:
+    #     #         for i, chave in enumerate(self.dic_programas.keys()):
+    #     #             descricao = findall('\(.+\)', chave)
+    #     #             if descricao:
+    #     #                 chave = chave.replace(descricao[0], '')
+    #     #
+    #     #             if chave in dependencias:
+    #     #                 self.checkbutton[i].set(1)
+    #     pass
 
     def fechar(self):
         """ Fecha o programa após confirmação.
@@ -196,7 +203,7 @@ class Instalador(tkinter.Tk):
 
         if askyesno("Atenção", "Este processo pode demorar dependendo da quantidade de programas listados,"
                                "\nContinuar?"):
-            marcacoes = verificar_programas_instalados(self.dic_programas, self.diretorio)
+            marcacoes = verifica_programas_instalados(self.dic_programas, self.diretorio)
 
             for i, marcar in enumerate(marcacoes):
                 # marca ou desmarca o programa de acordo com a análise feita do laço.
@@ -216,30 +223,39 @@ class Instalador(tkinter.Tk):
         # Verificação se existe pelo menos 1 item para instalar.
         if any(temp):
             if askyesno("Atenção", "Deseja realmente %sar todos os programas marcados?" % tarefa.lower()):
-                for i, programa in enumerate(self.dic_programas):
-                    repositorio = ""
+                for i, programa in enumerate(self.lista_programas):
+                    # repositorio = ""
                     if self.checkbutton[i].get():
-                        for comando in self.dic_programas[programa]:
-                            msg = tarefa + "ando " + programa
-                            print(msg)
-                            self.lbl_status['text'] = msg
-                            # Sleep somente para atualizar self.lbl_status
-                            # sleep(0.25)
+                        if remover:
+                            return_code = programa.remove()
+                        else:
+                            return_code = programa.install()
+                        # for comando in self.dic_programas[programa]:
+                        #     msg = tarefa + "ando " + programa
+                        #     print(msg)
+                        #     self.lbl_status['text'] = msg
+                        #     # Sleep somente para atualizar self.lbl_status
+                        #     # sleep(0.25)
+                        #
+                        #     return_code, repositorio = instalar_programa(comando, remover)
+                        #
+                        #     print(return_code)
+                        msg = tarefa + "ando " + programa.descricao
+                        # print(msg)
+                        self.lbl_status['text'] = msg
+                        # Sleep somente para atualizar self.lbl_status
+                        # sleep(0.25)
 
-                            return_code, repositorio = instalar_programa(comando, remover)
-
-                            print(return_code)
-
-                            if return_code:
-                                showerror("Atenção", "%s de %s interrompida" %
-                                          (tarefa + "ação", programa))
-                            else:
-                                self.lbl_status['text'] = "Finalizada a %s de %s" % (tarefa.lower() + "ação", programa)
-                    # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
-                    if repositorio:
-                        print("Removendo repositório %s\n" % repositorio)
-                        return_code = remover_repositorio(repositorio)
-                        print(return_code)
+                        if any(return_code):
+                            showerror("Atenção", "%s de %s interrompida" %
+                                      (tarefa + "ação", programa.descricao))
+                        else:
+                            self.lbl_status['text'] = "Finalizada a %s de %s" % (tarefa.lower() + "ação", programa.descricao)
+                    # # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
+                    # if repositorio:
+                    #     print("Removendo repositório %s\n" % repositorio)
+                    #     return_code = remover_repositorio(repositorio)
+                    #     print(return_code)
         else:
             showinfo("Atenção", "Marque pelo menos um item para %sar" % tarefa.lower())
 
@@ -289,8 +305,8 @@ class Instalador(tkinter.Tk):
         """ Retorna a posição do programa de acordo com o nome informado e a lista de programas,
         :param programa: Nome do programa
         :return: Posição correspondente. """
-        for i, chave in enumerate(self.dic_programas.keys()):
-            if chave == programa:
+        for i, item in enumerate(self.lista_programas):
+            if item.pacote == programa.pacote:
                 return i
 
     def _style(self):
@@ -392,7 +408,7 @@ class Instalador(tkinter.Tk):
         text.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
 
         # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
-        self._adicionar_check_programas(frame, text, self.dic_programas.keys())
+        self._adicionar_check_programas(frame, text, self.lista_programas)
 
         text.configure(state='disabled')
 
@@ -407,7 +423,7 @@ class Instalador(tkinter.Tk):
         :return: None. """
         # self.checkbutton = []  # lista de checkbutton está sendo zerada no metodo __init__.
 
-        for i, chave in enumerate(programas):
+        for i, programa in enumerate(programas):
             # se o método for invocado no __init__, é executado atribuindo
             # a marcação padrão(self.marcas_todos), caso contrário,
             # é atribuído a marcação já feita pelo usuário(método pesquisar)
@@ -415,15 +431,16 @@ class Instalador(tkinter.Tk):
                 self.checkbutton.append(tkinter.IntVar())
                 self.checkbutton[i].set(self.marcar_todos)  # marcar checkbutton de acordo com atrib. marcar_todos.
 
-                cb = ttk.Checkbutton(master=text, text=chave, offvalue=0, onvalue=1, variable=self.checkbutton[i])
+                cb = ttk.Checkbutton(master=text, text=programa.descricao,
+                                     offvalue=0, onvalue=1, variable=self.checkbutton[i])
             else:
-                posicao = self._posicao_programa(chave)
+                posicao = self._posicao_programa(programa)
 
-                cb = ttk.Checkbutton(master=text, text=chave, offvalue=0,
+                cb = ttk.Checkbutton(master=text, text=programa.descricao, offvalue=0,
                                      onvalue=1, variable=self.checkbutton[posicao])
 
             cb['style'] = 'E.TCheckbutton'
-            cb.bind('<Button-1>', self.clique_checkbutton)
+            # cb.bind('<Button-1>', self.clique_checkbutton)
 
             text.window_create(tkinter.END, window=cb)
             text.insert(tkinter.END, '\n')
