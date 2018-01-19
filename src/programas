@@ -1,14 +1,14 @@
 #Limpar apt
-pacote::apt0
+pacote::apt-limpeza
 install::apt autoremove -y;
 install::apt autoclean -y;
 
 #Atualizar programas
-pacote::apt1
+pacote::apt-atualiza
 install::apt update && apt upgrade -y;
 
 #Atualizar o sistema
-pacote::apt2
+pacote::apt-atualiza-sistema
 install::apt update && apt dist-upgrade -y;
 
 #Ubuntu restricted extras

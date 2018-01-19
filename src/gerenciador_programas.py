@@ -36,15 +36,37 @@ def log(pacote: str, comando: str, codigo):
 
 def executa_comando(pacote: str, comando: str, shell: bool) -> int:
     print("{}: {}".format(pacote, comando))
-    # codigo = call(comando, shell=shell)
-    codigo = 0
+    codigo = call(comando, shell=shell)
+    # codigo = 0
 
     log(pacote, comando, codigo)
 
     return codigo
 
 
+def verifica_arquivo(nome_arquivo):
+    pacotes = list()
+
+    with open(nome_arquivo) as arquivo:
+        for i, linha in enumerate(arquivo):
+            linha = linha.strip().split(SEPARADOR)
+
+            if linha[0] == PACOTE:
+                if linha[1] == APT:
+                    pacote = linha[2]
+                else:
+                    pacote = linha[1]
+
+                print('>>>', pacote)
+
+                assert pacote not in pacotes, 'Pacote {} duplicado, verificar linha {}'.format(pacote, i + 1)
+
+                pacotes.append(pacote)
+
+
 def gera_lista_programas(nome_arquivo: str) -> list:
+    verifica_arquivo(nome_arquivo)
+
     lista_programas = list()
 
     with open(nome_arquivo) as f:
