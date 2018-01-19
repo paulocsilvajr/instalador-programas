@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from collections import OrderedDict
 from os import system
-from re import findall
 
 try:
     from src.gerenciador_programas import verifica_programas_instalados
@@ -27,11 +25,6 @@ def _definir_marca(lista_programas, check, codigo, simnao='[S/n]'):
     if not resposta.lower().startswith('s'):
         marca = not marca
 
-    # if marca:
-    #     _marcar_dependencias(programa=lista_programas.keys())[codigo],
-    #                          dic_programas=dic_programas,
-    #                          check=check)
-
     check[codigo] = marca
 
     return resposta
@@ -46,20 +39,6 @@ def _marcar_item(lista_programas, diretorio, check):
             _definir_marca(lista_programas=lista_programas,
                            check=check,
                            codigo=codigo - 1)
-
-
-# def _marcar_dependencias(programa, lista_programas, check):
-#     """ Marca das dependências do programa para instalar. """
-#     dependencias = programa.split(':')[:-1]
-#
-#     if dependencias:
-#         for i, chave in enumerate(lista_programas):
-#             descricao = findall('\(.+\)', chave)
-#             if descricao:
-#                 chave = chave.replace(descricao[0], '')
-#
-#             if chave in dependencias:
-#                 check[i] = 1
 
 
 def _marcar(check, marcar):
@@ -244,7 +223,6 @@ def instalar(lista_programas, diretorio, check, remover=False):
             print('{}ando programas:'.format(tarefa))
 
             for i, programa in enumerate(lista_programas):
-                repositorio = ""
                 if check[i]:
                     if remover:
                         return_code = programa.remove()
@@ -253,22 +231,6 @@ def instalar(lista_programas, diretorio, check, remover=False):
 
                     if any(return_code):
                         print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
-
-                #     for comando in dic_programas[programa]:
-                #         msg = tarefa + "ando " + programa
-                #         print('\n\n{}'.format(msg))
-                #
-                #         return_code, repositorio = instalar_programa(comando, remover)
-                #
-                #         print(return_code)
-                #
-                #         if return_code:
-                #             print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
-                # # Remoção do repositório, depois da desinstalação do programa, caso tenha sido adicionado.
-                # if repositorio:
-                #     print("Removendo repositório %s\n" % repositorio)
-                #     return_code = remover_repositorio(repositorio)
-                #     print(return_code)
 
             pausar()
     else:
@@ -290,11 +252,11 @@ def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
     """ Função para apresentar os menus da interface, com verificação de intervalo.
     :param texto: Opção para o menu, usar números para representar-las.
     :param mensagem_fim: Mensagem quando vai para a opção 0(sair).
-    :param funcoes: Dicionário de funções que serão invocadas.
+    :param funcoes: Lista de funções que serão invocadas.
     :param inicio: Menor valor as opções, geralmente o 0.
     :param fim: Maior valor das opçoes.
     :param kwargs: Parâmetros das funções:
-                        dic_programas,
+                        lista_programas,
                         diretorio,
                         check
     :return: None. """
@@ -365,7 +327,7 @@ Desenvolvido por Paulo C. Silva Jr
 
 def instalador(lista_programas: list, diretorio: str):
     """ Função que captura as variáveis enviadas pelo instalador.py
-    :param dic_programas: Dicionário de programas ordenado.
+    :param lista_programas: Lista de programas ordenado.
     :param diretorio: Diretório usado pela função desmarcar_intalados.
     :return: None. """
     main(lista_programas=lista_programas, diretorio=diretorio)

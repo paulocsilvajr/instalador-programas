@@ -17,7 +17,7 @@ class Instalador(tkinter.Tk):
     def __init__(self, lista_programas: list, diretorio: str):
         """ Construtor da interface gráfica do programa. A criação dos componentes foram extraídos em
         métodos para melhorar a legibilidade do código.
-        :param dic_programas: Dicionário de programas gerado a partir do arquivo src/programas.
+        :param lista_programas: Lista de programas gerado a partir do arquivo src/programas.
         :param diretorio: Diretório base do programa. """
         # Construtor(classe pai: tkinter.Tk) e configurações da janela.
         super(Instalador, self).__init__()
@@ -363,7 +363,7 @@ class Instalador(tkinter.Tk):
         vsb.pack(side=tkinter.RIGHT, fill=tkinter.Y, padx=2)
         text.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
 
-        # Criação dos checkbuttons para cada chave de dic_programas e inclusão no text
+        # Criação dos checkbuttons para cada chave de lista_programas e inclusão no text
         self._adicionar_check_programas(frame, text, self.lista_programas)
 
         text.configure(state='disabled')
