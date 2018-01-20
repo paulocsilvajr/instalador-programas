@@ -44,7 +44,7 @@ def executa_comando(pacote: str, comando: str, shell: bool) -> int:
     return codigo
 
 
-def verifica_arquivo(nome_arquivo):
+def verifica_pacote_duplicado(nome_arquivo):
     pacotes = list()
 
     with open(nome_arquivo) as arquivo:
@@ -62,18 +62,30 @@ def verifica_arquivo(nome_arquivo):
                 pacotes.append(pacote)
 
 
+def verifica_chave(chave, i):
+    if chave:
+        assert chave in LISTA_CHAVES or chave.startswith(DESCRICAO), 'Chave informada [{}] inválida, ' \
+                                                                     'verifique linha {}.\n' \
+                                                                     'Chaves válidas: {}'.format(
+                                                                     chave,
+                                                                     i + 1,
+                                                                     ', '.join(LISTA_CHAVES))
+
+
 def gera_lista_programas(nome_arquivo: str) -> list:
-    verifica_arquivo(nome_arquivo)
+    verifica_pacote_duplicado(nome_arquivo)
 
     lista_programas = list()
 
     with open(nome_arquivo) as f:
         programa = Programa()
 
-        for linha in f:
+        for i, linha in enumerate(f):
             linha = linha.strip().split(SEPARADOR)
 
             chave = linha[0]
+
+            verifica_chave(chave, i)
 
             if chave.startswith(DESCRICAO):
                 descricao = chave[1:]
@@ -93,7 +105,8 @@ def gera_lista_programas(nome_arquivo: str) -> list:
 
             elif chave == DEPENDENCIA:
                 for pacote in linha[1:]:
-                    dep_programa = list(filter(lambda prog: prog.pacote == pacote, lista_programas))[0]
+                    dep_programa = get_dependencia(lista_programas, pacote, i)
+
                     programa.dependencias = dep_programa
 
             elif chave == EXTRA_INSTALL:
@@ -109,9 +122,22 @@ def gera_lista_programas(nome_arquivo: str) -> list:
                 lista_programas.append(programa)
                 programa = Programa()
 
-    lista_programas.sort(key=attrgetter('descricao'))
+    ordena_por_descricao(lista_programas)
 
     return lista_programas
+
+
+def ordena_por_descricao(lista_programas):
+    lista_programas.sort(key=attrgetter('descricao'))
+
+
+def get_dependencia(lista_programas, pacote, i):
+    try:
+        return list(filter(lambda prog: prog.pacote == pacote, lista_programas))[0]
+    except IndexError as e:
+        raise Exception('Dependência {} deve ser declarada '
+                        'como pacote antes de ser referenciada, '
+                        'verifique linha {} [Exception: {}]'.format(pacote, i + 1, e))
 
 
 def verifica_programas_instalados(lista_programas: list, diretorio: str = ''):
