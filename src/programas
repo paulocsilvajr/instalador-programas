@@ -266,3 +266,7 @@ install::apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 379CE192D401AB
 install::apt-get update;
 install::apt install etcher-electron -y;
 remove::apt remove etcher-electron -y;
+
+#trash-cli(lixeira no terminal)
+pacote::apt::trash-cli
+

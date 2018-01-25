@@ -17,9 +17,23 @@ __version__ = '0.4.0'
 """
 Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.
 O arquivo programas deve ter entradas no seguinte formato:
-#nome-programa
-add-apt-repository ppa:repositorio -y; # incluido somente quando não está presente nos repositórios padrão.
-apt install nome-programa -y; # 2 x ENTER
++------ Exemplo de entrada em programas ------+
+|#Descrição do pacote                         |
+|pacote::apt::nome_pacote                     |
+|dependencia::nome_pacote_necessário          |
+|ppa::ppa:repositorio                         |
+|install::apt install pacote_complementar     |
+|remove::apt remove pacote_complementar       |
+|                                             |
++---------------------------------------------+
+# Cada entrada de programa deve terminar com uma nova linha para separa-las.
+# Os caracteres :: são os separadores, portando devem ser mantidos.
+# apt pode ser omitido, mas deve-se descrever nas chaves install e remove o comando que se deseja executar para essas operações.
+# O nome_pacote deve ser sempre informado, pois é usado para indicar dependências. 
+# Quando informado apt, deve-se informar obrigatoriamente o nome de pacote pertencente aos repositórios do Ubuntu. 
+# Quando informado dependencia, deve-se declarar a entrada do pacote pai anteriormente.
+# Para pacotes do repositório oficial do Ubuntu(informados com apt) e ppas o programa conhece a rotina de instalação e remoção.
+# dependencia, ppa, install e remove são opcionais.
 """
 
 
@@ -42,5 +56,6 @@ def main():
         InstaladorGUI(lista_programas, diretorio)
     else:
         InstaladorCLI(lista_programas, diretorio)
+
 
 main()

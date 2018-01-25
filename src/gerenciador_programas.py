@@ -196,8 +196,8 @@ class Programa:
         self.__pacote = pacote
 
         if self.__apt:
-            self.__install.append(self._apt_install())
-            self.__remove.append(self._apt_remove())
+            self.__install.append(self.__apt_install())
+            self.__remove.append(self.__apt_remove())
 
     @property
     def apt(self) -> bool:
@@ -239,19 +239,19 @@ class Programa:
     def extra_remove(self, extra: str):
         self.__remove.append(extra)
 
-    def _apt_install(self) -> str:
+    def __apt_install(self) -> str:
         return 'apt install {} -y;'.format(self.__pacote)
 
-    def _apt_remove(self) -> str:
+    def __apt_remove(self) -> str:
         return 'apt remove {} -y;'.format(self.__pacote)
 
-    def _apt_update(self) -> str:
+    def __apt_update(self) -> str:
         return 'apt update;'
 
-    def _add_ppa(self) -> str:
+    def __add_ppa(self) -> str:
         return 'add-apt-repository {} -y;'.format(self.__ppa)
 
-    def _del_ppa(self) -> str:
+    def __del_ppa(self) -> str:
         return 'add-apt-repository {} -r -y;'.format(self.__ppa)
 
     def install(self, shell=True) -> list:
@@ -263,10 +263,10 @@ class Programa:
                 cod_retorno.extend(codigo)
 
         if self.__ppa:
-            codigo = executa_comando(self.__pacote, self._add_ppa(), shell)
+            codigo = executa_comando(self.__pacote, self.__add_ppa(), shell)
             cod_retorno.append(codigo)
 
-            codigo = executa_comando(self.__pacote, self._apt_update(), shell)
+            codigo = executa_comando(self.__pacote, self.__apt_update(), shell)
             cod_retorno.append(codigo)
 
         for comando in self.__install:
@@ -283,10 +283,10 @@ class Programa:
             cod_retorno.append(codigo)
 
         if self.__ppa:
-            codigo = executa_comando(self.__pacote, self._del_ppa(), shell)
+            codigo = executa_comando(self.__pacote, self.__del_ppa(), shell)
             cod_retorno.append(codigo)
 
-            codigo = executa_comando(self.__pacote, self._apt_update(), shell)
+            codigo = executa_comando(self.__pacote, self.__apt_update(), shell)
             cod_retorno.append(codigo)
 
         return cod_retorno
@@ -294,14 +294,12 @@ class Programa:
     def __str__(self):
         return self.__descricao
 
-
-if __name__ == '__main__':
-    lista = gera_lista_programas('../programas.novo')
-
-    for i in lista:
-        i.install()
-        print()
-        i.remove()
-        print('----------------------------')
-
-    pass
+# TESTE
+# if __name__ == '__main__':
+#     lista = gera_lista_programas('../programas.novo')
+#
+#     for i in lista:
+#         i.install()
+#         print()
+#         i.remove()
+#         print('----------------------------')
