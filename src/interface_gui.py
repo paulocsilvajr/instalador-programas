@@ -211,6 +211,7 @@ class Instalador(tkinter.Tk):
                             showerror("Atenção", "%s de %s interrompida" %
                                       (tarefa + "ação", programa.descricao))
                         else:
+                            self.checkbutton[i].set(False)
                             self.lbl_status['text'] = "Finalizada a %s de %s" % (tarefa.lower() + "ação", programa.descricao)
         else:
             showinfo("Atenção", "Marque pelo menos um item para %sar" % tarefa.lower())

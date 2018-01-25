@@ -231,6 +231,8 @@ def instalar(lista_programas, diretorio, check, remover=False):
 
                     if any(return_code):
                         print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
+                    else:
+                        check[i] = 0
 
             pausar()
     else:
