@@ -203,7 +203,7 @@ pacote::apt::curl
 pacote::apt::zsh
 dependencia::git::curl
 install::sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
-install::chown -R $USER $(ls -a $HOME | grep 'zsh');
+install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'zsh');
 install::apt install grc -y;
 remove::apt remove grc -y;
 
@@ -257,7 +257,7 @@ pacote::ultimate-vimrc
 dependencia::vim::git
 install::git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
 install::sh ~/.vim_runtime/install_awesome_vimrc.sh;
-install::chown -R $USER $(ls -a $HOME | grep 'vim');
+install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'vim');
 
 #etcher(gravador imagem em sdcard/pendrive)
 pacote::etcher
