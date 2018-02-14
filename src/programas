@@ -207,13 +207,13 @@ install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'zsh');
 install::apt install grc -y;
 remove::apt remove grc -y;
 
-#docker
-pacote::apt::docker.io
-install::apt install docker-compose -y;
-install::update-rc.d docker defaults;
-install::service docker start;
-remove::service docker stop;
-remove::apt remove docker-compose -y;
+#docker ce(docker/docker-compose)
+pacote::docker-ce
+install::curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+install::usermod -aG docker $(users|awk ' {print $1} ')
+install::curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+install::chmod +x /usr/local/bin/docker-compose
+install::echo 'Faça logout para atualizar os grupos do usuário atual'
 
 #retroarch
 pacote::apt::retroarch
