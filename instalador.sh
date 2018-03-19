@@ -37,6 +37,7 @@ help(){
 # Se parametro1 estiver vazio.
 if [ -z $1 ]; then
     is_root
+    install_idle_python
 
     python3 $CAMINHO
 else
@@ -46,7 +47,6 @@ else
             ;;
         "-g")
             is_root
-            
             install_idle_python
 
             python3 $CAMINHO g
