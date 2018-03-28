@@ -207,6 +207,11 @@ install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'zsh');
 install::apt install grc -y;
 remove::apt remove grc -y;
 
+#ZSH como shell padrão
+pacote::zsh-padrao
+dependencia::zsh
+install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
+
 #docker ce(docker/docker-compose)
 pacote::docker-ce
 dependencia::curl
@@ -250,6 +255,11 @@ pacote::apt::cmatrix
 #fish(Friendly Interactive Shell)
 pacote::apt::fish
 ppa::ppa:fish-shell/release-2
+
+#fish como shell padrão
+pacote::fish-padrao
+dependencia::fish
+install::chsh -s /usr/bin/fish $(users|awk ' {print $1} ')
 
 #psensor
 pacote::apt::psensor
