@@ -275,7 +275,7 @@ pacote::apt::trash-cli
 #golang(Linguagem GO) 1.10
 pacote::golang
 install::wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz
-install::tar -c /usr/local/ -xzf go1.10.linux-amd64.tar.gz
+install::tar -C /usr/local/ -xzf go1.10.linux-amd64.tar.gz
 install::mkdir $HOME/go $HOME/go/bin $HOME/go/pkg $HOME/go/src
 install::chown -R $(users|awk ' {print $1} ') $HOME/go
 install::echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
