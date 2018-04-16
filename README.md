@@ -15,8 +15,8 @@ Quando executado o programa pelo script 'instalador.sh', é verificado se o prog
 ### Interfaces(GUI e CLI)
 
 <p align=""center>
-    <img alt="Interface gráfica" src="https://github.com/paulocsilvajr/instalador-programas/blob/master/gui.png">
-    <img alt="Interface gráfica" src="https://github.com/paulocsilvajr/instalador-programas/blob/master/cli.png">
+    <img alt="Interface gráfica" src="https://github.com/paulocsilvajr/instalador-programas/blob/desenvolvimento/gui.png">
+    <img alt="Interface gráfica" src="https://github.com/paulocsilvajr/instalador-programas/blob/desenvolvimento/cli.png">
 </p>
 
 ### Arquivos
