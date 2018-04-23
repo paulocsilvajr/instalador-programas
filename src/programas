@@ -295,3 +295,6 @@ install::rm -v go1.10.linux-amd64.tar.gz
 install::echo 'Disponibilizado variável $GOPATH, diretório ~/go e finalizado instalação.'
 install::echo -e "Para usuários do ZSH, execute o comando abaixo para reconhecer o executável go:\ncp -v ~/.profile ~/.zprofile"
 
+#gsmartcontrol(verificar estado de hd)
+pacote::gsmartcontrol
+
