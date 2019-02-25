@@ -29,7 +29,7 @@ remove::apt remove oracle-java8-set-default -y;
 
 #Python 2 e 3
 package::python
-install::apt install idle-python3.5 -y;
+install::apt install idle-python3\* -y;
 install::apt install tix -y;
 install::apt install python-pip -y;
 install::apt install python-dev -y;
@@ -296,5 +296,5 @@ install::echo 'Disponibilizado variável $GOPATH, diretório ~/go e finalizado i
 install::echo -e "Para usuários do ZSH, execute o comando abaixo para reconhecer o executável go:\ncp -v ~/.profile ~/.zprofile"
 
 #gsmartcontrol(verificar estado de hd)
-package::gsmartcontrol
+package::apt::gsmartcontrol
 

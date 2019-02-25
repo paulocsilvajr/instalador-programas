@@ -8,7 +8,7 @@ Conceder privilégio de execução ao script 'instalador.sh'.
 
 Instalar o pacote IDLE do python3. No Ubuntu 16.04 usar o comando abaixo:
 ```
-# apt install idle-python3*;
+# apt install idle-python3\*;
 ```
 Quando executado o programa pelo script 'instalador.sh', é verificado se o programa informado nos requisitos foi instalado, caso necessário, é feito a instalação automática.
 
