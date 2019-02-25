@@ -4,12 +4,12 @@ from os import popen
 from operator import attrgetter
 
 DESCRICAO = '#'
-PACOTE = 'pacote'
+PACOTE = 'package'
 APT = 'apt'
 EXTRA_INSTALL = 'install'
 EXTRA_REMOVE = 'remove'
 PPA = 'ppa'
-DEPENDENCIA = 'dependencia'
+DEPENDENCIA = 'dependency'
 
 SEPARADOR = '::'
 
