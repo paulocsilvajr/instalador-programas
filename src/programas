@@ -156,6 +156,7 @@ remove::apt remove spotify-client -y;
 
 #snap
 package::apt::snapd
+install::snap install core;
 
 #Spotify(snap)
 package::spotify-client-snap
@@ -194,11 +195,6 @@ package::apt::vim
 
 #timeshift(restauração do sistema)
 package::apt::timeshift
-ppa::ppa:noobslab/apps
-
-#systemback(restauração do sistema)
-package::apt::systemback
-ppa::ppa:nemh/systemback
 
 #curl
 package::apt::curl
