@@ -230,7 +230,7 @@ def instalar(lista_programas, diretorio, check, remover=False):
                         return_code = programa.install()
 
                     if any(return_code):
-                        print("Atenção", "{0} de {1} interrompida".format(tarefa + 'ação', programa))
+                        print("Atenção", "{0} de {1} com erro(s)\nVerifique o log".format(tarefa + 'ação', programa))
                     else:
                         check[i] = 0
 
