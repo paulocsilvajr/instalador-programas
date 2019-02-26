@@ -146,9 +146,6 @@ package::apt::blender
 #synapse
 package::apt::synapse
 
-#indicator-keylock
-package::apt::indicator-keylock
-
 #Spotify
 package::spotify-client
 install::sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90;
@@ -157,13 +154,13 @@ install::apt update;
 install::apt install spotify-client -y;
 remove::apt remove spotify-client -y;
 
+#snap
+package::apt::snapd
+
 #Spotify(snap)
 package::spotify-client-snap
 dependency::snapd
 install::snap install spotify;
-
-#snap
-package::apt::snapd
 
 #screenfetch(informações do sistema)
 package::apt::screenfetch
