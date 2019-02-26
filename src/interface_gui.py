@@ -208,7 +208,8 @@ class Instalador(tkinter.Tk):
                         # sleep(0.25)
 
                         if any(return_code):
-                            showerror("Atenção", "%s de %s interrompida" %
+                            showerror("Atenção", "%s de %s interrompida ou com código de erro\n"
+                                                 "Verifique o arquivo de log" %
                                       (tarefa + "ação", programa.descricao))
                         else:
                             self.checkbutton[i].set(False)
