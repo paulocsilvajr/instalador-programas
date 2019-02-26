@@ -104,8 +104,10 @@ package::python3-psycopg2
 dependency::python
 
 #Sublime-text-3
-package::apt::sublime-text-installer
-ppa::ppa:webupd8team/sublime-text-3
+package::sublime-text
+dependency::ubuntu-make
+install::umake ide sublime-text;
+remove::umake ide sublime-text -r;
 
 #brackets
 package::apt::brackets
