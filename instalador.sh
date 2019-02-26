@@ -18,7 +18,7 @@ install_idle_python(){
 
     if [[ -z $verif_idle ]]; then
         echo "Instalando idle-python3..."
-        apt install idle-python3* -y
+        apt install idle-python3\* -y
     fi
 }
 

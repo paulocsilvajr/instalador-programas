@@ -4,12 +4,12 @@ from os import popen
 from operator import attrgetter
 
 DESCRICAO = '#'
-PACOTE = 'pacote'
+PACOTE = 'package'
 APT = 'apt'
 EXTRA_INSTALL = 'install'
 EXTRA_REMOVE = 'remove'
 PPA = 'ppa'
-DEPENDENCIA = 'dependencia'
+DEPENDENCIA = 'dependency'
 
 SEPARADOR = '::'
 
@@ -128,7 +128,7 @@ def gera_lista_programas(nome_arquivo: str) -> list:
 
 
 def ordena_por_descricao(lista_programas):
-    lista_programas.sort(key=attrgetter('descricao'))
+    lista_programas.sort(key=attrgetter('descricao_ordenacao'))
 
 
 def get_dependencia(lista_programas, pacote, i):
@@ -182,6 +182,10 @@ class Programa:
     @property
     def descricao(self) -> str:
         return self.__descricao
+
+    @property
+    def descricao_ordenacao(self) -> str:
+        return self.__descricao.lower()
 
     @descricao.setter
     def descricao(self, descricao: str):

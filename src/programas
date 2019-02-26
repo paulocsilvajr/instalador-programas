@@ -1,35 +1,35 @@
 #Limpar apt
-pacote::apt-limpeza
+package::apt-limpeza
 install::apt autoremove -y;
 install::apt autoclean -y;
 
 #Atualizar programas
-pacote::apt-atualiza
+package::apt-atualiza
 install::apt update && apt upgrade -y;
 
 #Atualizar o sistema
-pacote::apt-atualiza-sistema
+package::apt-atualiza-sistema
 install::apt update && apt dist-upgrade -y;
 
 #Ubuntu restricted extras
-pacote::apt::ubuntu-restricted-extras
+package::apt::ubuntu-restricted-extras
 
 #Calibre
-pacote::apt::calibre
+package::apt::calibre
 
 #Calibre KDE
-pacote::calibre-kde
+package::calibre-kde
 install::sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()";
 
 #Java 8
-pacote::apt::oracle-java8-installer
+package::apt::oracle-java8-installer
 ppa::ppa:webupd8team/java
 install::apt install oracle-java8-set-default -y;
 remove::apt remove oracle-java8-set-default -y;
 
 #Python 2 e 3
-pacote::python
-install::apt install idle-python3.5 -y;
+package::python
+install::apt install idle-python3\* -y;
 install::apt install tix -y;
 install::apt install python-pip -y;
 install::apt install python-dev -y;
@@ -42,179 +42,179 @@ install::pip3 install --upgrade pip;
 install::apt install ipython3 -y;
 
 #Ubuntu Make(umake)
-pacote::apt::ubuntu-make
+package::apt::ubuntu-make
 ppa::ppa:ubuntu-desktop/ubuntu-make
 
 #Pycharm CE(IDE Python)
-pacote::pycharm
-dependencia::ubuntu-make::oracle-java8-installer::python
+package::pycharm
+dependency::ubuntu-make::oracle-java8-installer::python
 install::umake ide pycharm;
 remove::umake ide pycharm -r;
 
 #Eclipse(IDE Java)
-pacote::eclipse
-dependencia::ubuntu-make::oracle-java8-installer
-install::umake ide eclipse;
-remove::umake ide eclipse -r;
+package::apt::eclipse
 
 #NetBeans(IDE Java)
-pacote::netbeans
-dependencia::ubuntu-make::oracle-java8-installer
+package::netbeans
+dependency::ubuntu-make::oracle-java8-installer
 install::umake ide netbeans;
 remove::umake ide netbeans -r;
 
 #Intellij Idea CE(IDE Java)
-pacote::idea
-dependencia::ubuntu-make::oracle-java8-installer
+package::idea
+dependency::ubuntu-make::oracle-java8-installer
 install::umake ide idea;
 remove::umake ide idea -r;
 
 #Atom
-pacote::apt::atom
+package::apt::atom
 ppa::ppa:webupd8team/atom
 
 #Dia
-pacote::apt::dia
+package::apt::dia
 
 #Password gorilla
-pacote::apt::password-gorilla
+package::apt::password-gorilla
 
 #GIT
-pacote::apt::git
+package::apt::git
 
 #git-cola(GIT GUI)
-pacote::apt::git-cola
-dependencia::git
+package::apt::git-cola
+dependency::git
 
 #GnuCash
-pacote::apt::gnucash
+package::apt::gnucash
 
 #tree
-pacote::apt::tree
+package::apt::tree
 
 #emacs
-pacote::apt:emacs
+package::apt:emacs
 
 #inxi(informações do sistema)
-pacote::apt::inxi
+package::apt::inxi
 
 #python3-mysql.connector
-pacote::python3-mysql.connector
-dependencia::python
+package::python3-mysql.connector
+dependency::python
 
 #python3-psycopg2
-pacote::python3-psycopg2
-dependencia::python
+package::python3-psycopg2
+dependency::python
 
 #Sublime-text-3
-pacote::apt::sublime-text-installer
-ppa::ppa:webupd8team/sublime-text-3
+package::sublime-text
+dependency::ubuntu-make
+install::umake ide sublime-text;
+remove::umake ide sublime-text -r;
 
 #brackets
-pacote::apt::brackets
+package::apt::brackets
 ppa::ppa:webupd8team/brackets
 
 #clipit
-pacote::apt::clipit
+package::apt::clipit
 
 #compizconfig
-pacote::apt::compizconfig-settings-manager
+package::apt::compizconfig-settings-manager
 
 #unity-tweak
-pacote::apt::unity-tweak-tool
+package::apt::unity-tweak-tool
 
 #preload
-pacote::apt::preload
+package::apt::preload
 
 #virtualbox
-pacote::apt::virtualbox
+package::apt::virtualbox
 
 #geany
-pacote::apt::geany
+package::apt::geany
 
 #gparted
-pacote::apt::gparted
+package::apt::gparted
 
 #gimp
-pacote::apt::gimp
+package::apt::gimp
 
 #vlc
-pacote::apt::vlc
+package::apt::vlc
 
 #blender
-pacote::apt::blender
+package::apt::blender
 
 #synapse
-pacote::apt::synapse
-
-#indicator-keylock
-pacote::apt::indicator-keylock
+package::apt::synapse
 
 #Spotify
-pacote::spotify-client
-install::sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410;
+package::spotify-client
+install::sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90;
 install::echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list;
 install::apt update;
 install::apt install spotify-client -y;
 remove::apt remove spotify-client -y;
 
+#snap
+package::apt::snapd
+install::snap install core;
+
+#Spotify(snap)
+package::spotify-client-snap
+dependency::snapd
+install::snap install spotify;
+
 #screenfetch(informações do sistema)
-pacote::apt::screenfetch
+package::apt::screenfetch
 
 #plasma-nm(kde5-nm-connection-editor)
-pacote::apt::plasma-nm
+package::apt::plasma-nm
 
 #redshift
-pacote::apt::redshift
+package::apt::redshift
 install::apt install redshift-gtk -y;
 
 #speedtest(teste de velocidade internet pelo terminal)
-pacote::speedtest-cli
-dependencia::python
+package::speedtest-cli
+dependency::python
 install::pip2 install speedtest-cli;
 remove::pip2 uninstall speedtest-cli;
 
 #htop(visualizador de processos)
-pacote::apt::htop
+package::apt::htop
 
 #glances(monitor do sistema)
-pacote::apt::glances
+package::apt::glances
 
 #guake(terminal)
-pacote::apt::guake
+package::apt::guake
 install::apt install guake-indicator -y;
 remove::apt remove guake-indicator -y;
 
 #vim
-pacote::apt::vim
+package::apt::vim
 
 #timeshift(restauração do sistema)
-pacote::apt::timeshift
-ppa::ppa:noobslab/apps
-
-#systemback(restauração do sistema)
-pacote::apt::systemback
-ppa::ppa:nemh/systemback
+package::apt::timeshift
 
 #curl
-pacote::apt::curl
+package::apt::curl
 
 #ZSH & oh-my-zsh(ZShell)
-pacote::apt::zsh
-dependencia::git::curl
+package::apt::zsh
+dependency::git::curl
 install::sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
 install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'zsh');
 install::apt install grc -y;
 remove::apt remove grc -y;
 
 #ZSH como shell padrão
-pacote::zsh-padrao
-dependencia::zsh
+package::zsh-padrao
+dependency::zsh
 install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
 
 #docker ce(docker/docker-compose)
-pacote::docker-ce
-dependencia::curl
+package::docker-ce
+dependency::curl
 install::curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
 install::usermod -aG docker $(users|awk ' {print $1} ')
 install::curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
@@ -223,56 +223,56 @@ install::rm -v get-docker.sh
 install::echo 'Faça logout para atualizar os grupos do usuário atual'
 
 #retroarch
-pacote::apt::retroarch
+package::apt::retroarch
 ppa::ppa:libretro/stable
 
 #latex & texstudio
-pacote::apt::texlive texlive-latex-extra texlive-lang-portuguese texstudio
+package::apt::texlive texlive-latex-extra texlive-lang-portuguese texstudio
 
 #ssh-server
-pacote::apt::openssh-server
+package::apt::openssh-server
 install::service ssh start;
 remove::service ssh stop;
 
 #oneko(mascote)
-pacote::apt::oneko
+package::apt::oneko
 
 #figlet(texto em caracteres ASCII)
-pacote::apt::figlet
+package::apt::figlet
 
 #sl(Steam Locomotive)
-pacote::apt::sl
+package::apt::sl
 
 #lynx(navegador em modo texto)
-pacote::apt::lynx
+package::apt::lynx
 
 #steam
-pacote::apt::steam
+package::apt::steam
 
 #cmatrix
-pacote::apt::cmatrix
+package::apt::cmatrix
 
 #fish(Friendly Interactive Shell)
-pacote::apt::fish
+package::apt::fish
 ppa::ppa:fish-shell/release-2
 
 #fish como shell padrão
-pacote::fish-padrao
-dependencia::fish
+package::fish-padrao
+dependency::fish
 install::chsh -s /usr/bin/fish $(users|awk ' {print $1} ')
 
 #psensor
-pacote::apt::psensor
+package::apt::psensor
 
 #ultimate-vimrc(Awesome version)
-pacote::ultimate-vimrc
-dependencia::vim::git
+package::ultimate-vimrc
+dependency::vim::git
 install::git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
 install::sh ~/.vim_runtime/install_awesome_vimrc.sh;
 install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'vim');
 
 #etcher(gravador imagem em sdcard/pendrive)
-pacote::etcher
+package::etcher
 install::echo "deb https://dl.bintray.com/resin-io/debian stable etcher" | sudo tee /etc/apt/sources.list.d/etcher.list;
 install::apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 379CE192D401AB61;
 install::apt-get update;
@@ -280,10 +280,10 @@ install::apt install etcher-electron -y;
 remove::apt remove etcher-electron -y;
 
 #trash-cli(lixeira no terminal)
-pacote::apt::trash-cli
+package::apt::trash-cli
 
 #golang(Linguagem GO) 1.10
-pacote::golang
+package::golang
 install::wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz
 install::tar -C /usr/local/ -xzf go1.10.linux-amd64.tar.gz
 install::mkdir $HOME/go $HOME/go/bin $HOME/go/pkg $HOME/go/src
@@ -294,4 +294,7 @@ install::echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.profile
 install::rm -v go1.10.linux-amd64.tar.gz
 install::echo 'Disponibilizado variável $GOPATH, diretório ~/go e finalizado instalação.'
 install::echo -e "Para usuários do ZSH, execute o comando abaixo para reconhecer o executável go:\ncp -v ~/.profile ~/.zprofile"
+
+#gsmartcontrol(verificar estado de hd)
+package::apt::gsmartcontrol
 

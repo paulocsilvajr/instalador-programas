@@ -19,8 +19,8 @@ Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.
 O arquivo programas deve ter entradas no seguinte formato:
 +------ Exemplo de entrada em programas ------+
 |#Descrição do pacote                         |
-|pacote::apt::nome_pacote                     |
-|dependencia::nome_pacote_necessário          |
+|package::apt::nome_pacote                     |
+|dependency::nome_pacote_necessário          |
 |ppa::ppa:repositorio                         |
 |install::apt install pacote_complementar     |
 |remove::apt remove pacote_complementar       |
@@ -31,9 +31,9 @@ O arquivo programas deve ter entradas no seguinte formato:
 # apt pode ser omitido, mas deve-se descrever nas chaves install e remove o comando que se deseja executar para essas operações.
 # O nome_pacote deve ser sempre informado, pois é usado para indicar dependências. 
 # Quando informado apt, deve-se informar obrigatoriamente o nome de pacote pertencente aos repositórios do Ubuntu. 
-# Quando informado dependencia, deve-se declarar a entrada do pacote pai anteriormente.
+# Quando informado dependency, deve-se declarar a entrada do pacote pai anteriormente.
 # Para pacotes do repositório oficial do Ubuntu(informados com apt) e ppas o programa conhece a rotina de instalação e remoção.
-# dependencia, ppa, install e remove são opcionais.
+# dependency, ppa, install e remove são opcionais.
 """
 
 
