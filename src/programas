@@ -52,10 +52,7 @@ install::umake ide pycharm;
 remove::umake ide pycharm -r;
 
 #Eclipse(IDE Java)
-package::eclipse
-dependency::ubuntu-make::oracle-java8-installer
-install::umake ide eclipse;
-remove::umake ide eclipse -r;
+package::apt::eclipse
 
 #NetBeans(IDE Java)
 package::netbeans
