@@ -50,7 +50,7 @@ def abrir_gui():
 
 def main():
     diretorio = capturar_diretorio()
-    lista_programas = gera_lista_programas(diretorio + 'programas')
+    lista_programas = gera_lista_programas(diretorio=diretorio, nome_arquivo='programas')
 
     if abrir_gui():
         InstaladorGUI(lista_programas, diretorio)

@@ -26,20 +26,25 @@ LISTA_CHAVES = [
 ARQUIVO_LOG = 'log'
 
 
-def log(pacote: str, comando: str, codigo):
+def log(diretorio_log: str, pacote: str, comando: str, codigo: int):
     agora = datetime.now().strftime("%Y%m%d:%H%M%S")
     mensagem = '{} {}: {} [{}]'.format(agora, pacote, comando, codigo)
 
-    with open(ARQUIVO_LOG, 'a') as f:
-        f.write(mensagem + '\n')
+    arquivo = diretorio_log + ARQUIVO_LOG
+    try:
+        with open(arquivo, 'a') as f:
+            f.write(mensagem + '\n')
+        print('Adicionado LOG no arquivo:', arquivo)
+    except IOError:
+        print('Problema na geração do arquivo de log:', arquivo)
 
 
-def executa_comando(pacote: str, comando: str, shell: bool) -> int:
+def executa_comando(pacote: str, comando: str, shell: bool, dir_log: str) -> int:
     print("{}: {}".format(pacote, comando))
     codigo = call(comando, shell=shell)
     # codigo = 0
 
-    log(pacote, comando, codigo)
+    log(dir_log, pacote, comando, codigo)
 
     return codigo
 
@@ -67,18 +72,19 @@ def verifica_chave(chave, i):
         assert chave in LISTA_CHAVES or chave.startswith(DESCRICAO), 'Chave informada [{}] inválida, ' \
                                                                      'verifique linha {}.\n' \
                                                                      'Chaves válidas: {}'.format(
-                                                                     chave,
-                                                                     i + 1,
-                                                                     ', '.join(LISTA_CHAVES))
+            chave,
+            i + 1,
+            ', '.join(LISTA_CHAVES))
 
 
-def gera_lista_programas(nome_arquivo: str) -> list:
-    verifica_pacote_duplicado(nome_arquivo)
+def gera_lista_programas(diretorio: str, nome_arquivo: str) -> list:
+    arquivo = diretorio + nome_arquivo
+    verifica_pacote_duplicado(arquivo)
 
     lista_programas = list()
 
-    with open(nome_arquivo) as f:
-        programa = Programa()
+    with open(arquivo) as f:
+        programa = Programa(diretorio_log=diretorio)
 
         for i, linha in enumerate(f):
             linha = linha.strip().split(SEPARADOR)
@@ -120,7 +126,7 @@ def gera_lista_programas(nome_arquivo: str) -> list:
 
             elif not chave:
                 lista_programas.append(programa)
-                programa = Programa()
+                programa = Programa(diretorio_log=diretorio)
 
     ordena_por_descricao(lista_programas)
 
@@ -170,7 +176,7 @@ def verifica_programas_instalados(lista_programas: list, diretorio: str = ''):
 
 
 class Programa:
-    def __init__(self):
+    def __init__(self, diretorio_log: str):
         self.__descricao = ''
         self.__pacote = ''
         self.__install = list()
@@ -178,6 +184,7 @@ class Programa:
         self.__ppa = str()
         self.__dependencias = list()
         self.__apt = False
+        self.__dir_log = diretorio_log.replace('src/', '')
 
     @property
     def descricao(self) -> str:
@@ -267,14 +274,14 @@ class Programa:
                 cod_retorno.extend(codigo)
 
         if self.__ppa:
-            codigo = executa_comando(self.__pacote, self.__add_ppa(), shell)
+            codigo = executa_comando(self.__pacote, self.__add_ppa(), shell, self.__dir_log)
             cod_retorno.append(codigo)
 
-            codigo = executa_comando(self.__pacote, self.__apt_update(), shell)
+            codigo = executa_comando(self.__pacote, self.__apt_update(), shell, self.__dir_log)
             cod_retorno.append(codigo)
 
         for comando in self.__install:
-            codigo = executa_comando(self.__pacote, comando, shell)
+            codigo = executa_comando(self.__pacote, comando, shell, self.__dir_log)
             cod_retorno.append(codigo)
 
         return cod_retorno
@@ -283,14 +290,14 @@ class Programa:
         cod_retorno = list()
 
         for comando in reversed(self.__remove):
-            codigo = executa_comando(self.__pacote, comando, shell)
+            codigo = executa_comando(self.__pacote, comando, shell, self.__dir_log)
             cod_retorno.append(codigo)
 
         if self.__ppa:
-            codigo = executa_comando(self.__pacote, self.__del_ppa(), shell)
+            codigo = executa_comando(self.__pacote, self.__del_ppa(), shell, self.__dir_log)
             cod_retorno.append(codigo)
 
-            codigo = executa_comando(self.__pacote, self.__apt_update(), shell)
+            codigo = executa_comando(self.__pacote, self.__apt_update(), shell, self.__dir_log)
             cod_retorno.append(codigo)
 
         return cod_retorno
