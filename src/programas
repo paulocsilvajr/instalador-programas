@@ -271,14 +271,6 @@ install::git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
 install::sh ~/.vim_runtime/install_awesome_vimrc.sh;
 install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'vim');
 
-#etcher(gravador imagem em sdcard/pendrive)
-package::etcher
-install::echo "deb https://dl.bintray.com/resin-io/debian stable etcher" | sudo tee /etc/apt/sources.list.d/etcher.list;
-install::apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 379CE192D401AB61;
-install::apt-get update;
-install::apt install etcher-electron -y;
-remove::apt remove etcher-electron -y;
-
 #trash-cli(lixeira no terminal)
 package::apt::trash-cli
 
