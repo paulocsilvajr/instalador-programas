@@ -127,6 +127,7 @@ package::apt::preload
 
 #virtualbox
 package::apt::virtualbox
+install::apt install virtualbox-qt -y;
 
 #geany
 package::apt::geany
