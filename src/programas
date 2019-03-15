@@ -164,6 +164,11 @@ package::spotify-client-snap
 dependency::snapd
 install::snap install spotify;
 
+#WPS-Office(snap)
+package::wps-office-snap
+dependency::snapd
+install::snap install wps-office;
+
 #screenfetch(informações do sistema)
 package::apt::screenfetch
 
