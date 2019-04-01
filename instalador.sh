@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CAMINHO=$0
 CAMINHO="${CAMINHO%/*}"
