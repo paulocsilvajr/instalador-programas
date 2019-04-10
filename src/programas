@@ -296,3 +296,6 @@ install::echo -e "Para usuários do ZSH, execute o comando abaixo para reconhece
 #gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
 
+#qbittorrent(Cliente Torrent)
+package::apt::qbittorrent
+
