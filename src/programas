@@ -301,4 +301,5 @@ package::apt::qbittorrent
 
 #ClamAV(Antivírus Open-Source)
 package::apt::clamav
+install::apt install clamtk
 
