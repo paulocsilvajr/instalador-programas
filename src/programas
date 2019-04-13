@@ -299,3 +299,6 @@ package::apt::gsmartcontrol
 #qbittorrent(Cliente Torrent)
 package::apt::qbittorrent
 
+#ClamAV(Antivírus Open-Source)
+package::apt::clamav
+
