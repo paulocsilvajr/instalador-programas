@@ -76,6 +76,9 @@ package::apt::dia
 #Password gorilla
 package::apt::password-gorilla
 
+#Keepass2
+package::apt::keepass2
+
 #GIT
 package::apt::git
 
