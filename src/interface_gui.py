@@ -82,13 +82,13 @@ class Instalador(tkinter.Tk):
         self.lbl_status = self._label(master=self, text="Sempre execute este programa como administrador.")
 
         # Centralizando formulário.
-        dimensao = (500, 600)
+        dimensao = (600, 700)
         self.wm_geometry('%dx%d-%d-%d' % (dimensao[0], dimensao[1],
                                           (self.winfo_screenwidth() / 2) - (dimensao[0] / 2),
                                           self.winfo_screenheight()))
 
         # Definindo tamanho mínimo do formulário
-        self.minsize(400, 525)
+        self.minsize(525, 625)
 
         # Eventos do formulário.
         self.bind('<Escape>', self.atalho_fechar)
