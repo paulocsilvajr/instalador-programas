@@ -180,13 +180,13 @@ remove::snap remove wps-office;
 #Pycharm CE(IDE Python - SNAP)
 package::pycharm-snap
 dependency::snapd::openjdk-8-jdk::python
-install::snap install pycharm-community;
+install::snap install pycharm-community --classic;
 remove::snap remove pycharm-community;
 
 #Intellij Idea CE(IDE Java - SNAP)
 package::idea-snap
 dependency::snapd::openjdk-8-jdk
-install::snap install intellij-idea-community;
+install::snap install intellij-idea-community --classic;
 remove::snap remove intellij-idea-community;
 
 #screenfetch(informações do sistema)
