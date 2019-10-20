@@ -17,8 +17,8 @@ install_idle_python(){
     verif_idle=$(dpkg --get-selections|grep "^idle-python3*"|grep "\binstall")
 
     if [[ -z $verif_idle ]]; then
-        echo "Instalando idle-python3..."
-        apt install idle-python3\* -y
+        echo "Instalando idle-python3.7 ..."
+        apt install idle-python3.7 -y
     fi
 }
 
@@ -35,11 +35,11 @@ help(){
 }
 
 # Se parametro1 estiver vazio.
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     is_root
     install_idle_python
 
-    python3 $CAMINHO
+    python3 "$CAMINHO"
 else
     case $1 in
         "-h"|"--help")
@@ -49,7 +49,7 @@ else
             is_root
             install_idle_python
 
-            python3 $CAMINHO g
+            python3 "$CAMINHO" g
             ;;
         *)
             echo "Parâmetro inválido: $1, -h para ajuda."
