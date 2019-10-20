@@ -21,11 +21,17 @@ package::apt::calibre
 package::calibre-kde
 install::sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()";
 
-#Java 8
+#Java 8(Oracle)
 package::apt::oracle-java8-installer
 ppa::ppa:webupd8team/java
 install::apt install oracle-java8-set-default -y;
 remove::apt remove oracle-java8-set-default -y;
+
+#OpenJDK8(Java 8)
+package::apt::openjdk-8-jdk
+
+#OpenJDK11(Java 11)
+package::apt::openjdk-11-jdk
 
 #Python 2 e 3
 package::python
