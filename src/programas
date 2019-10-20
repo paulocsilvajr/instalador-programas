@@ -29,7 +29,7 @@ remove::apt remove oracle-java8-set-default -y;
 
 #Python 2 e 3
 package::python
-install::apt install idle-python3\* -y;
+install::apt install idle-python3.7 -y;
 install::apt install tix -y;
 install::apt install python-pip -y;
 install::apt install python-dev -y;
@@ -41,12 +41,12 @@ install::pip2 install --upgrade pip;
 install::pip3 install --upgrade pip;
 install::apt install ipython3 -y;
 
-#Ubuntu Make(umake)
+#Ubuntu Make(UMAKE)
 package::apt::ubuntu-make
 ppa::ppa:ubuntu-desktop/ubuntu-make
 
-#Pycharm CE(IDE Python)
-package::pycharm
+#Pycharm CE(IDE Python - UMAKE)
+package::pycharm-umake
 dependency::ubuntu-make::oracle-java8-installer::python
 install::umake ide pycharm;
 remove::umake ide pycharm -r;
@@ -54,14 +54,14 @@ remove::umake ide pycharm -r;
 #Eclipse(IDE Java)
 package::apt::eclipse
 
-#NetBeans(IDE Java)
-package::netbeans
+#NetBeans(IDE Java - UMAKE)
+package::netbeans-umake
 dependency::ubuntu-make::oracle-java8-installer
 install::umake ide netbeans;
 remove::umake ide netbeans -r;
 
-#Intellij Idea CE(IDE Java)
-package::idea
+#Intellij Idea CE(IDE Java - UMAKE)
+package::idea-umake
 dependency::ubuntu-make::oracle-java8-installer
 install::umake ide idea;
 remove::umake ide idea -r;
@@ -119,9 +119,6 @@ package::apt::clipit
 #compizconfig
 package::apt::compizconfig-settings-manager
 
-#unity-tweak
-package::apt::unity-tweak-tool
-
 #preload
 package::apt::preload
 
@@ -159,15 +156,29 @@ remove::apt remove spotify-client -y;
 package::apt::snapd
 install::snap install core;
 
-#Spotify(snap)
+#Spotify(SNAP)
 package::spotify-client-snap
 dependency::snapd
 install::snap install spotify;
+remove::snap remove spotify;
 
-#WPS-Office(snap)
+#WPS-Office(SNAP)
 package::wps-office-snap
 dependency::snapd
 install::snap install wps-office;
+remove::snap remove wps-office;
+
+#Pycharm CE(IDE Python - SNAP)
+package::pycharm-snap
+dependency::snapd::oracle-java8-installer::python
+install::snap install pycharm-community;
+remove::snap remove pycharm-community;
+
+#Intellij Idea CE(IDE Java - SNAP)
+package::idea-snap
+dependency::snapd::oracle-java8-installer
+install::snap install intellij-idea-community;
+remove::snap remove intellij-idea-community;
 
 #screenfetch(informações do sistema)
 package::apt::screenfetch
