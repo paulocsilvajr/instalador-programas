@@ -1,14 +1,14 @@
 # Instalador de Programas
-### Desenvolvido no Ubuntu 16.04, Python3.5, Tkinter.
+### Desenvolvido no Ubuntu 18.04, Python3.7, Tkinter.
 
 Este repositório contém um software desenvolvido em python para instalar programas na distribuição Ubuntu. Seu objetivo é facilitar e agilizar o processo de instalar vários aplicativos ao mesmo tempo. Para isso, ele usa de uma lista previamente alimentada.
 
 ### Pré-requisitos
 Conceder privilégio de execução ao script 'instalador.sh'.
 
-Instalar o pacote IDLE do python3. No Ubuntu 16.04 usar o comando abaixo:
+Instalar o pacote IDLE do python3.7. No Ubuntu 18.04 usar o comando abaixo:
 ```
-# apt install idle-python3\*;
+# apt install idle-python3.7;
 ```
 Quando executado o programa pelo script 'instalador.sh', é verificado se o programa informado nos requisitos foi instalado, caso necessário, é feito a instalação automática.
 
