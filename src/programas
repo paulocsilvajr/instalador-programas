@@ -53,7 +53,7 @@ ppa::ppa:ubuntu-desktop/ubuntu-make
 
 #Pycharm CE(IDE Python - UMAKE)
 package::pycharm-umake
-dependency::ubuntu-make::oracle-java8-installer::python
+dependency::ubuntu-make::openjdk-8-jdk::python
 install::umake ide pycharm;
 remove::umake ide pycharm -r;
 
@@ -62,13 +62,13 @@ package::apt::eclipse
 
 #NetBeans(IDE Java - UMAKE)
 package::netbeans-umake
-dependency::ubuntu-make::oracle-java8-installer
+dependency::ubuntu-make::openjdk-8-jdk
 install::umake ide netbeans;
 remove::umake ide netbeans -r;
 
 #Intellij Idea CE(IDE Java - UMAKE)
 package::idea-umake
-dependency::ubuntu-make::oracle-java8-installer
+dependency::ubuntu-make::openjdk-8-jdk
 install::umake ide idea;
 remove::umake ide idea -r;
 
@@ -179,13 +179,13 @@ remove::snap remove wps-office;
 
 #Pycharm CE(IDE Python - SNAP)
 package::pycharm-snap
-dependency::snapd::oracle-java8-installer::python
+dependency::snapd::openjdk-8-jdk::python
 install::snap install pycharm-community;
 remove::snap remove pycharm-community;
 
 #Intellij Idea CE(IDE Java - SNAP)
 package::idea-snap
-dependency::snapd::oracle-java8-installer
+dependency::snapd::openjdk-8-jdk
 install::snap install intellij-idea-community;
 remove::snap remove intellij-idea-community;
 
