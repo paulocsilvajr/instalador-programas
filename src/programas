@@ -271,7 +271,6 @@ package::apt::cmatrix
 
 #fish(Friendly Interactive Shell)
 package::apt::fish
-ppa::ppa:fish-shell/release-2
 
 #fish como shell padrão
 package::fish-padrao
