@@ -19,7 +19,7 @@ package::apt::calibre
 
 #Calibre KDE
 package::calibre-kde
-install::sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()";
+install::sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
 
 #Java 8(Oracle)
 package::apt::oracle-java8-installer
@@ -235,7 +235,6 @@ remove::apt remove grc -y;
 
 #ZSH como shell padrão
 package::zsh-padrao
-dependency::zsh
 install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
 
 #docker ce(docker/docker-compose)
@@ -283,7 +282,6 @@ package::apt::fish
 
 #fish como shell padrão
 package::fish-padrao
-dependency::fish
 install::chsh -s /usr/bin/fish $(users|awk ' {print $1} ')
 
 #psensor
