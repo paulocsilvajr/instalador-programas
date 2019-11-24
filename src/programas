@@ -19,17 +19,23 @@ package::apt::calibre
 
 #Calibre KDE
 package::calibre-kde
-install::sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()";
+install::sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
 
-#Java 8
+#Java 8(Oracle)
 package::apt::oracle-java8-installer
 ppa::ppa:webupd8team/java
 install::apt install oracle-java8-set-default -y;
 remove::apt remove oracle-java8-set-default -y;
 
+#OpenJDK8(Java 8)
+package::apt::openjdk-8-jdk
+
+#OpenJDK11(Java 11)
+package::apt::openjdk-11-jdk
+
 #Python 2 e 3
 package::python
-install::apt install idle-python3\* -y;
+install::apt install idle-python3.7 -y;
 install::apt install tix -y;
 install::apt install python-pip -y;
 install::apt install python-dev -y;
@@ -41,28 +47,28 @@ install::pip2 install --upgrade pip;
 install::pip3 install --upgrade pip;
 install::apt install ipython3 -y;
 
-#Ubuntu Make(umake)
+#Ubuntu Make(UMAKE)
 package::apt::ubuntu-make
 ppa::ppa:ubuntu-desktop/ubuntu-make
 
-#Pycharm CE(IDE Python)
-package::pycharm
-dependency::ubuntu-make::oracle-java8-installer::python
+#Pycharm CE(IDE Python - UMAKE)
+package::pycharm-umake
+dependency::ubuntu-make::openjdk-8-jdk::python
 install::umake ide pycharm;
 remove::umake ide pycharm -r;
 
 #Eclipse(IDE Java)
 package::apt::eclipse
 
-#NetBeans(IDE Java)
-package::netbeans
-dependency::ubuntu-make::oracle-java8-installer
+#NetBeans(IDE Java - UMAKE)
+package::netbeans-umake
+dependency::ubuntu-make::openjdk-8-jdk
 install::umake ide netbeans;
 remove::umake ide netbeans -r;
 
-#Intellij Idea CE(IDE Java)
-package::idea
-dependency::ubuntu-make::oracle-java8-installer
+#Intellij Idea CE(IDE Java - UMAKE)
+package::idea-umake
+dependency::ubuntu-make::openjdk-8-jdk
 install::umake ide idea;
 remove::umake ide idea -r;
 
@@ -75,6 +81,9 @@ package::apt::dia
 
 #Password gorilla
 package::apt::password-gorilla
+
+#Keepass2
+package::apt::keepass2
 
 #GIT
 package::apt::git
@@ -119,14 +128,12 @@ package::apt::clipit
 #compizconfig
 package::apt::compizconfig-settings-manager
 
-#unity-tweak
-package::apt::unity-tweak-tool
-
 #preload
 package::apt::preload
 
 #virtualbox
 package::apt::virtualbox
+install::apt install virtualbox-qt -y;
 
 #geany
 package::apt::geany
@@ -158,10 +165,29 @@ remove::apt remove spotify-client -y;
 package::apt::snapd
 install::snap install core;
 
-#Spotify(snap)
+#Spotify(SNAP)
 package::spotify-client-snap
 dependency::snapd
 install::snap install spotify;
+remove::snap remove spotify;
+
+#WPS-Office(SNAP)
+package::wps-office-snap
+dependency::snapd
+install::snap install wps-office;
+remove::snap remove wps-office;
+
+#Pycharm CE(IDE Python - SNAP)
+package::pycharm-snap
+dependency::snapd::openjdk-8-jdk::python
+install::snap install pycharm-community --classic;
+remove::snap remove pycharm-community;
+
+#Intellij Idea CE(IDE Java - SNAP)
+package::idea-snap
+dependency::snapd::openjdk-8-jdk
+install::snap install intellij-idea-community --classic;
+remove::snap remove intellij-idea-community;
 
 #screenfetch(informações do sistema)
 package::apt::screenfetch
@@ -209,7 +235,6 @@ remove::apt remove grc -y;
 
 #ZSH como shell padrão
 package::zsh-padrao
-dependency::zsh
 install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
 
 #docker ce(docker/docker-compose)
@@ -254,11 +279,9 @@ package::apt::cmatrix
 
 #fish(Friendly Interactive Shell)
 package::apt::fish
-ppa::ppa:fish-shell/release-2
 
 #fish como shell padrão
 package::fish-padrao
-dependency::fish
 install::chsh -s /usr/bin/fish $(users|awk ' {print $1} ')
 
 #psensor
@@ -271,30 +294,29 @@ install::git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
 install::sh ~/.vim_runtime/install_awesome_vimrc.sh;
 install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'vim');
 
-#etcher(gravador imagem em sdcard/pendrive)
-package::etcher
-install::echo "deb https://dl.bintray.com/resin-io/debian stable etcher" | sudo tee /etc/apt/sources.list.d/etcher.list;
-install::apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 379CE192D401AB61;
-install::apt-get update;
-install::apt install etcher-electron -y;
-remove::apt remove etcher-electron -y;
-
 #trash-cli(lixeira no terminal)
 package::apt::trash-cli
 
-#golang(Linguagem GO) 1.10
+#golang(Linguagem GO) 1.12
 package::golang
-install::wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz
-install::tar -C /usr/local/ -xzf go1.10.linux-amd64.tar.gz
+install::wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz
+install::tar -C /usr/local/ -xzf go1.12.linux-amd64.tar.gz
 install::mkdir $HOME/go $HOME/go/bin $HOME/go/pkg $HOME/go/src
 install::chown -R $(users|awk ' {print $1} ') $HOME/go
 install::echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
 install::echo 'export GOPATH=$HOME/go' >> $HOME/.profile
 install::echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.profile
-install::rm -v go1.10.linux-amd64.tar.gz
+install::rm -v go1.12.linux-amd64.tar.gz
 install::echo 'Disponibilizado variável $GOPATH, diretório ~/go e finalizado instalação.'
 install::echo -e "Para usuários do ZSH, execute o comando abaixo para reconhecer o executável go:\ncp -v ~/.profile ~/.zprofile"
 
 #gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
+
+#qbittorrent(Cliente Torrent)
+package::apt::qbittorrent
+
+#ClamAV(Antivírus Open-Source)
+package::apt::clamav
+install::apt install clamtk
 

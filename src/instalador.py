@@ -15,7 +15,7 @@ __author__ = 'Paulo C. Silva Jr.'
 __version__ = '0.4.0'
 
 """
-Instalador de programas, desenvolvido: Ubuntu 16.04, Python3.5, Tkinter.
+Instalador de programas, desenvolvido: Ubuntu 18.04, Python3.7, Tkinter.
 O arquivo programas deve ter entradas no seguinte formato:
 +------ Exemplo de entrada em programas ------+
 |#Descrição do pacote                         |
@@ -50,7 +50,7 @@ def abrir_gui():
 
 def main():
     diretorio = capturar_diretorio()
-    lista_programas = gera_lista_programas(diretorio + 'programas')
+    lista_programas = gera_lista_programas(diretorio=diretorio, nome_arquivo='programas')
 
     if abrir_gui():
         InstaladorGUI(lista_programas, diretorio)

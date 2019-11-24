@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DESTINO=/usr/bin/
 NOME_PROGRAMA="instalador-programas"
@@ -13,7 +13,7 @@ is_root(){
 make_program(){
     echo $PWD/instalador.sh '$1' > $NOME_PROGRAMA
 
-    # move o programa para /usr/bin, definição de permissão e 
+    # move o programa para /usr/bin, definição de permissão e
     # mensagem de confirmação
     mv -vi $NOME_PROGRAMA $DESTINO$NOME_PROGRAMA && chmod 755 -v $DESTINO$NOME_PROGRAMA && echo "Reinicie o terminal para utilizar o programa" $NOME_PROGRAMA
 }
