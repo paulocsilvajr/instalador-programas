@@ -320,3 +320,6 @@ package::apt::qbittorrent
 package::apt::clamav
 install::apt install clamtk
 
+#HardInfo(Informações do Sistema e Benchmark)
+package::apt::hardinfo
+
