@@ -323,3 +323,6 @@ install::apt install clamtk
 #HardInfo(Informações do Sistema e Benchmark)
 package::apt::hardinfo
 
+#NMON(Monitor de recursos no terminal)
+package::apt::nmon
+
