@@ -326,3 +326,6 @@ package::apt::hardinfo
 #NMON(Monitor de recursos no terminal)
 package::apt::nmon
 
+#HWinfo(Informações do hardware)
+package::apt::hwinfo
+
