@@ -329,3 +329,8 @@ package::apt::nmon
 #HWinfo(Informações do hardware)
 package::apt::hwinfo
 
+#NETDATA(Informações do Sistema WEB)
+package::netdata
+install::bash <(curl -Ss https://my-netdata.io/kickstart.sh)
+install::echo "Execute: 'netdata' no terminal para verificar o endereço:porta da aplicação"
+
