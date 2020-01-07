@@ -331,6 +331,7 @@ package::apt::hwinfo
 
 #NETDATA(Informações do Sistema WEB)
 package::netdata
-install::bash <(curl -Ss https://my-netdata.io/kickstart.sh)
+install::curl -Ss https://my-netdata.io/kickstart.sh -o kickstart.sh && bash kickstart.sh
+install::rm -v kickstart.sh
 install::echo "Execute: 'netdata' no terminal para verificar o endereço:porta da aplicação"
 
