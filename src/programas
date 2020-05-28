@@ -179,13 +179,13 @@ remove::snap remove wps-office;
 
 #Pycharm CE(IDE Python - SNAP)
 package::pycharm-snap
-dependency::snapd::openjdk-8-jdk::python
+dependency::snapd::openjdk-11-jdk::python
 install::snap install pycharm-community --classic;
 remove::snap remove pycharm-community;
 
 #Intellij Idea CE(IDE Java - SNAP)
 package::idea-snap
-dependency::snapd::openjdk-8-jdk
+dependency::snapd::openjdk-11-jdk
 install::snap install intellij-idea-community --classic;
 remove::snap remove intellij-idea-community;
 
@@ -334,4 +334,10 @@ package::netdata
 install::curl -Ss https://my-netdata.io/kickstart.sh -o kickstart.sh && bash kickstart.sh
 install::rm -v kickstart.sh
 install::echo "Execute: 'netdata' no terminal para verificar o endereço:porta da aplicação"
+
+#Android-Studio(IDE Java para Android - SNAP)
+package::android-studio
+dependency::snapd::openjdk-11-jdk
+install::snap install android-studio --classic;
+remove::snap remove android-studio;
 
