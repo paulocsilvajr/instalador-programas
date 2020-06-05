@@ -35,7 +35,7 @@ package::apt::openjdk-11-jdk
 
 #Python 2 e 3
 package::python
-install::apt install idle-python3.7 -y;
+install::apt install -y idle-python$(python3 --version | awk '{print $2}' | cut -b -3)
 install::apt install tix -y;
 install::apt install python-pip -y;
 install::apt install python-dev -y;
