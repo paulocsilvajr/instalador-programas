@@ -228,7 +228,7 @@ package::apt::curl
 #ZSH & oh-my-zsh(ZShell)
 package::apt::zsh
 dependency::git::curl
-install::sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
+install::sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'zsh');
 install::apt install grc -y;
 remove::apt remove grc -y;
