@@ -33,17 +33,14 @@ package::apt::openjdk-8-jdk
 #OpenJDK11(Java 11)
 package::apt::openjdk-11-jdk
 
-#Python 2 e 3
+#Python 3
 package::python
 install::apt install -y idle-python$(python3 --version | awk '{print $2}' | cut -b -3)
 install::apt install tix -y;
-install::apt install python-pip -y;
-install::apt install python-dev -y;
 install::apt install build-essential -y;
 install::apt install python3-pip -y;
 install::apt install python3-dev -y;
 install::pip3 install --upgrade virtualenv;
-install::pip2 install --upgrade pip;
 install::pip3 install --upgrade pip;
 install::apt install ipython3 -y;
 
@@ -202,8 +199,8 @@ install::apt install redshift-gtk -y;
 #speedtest(teste de velocidade internet pelo terminal)
 package::speedtest-cli
 dependency::python
-install::pip2 install speedtest-cli;
-remove::pip2 uninstall speedtest-cli;
+install::pip3 install speedtest-cli;
+remove::pip3 uninstall speedtest-cli;
 
 #htop(visualizador de processos)
 package::apt::htop
