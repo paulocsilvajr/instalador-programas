@@ -150,14 +150,6 @@ package::apt::blender
 #synapse
 package::apt::synapse
 
-#Spotify
-package::spotify-client
-install::sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90;
-install::echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list;
-install::apt update;
-install::apt install spotify-client -y;
-remove::apt remove spotify-client -y;
-
 #snap
 package::apt::snapd
 install::snap install core;
