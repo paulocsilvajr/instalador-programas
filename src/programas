@@ -229,12 +229,7 @@ install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
 #docker ce(docker/docker-compose)
 package::docker-ce
 dependency::curl
-install::curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
-install::usermod -aG docker $(users|awk ' {print $1} ')
-install::curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-install::chmod +x /usr/local/bin/docker-compose
-install::rm -v get-docker.sh
-install::echo 'Faça logout para atualizar os grupos do usuário atual'
+install::src/scripts/docker.sh
 
 #retroarch
 package::apt::retroarch
