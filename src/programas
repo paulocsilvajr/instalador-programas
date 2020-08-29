@@ -217,8 +217,7 @@ package::apt::curl
 #ZSH & oh-my-zsh(ZShell)
 package::apt::zsh
 dependency::git::curl
-install::sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'zsh');
+install::src/scripts/oh-my-zsh.sh
 install::apt install grc -y;
 remove::apt remove grc -y;
 
@@ -274,25 +273,14 @@ package::apt::psensor
 #ultimate-vimrc(Awesome version)
 package::ultimate-vimrc
 dependency::vim::git
-install::git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
-install::sh ~/.vim_runtime/install_awesome_vimrc.sh;
-install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'vim');
+install::src/scripts/ultimate-vimrc.sh
 
 #trash-cli(lixeira no terminal)
 package::apt::trash-cli
 
 #golang(Linguagem GO) 1.12
 package::golang
-install::wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz
-install::tar -C /usr/local/ -xzf go1.12.linux-amd64.tar.gz
-install::mkdir $HOME/go $HOME/go/bin $HOME/go/pkg $HOME/go/src
-install::chown -R $(users|awk ' {print $1} ') $HOME/go
-install::echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
-install::echo 'export GOPATH=$HOME/go' >> $HOME/.profile
-install::echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.profile
-install::rm -v go1.12.linux-amd64.tar.gz
-install::echo 'Disponibilizado variável $GOPATH, diretório ~/go e finalizado instalação.'
-install::echo -e "Para usuários do ZSH, execute o comando abaixo para reconhecer o executável go:\ncp -v ~/.profile ~/.zprofile"
+install::src/scripts/golang.sh
 
 #gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
