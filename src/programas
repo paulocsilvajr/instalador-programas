@@ -313,3 +313,9 @@ dependency::snapd::openjdk-11-jdk
 install::snap install android-studio --classic;
 remove::snap remove android-studio;
 
+#CoreCtrl(Informações e Overclock hardware AMD)
+package::apt::corectrl
+ppa::ppa:ernstp/mesarc
+install::apt install corectrl -y;
+remove::apt remove corectrl -y;
+
