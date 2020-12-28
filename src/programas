@@ -282,6 +282,10 @@ package::apt::trash-cli
 package::golang
 install::src/scripts/golang.sh
 
+#golang(Linguagem GO) 1.15
+package::golang1.15
+install::src/scripts/golang1.15.sh
+
 #gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
 
