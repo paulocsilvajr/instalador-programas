@@ -1,14 +1,10 @@
 # coding: utf-8
 
 from sys import argv
-try:
-    from src.gerenciador_programas import gera_lista_programas
-    from src.interface_gui import Instalador as InstaladorGUI
-    from src.interface_cli import instalador as InstaladorCLI
-except ImportError:
-    from gerenciador_programas import gera_lista_programas
-    from interface_gui import Instalador as InstaladorGUI
-    from interface_cli import instalador as InstaladorCLI
+# try:
+from gerenciador_programas import gera_lista_programas
+from interface_gui import Instalador as InstaladorGUI
+from interface_cli import instalador as InstaladorCLI
 
 __author__ = 'Paulo C. Silva Jr.'
 
