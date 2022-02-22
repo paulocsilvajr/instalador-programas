@@ -85,27 +85,27 @@ package::apt::keepass2
 #GIT
 package::apt::git
 
-#git-cola(GIT GUI)
+#Git-cola(GIT GUI)
 package::apt::git-cola
 dependency::git
 
 #GnuCash
 package::apt::gnucash
 
-#tree
+#Tree
 package::apt::tree
 
-#emacs
+#Emacs
 package::apt:emacs
 
-#inxi(informações do sistema)
+#Inxi(informações do sistema)
 package::apt::inxi
 
-#python3-mysql.connector
+#Python3-mysql.connector
 package::python3-mysql.connector
 dependency::python
 
-#python3-psycopg2
+#Python3-psycopg2
 package::python3-psycopg2
 dependency::python
 
@@ -115,42 +115,42 @@ dependency::ubuntu-make
 install::umake ide sublime-text;
 remove::umake ide sublime-text -r;
 
-#brackets
+#Brackets
 package::apt::brackets
 ppa::ppa:webupd8team/brackets
 
-#clipit
+#Clipit
 package::apt::clipit
 
-#compizconfig
+#Compizconfig
 package::apt::compizconfig-settings-manager
 
-#preload
+#Preload
 package::apt::preload
 
-#virtualbox
+#Virtualbox
 package::apt::virtualbox
 install::apt install virtualbox-qt -y;
 
-#geany
+#Geany
 package::apt::geany
 
-#gparted
+#Gparted
 package::apt::gparted
 
-#gimp
+#Gimp
 package::apt::gimp
 
-#vlc
+#VLC
 package::apt::vlc
 
-#blender
+#Blender
 package::apt::blender
 
-#synapse
+#Synapse
 package::apt::synapse
 
-#snap
+#SNAP
 package::apt::snapd
 install::snap install core;
 
@@ -178,40 +178,40 @@ dependency::snapd::openjdk-11-jdk
 install::snap install intellij-idea-community --classic;
 remove::snap remove intellij-idea-community;
 
-#screenfetch(informações do sistema)
+#Screenfetch(informações do sistema)
 package::apt::screenfetch
 
-#plasma-nm(kde5-nm-connection-editor)
+#Plasma-nm(kde5-nm-connection-editor)
 package::apt::plasma-nm
 
-#redshift
+#Redshift
 package::apt::redshift
 install::apt install redshift-gtk -y;
 
-#speedtest(teste de velocidade internet pelo terminal)
+#Speedtest(teste de velocidade internet pelo terminal)
 package::speedtest-cli
 dependency::python
 install::pip3 install speedtest-cli;
 remove::pip3 uninstall speedtest-cli;
 
-#htop(visualizador de processos)
+#Htop(visualizador de processos)
 package::apt::htop
 
-#glances(monitor do sistema)
+#Glances(monitor do sistema)
 package::apt::glances
 
-#guake(terminal)
+#Guake(terminal)
 package::apt::guake
 install::apt install guake-indicator -y;
 remove::apt remove guake-indicator -y;
 
-#vim
+#Vim
 package::apt::vim
 
-#timeshift(restauração do sistema)
+#Timeshift(restauração do sistema)
 package::apt::timeshift
 
-#curl
+#Curl
 package::apt::curl
 
 #ZSH & oh-my-zsh(ZShell)
@@ -225,71 +225,71 @@ remove::apt remove grc -y;
 package::zsh-padrao
 install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
 
-#docker ce(docker/docker-compose)
+#Docker CE(docker/docker-compose) Rep. Externo
 package::docker-ce
 dependency::curl
 install::src/scripts/docker.sh
 
-#retroarch
+#Retroarch
 package::apt::retroarch
 ppa::ppa:libretro/stable
 
-#latex & texstudio
+#Latex & Texstudio
 package::apt::texlive texlive-latex-extra texlive-lang-portuguese texstudio
 
-#ssh-server
+#SSH-server
 package::apt::openssh-server
 install::service ssh start;
 remove::service ssh stop;
 
-#oneko(mascote)
+#Oneko(mascote)
 package::apt::oneko
 
-#figlet(texto em caracteres ASCII)
+#Figlet(texto em caracteres ASCII)
 package::apt::figlet
 
 #sl(Steam Locomotive)
 package::apt::sl
 
-#lynx(navegador em modo texto)
+#Lynx(navegador em modo texto)
 package::apt::lynx
 
-#steam
+#Steam
 package::apt::steam
 
-#cmatrix
+#Cmatrix
 package::apt::cmatrix
 
-#fish(Friendly Interactive Shell)
+#Fish(Friendly Interactive Shell)
 package::apt::fish
 
-#fish como shell padrão
+#Fish como shell padrão
 package::fish-padrao
 install::chsh -s /usr/bin/fish $(users|awk ' {print $1} ')
 
-#psensor
+#Psensor
 package::apt::psensor
 
-#ultimate-vimrc(Awesome version)
+#Ultimate-vimrc(Awesome version)
 package::ultimate-vimrc
 dependency::vim::git
 install::src/scripts/ultimate-vimrc.sh
 
-#trash-cli(lixeira no terminal)
+#Trash-cli(lixeira no terminal)
 package::apt::trash-cli
 
-#golang(Linguagem GO) 1.12
+#Golang(Linguagem GO) 1.12
 package::golang
 install::src/scripts/golang.sh
 
-#golang(Linguagem GO) 1.15
+#Golang(Linguagem GO) 1.15
 package::golang1.15
 install::src/scripts/golang1.15.sh
 
-#gsmartcontrol(verificar estado de hd)
+#Gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
 
-#qbittorrent(Cliente Torrent)
+#Qbittorrent(Cliente Torrent)
 package::apt::qbittorrent
 
 #ClamAV(Antivírus Open-Source)
