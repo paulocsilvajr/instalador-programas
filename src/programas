@@ -330,17 +330,17 @@ install::src/scripts/wekan.sh
 remove::snap remove wekan
 
 #lnav(LOG file viewer)
-package::lnav
+package::apt::lnav
 
 #nmap(Network Mapper)
-package::nmap
+package::apt::nmap
 
-#tuptime(Report  historical and statistical real time of the system)
-package::tuptime
+#tuptime(Report historical and statistical real time of the system)
+package::apt::tuptime
 
 #smartmontools(Ferramentas para verificar disco)
-package::smartmontools
+package::apt::smartmontools
 
 #ncdu(Disk Usage)
-package::ncdu
+package::apt::ncdu
 
