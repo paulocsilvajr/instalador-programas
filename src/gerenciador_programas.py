@@ -25,7 +25,7 @@ LISTA_CHAVES = [
     DEPENDENCIA
 ]
 
-ARQUIVO_LOG = 'log'
+ARQUIVO_LOG = 'programas.log'
 
 
 def log(diretorio_log: str, pacote: str, comando: str, codigo: int):
