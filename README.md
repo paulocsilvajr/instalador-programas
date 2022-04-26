@@ -6,9 +6,9 @@ Este repositório contém um software desenvolvido em python para instalar progr
 ### Pré-requisitos
 Conceder privilégio de execução ao script 'instalador.sh'.
 
-Instalar o pacote IDLE do python3.7. No Ubuntu 18.04 usar o comando abaixo:
+Instalar o pacote IDLE do python3.x(altere o x pela subversão do Python de sua distribuição). No Ubuntu 18.04 ou sistema derivados, usar o comando abaixo:
 ```
-# apt install idle-python3.7;
+# apt install idle-python3.6;
 ```
 Quando executado o programa pelo script 'instalador.sh', é verificado se o programa informado nos requisitos foi instalado, caso necessário, é feito a instalação automática.
 

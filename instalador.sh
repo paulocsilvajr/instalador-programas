@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+BASE=$(dirname $0)
+source "$BASE/log.sh"
+
 CAMINHO=$0
 CAMINHO="${CAMINHO%/*}"
 CAMINHO=$CAMINHO/src/instalador.py
@@ -17,8 +20,8 @@ install_idle_python(){
     verif_idle=$(dpkg --get-selections|grep "^idle-python3*"|grep "\binstall")
 
     if [[ -z $verif_idle ]]; then
-        echo "Instalando idle-python3.7 ..."
-        apt install idle-python3.7 -y
+        echo "Instalando idle-python3.x ..."
+        apt install -y idle-python$(python3 --version | awk '{print $2}' | cut -b -3)
     fi
 }
 
@@ -49,7 +52,7 @@ else
             is_root
             install_idle_python
 
-            python3 "$CAMINHO" g
+            python3 "$CAMINHO" g | log $0
             ;;
         *)
             echo "Parâmetro inválido: $1, -h para ajuda."

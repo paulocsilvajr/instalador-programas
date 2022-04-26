@@ -33,17 +33,14 @@ package::apt::openjdk-8-jdk
 #OpenJDK11(Java 11)
 package::apt::openjdk-11-jdk
 
-#Python 2 e 3
+#Python 3
 package::python
-install::apt install idle-python3.7 -y;
+install::apt install -y idle-python$(python3 --version | awk '{print $2}' | cut -b -3)
 install::apt install tix -y;
-install::apt install python-pip -y;
-install::apt install python-dev -y;
 install::apt install build-essential -y;
 install::apt install python3-pip -y;
 install::apt install python3-dev -y;
 install::pip3 install --upgrade virtualenv;
-install::pip2 install --upgrade pip;
 install::pip3 install --upgrade pip;
 install::apt install ipython3 -y;
 
@@ -88,27 +85,27 @@ package::apt::keepass2
 #GIT
 package::apt::git
 
-#git-cola(GIT GUI)
+#Git-cola(GIT GUI)
 package::apt::git-cola
 dependency::git
 
 #GnuCash
 package::apt::gnucash
 
-#tree
+#Tree
 package::apt::tree
 
-#emacs
+#Emacs
 package::apt:emacs
 
-#inxi(informações do sistema)
+#Inxi(informações do sistema)
 package::apt::inxi
 
-#python3-mysql.connector
+#Python3-mysql.connector
 package::python3-mysql.connector
 dependency::python
 
-#python3-psycopg2
+#Python3-psycopg2
 package::python3-psycopg2
 dependency::python
 
@@ -118,50 +115,42 @@ dependency::ubuntu-make
 install::umake ide sublime-text;
 remove::umake ide sublime-text -r;
 
-#brackets
+#Brackets
 package::apt::brackets
 ppa::ppa:webupd8team/brackets
 
-#clipit
+#Clipit
 package::apt::clipit
 
-#compizconfig
+#Compizconfig
 package::apt::compizconfig-settings-manager
 
-#preload
+#Preload
 package::apt::preload
 
-#virtualbox
+#Virtualbox
 package::apt::virtualbox
 install::apt install virtualbox-qt -y;
 
-#geany
+#Geany
 package::apt::geany
 
-#gparted
+#Gparted
 package::apt::gparted
 
-#gimp
+#Gimp
 package::apt::gimp
 
-#vlc
+#VLC
 package::apt::vlc
 
-#blender
+#Blender
 package::apt::blender
 
-#synapse
+#Synapse
 package::apt::synapse
 
-#Spotify
-package::spotify-client
-install::sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 931FF8E79F0876134EDDBDCCA87FF9DF48BF1C90;
-install::echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list;
-install::apt update;
-install::apt install spotify-client -y;
-remove::apt remove spotify-client -y;
-
-#snap
+#SNAP
 package::apt::snapd
 install::snap install core;
 
@@ -189,47 +178,46 @@ dependency::snapd::openjdk-11-jdk
 install::snap install intellij-idea-community --classic;
 remove::snap remove intellij-idea-community;
 
-#screenfetch(informações do sistema)
+#Screenfetch(informações do sistema)
 package::apt::screenfetch
 
-#plasma-nm(kde5-nm-connection-editor)
+#Plasma-nm(kde5-nm-connection-editor)
 package::apt::plasma-nm
 
-#redshift
+#Redshift
 package::apt::redshift
 install::apt install redshift-gtk -y;
 
-#speedtest(teste de velocidade internet pelo terminal)
+#Speedtest(teste de velocidade internet pelo terminal)
 package::speedtest-cli
 dependency::python
-install::pip2 install speedtest-cli;
-remove::pip2 uninstall speedtest-cli;
+install::pip3 install speedtest-cli;
+remove::pip3 uninstall speedtest-cli;
 
-#htop(visualizador de processos)
+#Htop(visualizador de processos)
 package::apt::htop
 
-#glances(monitor do sistema)
+#Glances(monitor do sistema)
 package::apt::glances
 
-#guake(terminal)
+#Guake(terminal)
 package::apt::guake
 install::apt install guake-indicator -y;
 remove::apt remove guake-indicator -y;
 
-#vim
+#Vim
 package::apt::vim
 
-#timeshift(restauração do sistema)
+#Timeshift(restauração do sistema)
 package::apt::timeshift
 
-#curl
+#Curl
 package::apt::curl
 
 #ZSH & oh-my-zsh(ZShell)
 package::apt::zsh
 dependency::git::curl
-install::sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
-install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'zsh');
+install::src/scripts/oh-my-zsh.sh
 install::apt install grc -y;
 remove::apt remove grc -y;
 
@@ -237,83 +225,71 @@ remove::apt remove grc -y;
 package::zsh-padrao
 install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
 
-#docker ce(docker/docker-compose)
+#Docker CE(docker/docker-compose) Rep. Externo
 package::docker-ce
 dependency::curl
-install::curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
-install::usermod -aG docker $(users|awk ' {print $1} ')
-install::curl -L https://github.com/docker/compose/releases/download/1.25.1-rc1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-install::chmod +x /usr/local/bin/docker-compose
-install::rm -v get-docker.sh
-install::echo 'Faça logout para atualizar os grupos do usuário atual'
+install::src/scripts/docker.sh
 
-#retroarch
+#Retroarch
 package::apt::retroarch
 ppa::ppa:libretro/stable
 
-#latex & texstudio
+#Latex & Texstudio
 package::apt::texlive texlive-latex-extra texlive-lang-portuguese texstudio
 
-#ssh-server
+#SSH-server
 package::apt::openssh-server
 install::service ssh start;
 remove::service ssh stop;
 
-#oneko(mascote)
+#Oneko(mascote)
 package::apt::oneko
 
-#figlet(texto em caracteres ASCII)
+#Figlet(texto em caracteres ASCII)
 package::apt::figlet
 
 #sl(Steam Locomotive)
 package::apt::sl
 
-#lynx(navegador em modo texto)
+#Lynx(navegador em modo texto)
 package::apt::lynx
 
-#steam
+#Steam
 package::apt::steam
 
-#cmatrix
+#Cmatrix
 package::apt::cmatrix
 
-#fish(Friendly Interactive Shell)
+#Fish(Friendly Interactive Shell)
 package::apt::fish
 
-#fish como shell padrão
+#Fish como shell padrão
 package::fish-padrao
 install::chsh -s /usr/bin/fish $(users|awk ' {print $1} ')
 
-#psensor
+#Psensor
 package::apt::psensor
 
-#ultimate-vimrc(Awesome version)
+#Ultimate-vimrc(Awesome version)
 package::ultimate-vimrc
 dependency::vim::git
-install::git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime;
-install::sh ~/.vim_runtime/install_awesome_vimrc.sh;
-install::chown -R $(users|awk ' {print $1} ') $(ls -d $HOME/.* | grep 'vim');
+install::src/scripts/ultimate-vimrc.sh
 
-#trash-cli(lixeira no terminal)
+#Trash-cli(lixeira no terminal)
 package::apt::trash-cli
 
-#golang(Linguagem GO) 1.12
+#Golang(Linguagem GO) 1.12
 package::golang
-install::wget https://dl.google.com/go/go1.12.linux-amd64.tar.gz
-install::tar -C /usr/local/ -xzf go1.12.linux-amd64.tar.gz
-install::mkdir $HOME/go $HOME/go/bin $HOME/go/pkg $HOME/go/src
-install::chown -R $(users|awk ' {print $1} ') $HOME/go
-install::echo 'export PATH=$PATH:/usr/local/go/bin' >> $HOME/.profile
-install::echo 'export GOPATH=$HOME/go' >> $HOME/.profile
-install::echo 'export PATH=$PATH:$GOPATH/bin' >> $HOME/.profile
-install::rm -v go1.12.linux-amd64.tar.gz
-install::echo 'Disponibilizado variável $GOPATH, diretório ~/go e finalizado instalação.'
-install::echo -e "Para usuários do ZSH, execute o comando abaixo para reconhecer o executável go:\ncp -v ~/.profile ~/.zprofile"
+install::src/scripts/golang.sh
 
-#gsmartcontrol(verificar estado de hd)
+#Golang(Linguagem GO) 1.15
+package::golang1.15
+install::src/scripts/golang1.15.sh
+
+#Gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
 
-#qbittorrent(Cliente Torrent)
+#Qbittorrent(Cliente Torrent)
 package::apt::qbittorrent
 
 #ClamAV(Antivírus Open-Source)
@@ -340,4 +316,31 @@ package::android-studio
 dependency::snapd::openjdk-11-jdk
 install::snap install android-studio --classic;
 remove::snap remove android-studio;
+
+#CoreCtrl(Informações e Overclock hardware AMD)
+package::apt::corectrl
+ppa::ppa:ernstp/mesarc
+install::apt install corectrl -y;
+remove::apt remove corectrl -y;
+
+#Wekan(Open-Source kanban)
+package::wekan
+dependency::snapd
+install::src/scripts/wekan.sh
+remove::snap remove wekan
+
+#lnav(LOG file viewer)
+package::apt::lnav
+
+#nmap(Network Mapper)
+package::apt::nmap
+
+#tuptime(Report historical and statistical real time of the system)
+package::apt::tuptime
+
+#smartmontools(Ferramentas para verificar disco)
+package::apt::smartmontools
+
+#ncdu(Disk Usage)
+package::apt::ncdu
 
