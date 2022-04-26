@@ -1,8 +1,5 @@
 # coding: utf-8
-import os
 from sys import argv
-# try:
-from samba.remove_dc import offline_remove_server
 
 from gerenciador_programas import gera_lista_programas
 from interface_gui import Instalador as InstaladorGUI
@@ -10,7 +7,7 @@ from interface_cli import instalador as InstaladorCLI
 
 __author__ = 'Paulo C. Silva Jr.'
 
-__version__ = '0.4.0'
+__version__ = '0.5.6'
 
 """
 Instalador de programas, desenvolvido: Ubuntu 18.04, Python3.7, Tkinter.
@@ -39,6 +36,7 @@ def capturar_diretorio():
     diretorio_completo = argv[0]
     posicao = diretorio_completo.rfind("/")
     return diretorio_completo[0:posicao+1]
+
 
 def abrir_gui():
     if len(argv) > 1:
