@@ -323,3 +323,24 @@ ppa::ppa:ernstp/mesarc
 install::apt install corectrl -y;
 remove::apt remove corectrl -y;
 
+#Wekan(Open-Source kanban)
+package::wekan
+dependency::snapd
+install::src/scripts/wekan.sh
+remove::snap remove wekan
+
+#lnav(LOG file viewer)
+package::lnav
+
+#nmap(Network Mapper)
+package::nmap
+
+#tuptime(Report  historical and statistical real time of the system)
+package::tuptime
+
+#smartmontools(Ferramentas para verificar disco)
+package::smartmontools
+
+#ncdu(Disk Usage)
+package::ncdu
+
