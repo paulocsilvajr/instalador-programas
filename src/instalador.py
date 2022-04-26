@@ -1,7 +1,9 @@
 # coding: utf-8
-
+import os
 from sys import argv
 # try:
+from samba.remove_dc import offline_remove_server
+
 from gerenciador_programas import gera_lista_programas
 from interface_gui import Instalador as InstaladorGUI
 from interface_cli import instalador as InstaladorCLI
@@ -34,8 +36,9 @@ O arquivo programas deve ter entradas no seguinte formato:
 
 
 def capturar_diretorio():
-    return argv[0].replace('instalador.py', '')
-
+    diretorio_completo = argv[0]
+    posicao = diretorio_completo.rfind("/")
+    return diretorio_completo[0:posicao+1]
 
 def abrir_gui():
     if len(argv) > 1:
