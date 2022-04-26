@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+BASE=$(dirname $0)
+source "$BASE/log.sh"
+
 CAMINHO=$0
 CAMINHO="${CAMINHO%/*}"
 CAMINHO=$CAMINHO/src/instalador.py
@@ -49,7 +52,7 @@ else
             is_root
             install_idle_python
 
-            python3 "$CAMINHO" g
+            python3 "$CAMINHO" g | log $0
             ;;
         *)
             echo "Parâmetro inválido: $1, -h para ajuda."
