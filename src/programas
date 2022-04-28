@@ -329,6 +329,10 @@ dependency::snapd
 install::src/scripts/wekan.sh
 remove::snap remove wekan
 
+#brew(Homebrew on Linux)
+package::brew
+install::src/scripts/homebrew.sh
+
 #lnav(LOG file viewer)
 package::apt::lnav
 
