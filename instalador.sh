@@ -21,7 +21,7 @@ install_idle_python(){
 
     if [[ -z $verif_idle ]]; then
         echo "Instalando idle-python3.x ..."
-        apt install -y idle-python$(python3 --version | awk '{print $2}' | cut -b -3)
+        apt install -y idle3
     fi
 }
 
