@@ -278,13 +278,12 @@ install::src/scripts/ultimate-vimrc.sh
 #Trash-cli(lixeira no terminal)
 package::apt::trash-cli
 
-#Golang(Linguagem GO) 1.12
-package::golang
-install::src/scripts/golang.sh
+#Golang(Linguagem GO) 1.18
+package::golang1.18
+install::src/scripts/golang1.18.sh
 
-#Golang(Linguagem GO) 1.15
-package::golang1.15
-install::src/scripts/golang1.15.sh
+#Golang(Linguagem GO) APT
+package::apt::golang
 
 #Gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
