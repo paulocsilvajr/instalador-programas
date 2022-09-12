@@ -286,6 +286,10 @@ install::src/scripts/golang.sh
 package::golang1.15
 install::src/scripts/golang1.15.sh
 
+#golang(Linguagem GO) 1.18
+package::golang1.18
+install::src/scripts/golang1.18.sh
+
 #gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
 
