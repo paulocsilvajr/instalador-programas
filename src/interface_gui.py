@@ -4,11 +4,7 @@ import tkinter
 from tkinter.messagebox import showerror, askyesno, showinfo
 from tkinter import ttk
 
-try:
-    from src.gerenciador_programas import verifica_programas_instalados
-except ImportError:
-    from gerenciador_programas import verifica_programas_instalados
-
+from gerenciador_programas import verifica_programas_instalados
 
 class Instalador(tkinter.Tk):
     """ Interface gráfica do instalador. """

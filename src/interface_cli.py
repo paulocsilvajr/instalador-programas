@@ -2,10 +2,7 @@
 
 from os import system
 
-try:
-    from src.gerenciador_programas import verifica_programas_instalados
-except ImportError:
-    from gerenciador_programas import verifica_programas_instalados
+from gerenciador_programas import verifica_programas_instalados
 
 # Marcação inicial dos programas, quando 1, todos ficam marcados,
 # enquanto 0, todos desmarcados.

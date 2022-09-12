@@ -25,11 +25,11 @@ LISTA_CHAVES = [
     DEPENDENCIA
 ]
 
-ARQUIVO_LOG = 'log'
+ARQUIVO_LOG = 'programas.log'
 
 
 def log(diretorio_log: str, pacote: str, comando: str, codigo: int):
-    agora = datetime.now().strftime("%Y%m%d:%H%M%S")
+    agora = datetime.now().strftime("%Y%m%d %H%M%S")
     mensagem = '{} {}: {} [{}]'.format(agora, pacote, comando, codigo)
 
     arquivo = diretorio_log + ARQUIVO_LOG

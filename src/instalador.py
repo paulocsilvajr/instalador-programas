@@ -1,18 +1,13 @@
 # coding: utf-8
-
 from sys import argv
-try:
-    from src.gerenciador_programas import gera_lista_programas
-    from src.interface_gui import Instalador as InstaladorGUI
-    from src.interface_cli import instalador as InstaladorCLI
-except ImportError:
-    from gerenciador_programas import gera_lista_programas
-    from interface_gui import Instalador as InstaladorGUI
-    from interface_cli import instalador as InstaladorCLI
+
+from gerenciador_programas import gera_lista_programas
+from interface_gui import Instalador as InstaladorGUI
+from interface_cli import instalador as InstaladorCLI
 
 __author__ = 'Paulo C. Silva Jr.'
 
-__version__ = '0.4.0'
+__version__ = '0.5.6'
 
 """
 Instalador de programas, desenvolvido: Ubuntu 18.04, Python3.7, Tkinter.
@@ -38,7 +33,9 @@ O arquivo programas deve ter entradas no seguinte formato:
 
 
 def capturar_diretorio():
-    return argv[0].replace('instalador.py', '')
+    diretorio_completo = argv[0]
+    posicao = diretorio_completo.rfind("/")
+    return diretorio_completo[0:posicao+1]
 
 
 def abrir_gui():
