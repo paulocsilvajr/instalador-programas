@@ -285,12 +285,7 @@ install::src/scripts/golang1.18.sh
 #Golang(Linguagem GO) APT
 package::apt::golang
 
-#golang(Linguagem GO) 1.18
-package::golang1.18
-install::src/scripts/golang1.18.sh
-
 #Gsmartcontrol(verificar estado de hd)
->>>>>>> e0228e2c2586c9651e867b8d52e63357bb7faa95
 package::apt::gsmartcontrol
 
 #Qbittorrent(Cliente Torrent)
