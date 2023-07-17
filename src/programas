@@ -33,6 +33,9 @@ package::apt::openjdk-8-jdk
 #OpenJDK11(Java 11)
 package::apt::openjdk-11-jdk
 
+#OpenJDK11(Java 17)
+package::apt::openjdk-17-jdk
+
 #Python 3
 package::python
 install::apt install -y idle3
@@ -140,19 +143,19 @@ remove::snap remove wps-office;
 
 #Pycharm CE(IDE Python - SNAP)
 package::pycharm-snap
-dependency::snapd::openjdk-11-jdk::python
+dependency::snapd::openjdk-17-jdk::python
 install::snap install pycharm-community --classic;
 remove::snap remove pycharm-community;
 
 #Intellij Idea CE(IDE Java - SNAP)
 package::idea-snap
-dependency::snapd::openjdk-11-jdk
+dependency::snapd::openjdk-17-jdk
 install::snap install intellij-idea-community --classic;
 remove::snap remove intellij-idea-community;
 
 #NetBeans(IDE Java - SNAP)
 package::netbeans-snap
-dependency::snapd::openjdk-11-jdk
+dependency::snapd::openjdk-17-jdk
 install::snap install netbeans --classic;
 remove::snap remove netbeans;
 
@@ -290,7 +293,7 @@ install::echo "Execute: 'netdata' no terminal para verificar o endereço:porta d
 
 #Android-Studio(IDE Java para Android - SNAP)
 package::android-studio
-dependency::snapd::openjdk-11-jdk
+dependency::snapd::openjdk-17-jdk
 install::snap install android-studio --classic;
 remove::snap remove android-studio;
 
