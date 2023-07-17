@@ -33,7 +33,7 @@ package::apt::openjdk-8-jdk
 #OpenJDK11(Java 11)
 package::apt::openjdk-11-jdk
 
-#OpenJDK11(Java 17)
+#OpenJDK17(Java 17)
 package::apt::openjdk-17-jdk
 
 #Python 3
