@@ -3,3 +3,5 @@ __pycache__
 .idea
 log
 *.log
+build
+dist
