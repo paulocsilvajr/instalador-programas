@@ -33,9 +33,12 @@ package::apt::openjdk-8-jdk
 #OpenJDK11(Java 11)
 package::apt::openjdk-11-jdk
 
+#OpenJDK17(Java 17)
+package::apt::openjdk-17-jdk
+
 #Python 3
 package::python
-install::apt install -y idle-python$(python3 --version | awk '{print $2}' | cut -b -3)
+install::apt install -y idle3
 install::apt install tix -y;
 install::apt install build-essential -y;
 install::apt install python3-pip -y;
@@ -44,30 +47,8 @@ install::pip3 install --upgrade virtualenv;
 install::pip3 install --upgrade pip;
 install::apt install ipython3 -y;
 
-#Ubuntu Make(UMAKE)
-package::apt::ubuntu-make
-ppa::ppa:ubuntu-desktop/ubuntu-make
-
-#Pycharm CE(IDE Python - UMAKE)
-package::pycharm-umake
-dependency::ubuntu-make::openjdk-8-jdk::python
-install::umake ide pycharm;
-remove::umake ide pycharm -r;
-
 #Eclipse(IDE Java)
 package::apt::eclipse
-
-#NetBeans(IDE Java - UMAKE)
-package::netbeans-umake
-dependency::ubuntu-make::openjdk-8-jdk
-install::umake ide netbeans;
-remove::umake ide netbeans -r;
-
-#Intellij Idea CE(IDE Java - UMAKE)
-package::idea-umake
-dependency::ubuntu-make::openjdk-8-jdk
-install::umake ide idea;
-remove::umake ide idea -r;
 
 #Atom
 package::apt::atom
@@ -108,12 +89,6 @@ dependency::python
 #Python3-psycopg2
 package::python3-psycopg2
 dependency::python
-
-#Sublime-text-3
-package::sublime-text
-dependency::ubuntu-make
-install::umake ide sublime-text;
-remove::umake ide sublime-text -r;
 
 #Brackets
 package::apt::brackets
@@ -168,15 +143,21 @@ remove::snap remove wps-office;
 
 #Pycharm CE(IDE Python - SNAP)
 package::pycharm-snap
-dependency::snapd::openjdk-11-jdk::python
+dependency::snapd::openjdk-17-jdk::python
 install::snap install pycharm-community --classic;
 remove::snap remove pycharm-community;
 
 #Intellij Idea CE(IDE Java - SNAP)
 package::idea-snap
-dependency::snapd::openjdk-11-jdk
+dependency::snapd::openjdk-17-jdk
 install::snap install intellij-idea-community --classic;
 remove::snap remove intellij-idea-community;
+
+#NetBeans(IDE Java - SNAP)
+package::netbeans-snap
+dependency::snapd::openjdk-17-jdk
+install::snap install netbeans --classic;
+remove::snap remove netbeans;
 
 #Screenfetch(informações do sistema)
 package::apt::screenfetch
@@ -312,7 +293,7 @@ install::echo "Execute: 'netdata' no terminal para verificar o endereço:porta d
 
 #Android-Studio(IDE Java para Android - SNAP)
 package::android-studio
-dependency::snapd::openjdk-11-jdk
+dependency::snapd::openjdk-17-jdk
 install::snap install android-studio --classic;
 remove::snap remove android-studio;
 
