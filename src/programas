@@ -94,8 +94,8 @@ dependency::python
 package::apt::brackets
 ppa::ppa:webupd8team/brackets
 
-#Clipit
-package::apt::clipit
+#Diodon
+package::apt::diodon
 
 #Compizconfig
 package::apt::compizconfig-settings-manager
