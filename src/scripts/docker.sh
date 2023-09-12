@@ -6,4 +6,4 @@ apt-get update &&
     add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(. /etc/os-release; echo "$UBUNTU_CODENAME") stable" &&
     apt-get update &&
     apt-get -y install docker-ce docker-compose &&
-    usermod -aG docker $USER
+    usermod -aG docker $(logname)
