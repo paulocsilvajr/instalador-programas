@@ -83,7 +83,7 @@ def gera_lista_programas(diretorio: str, nome_arquivo: str) -> list:
     arquivo = diretorio + nome_arquivo
     verifica_pacote_duplicado(arquivo)
 
-    lista_programas = list()
+    lista_programas: list[Programa] = list()
 
     with open(arquivo) as f:
         programa = Programa(diretorio_log=diretorio)

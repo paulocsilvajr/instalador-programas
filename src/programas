@@ -94,8 +94,8 @@ dependency::python
 package::apt::brackets
 ppa::ppa:webupd8team/brackets
 
-#Clipit
-package::apt::clipit
+#Diodon
+package::apt::diodon
 
 #Compizconfig
 package::apt::compizconfig-settings-manager
@@ -210,6 +210,11 @@ install::chsh -s /bin/zsh $(users|awk ' {print $1} ')
 package::docker-ce
 dependency::curl
 install::src/scripts/docker.sh
+
+#Docker CE(docker/docker-compose) APT
+package::apt::docker
+install::apt install docker-compose
+install::echo -e "\nExecute o comando abaixo para adicionar o grupo 'docker' ao usuário corrente(reinicie a sessão após adicionar):\nusermod -aG docker \$USER"
 
 #Retroarch
 package::apt::retroarch
@@ -327,4 +332,12 @@ package::apt::smartmontools
 
 #ncdu(Disk Usage)
 package::apt::ncdu
+
+#cargo(Instalador de dependências/programas do Rust)
+package::apt::cargo
+
+#tokei(Estatísticas sobre o seu código)
+package::tokei
+dependency::cargo
+install::src/scripts/tokei.sh
 
