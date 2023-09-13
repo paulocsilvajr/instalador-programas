@@ -211,6 +211,11 @@ package::docker-ce
 dependency::curl
 install::src/scripts/docker.sh
 
+#Docker CE(docker/docker-compose) APT
+package::apt::docker
+install::apt install docker-compose
+install::echo -e "\nExecute o comando abaixo para adicionar o grupo 'docker' ao usuário corrente(reinicie a sessão após adicionar):\nusermod -aG docker \$USER"
+
 #Retroarch
 package::apt::retroarch
 ppa::ppa:libretro/stable
@@ -265,7 +270,6 @@ install::src/scripts/golang1.18.sh
 
 #Golang(Linguagem GO) APT
 package::apt::golang
-install::echo -e "\nExecute o comando abaixo para adicionar o grupo 'docker' ao usuário corrente(reinicie a sessão após adicionar):\nusermod -aG docker \$USER"
 
 #Gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
