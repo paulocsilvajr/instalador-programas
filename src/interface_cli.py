@@ -283,7 +283,7 @@ def menu(texto, mensagem_fim, funcoes, inicio, fim, **kwargs):
 def main(lista_programas: list, diretorio: str):
     """ Função inicial e principal do CLI, contendo as opções de manipulação dos programas. """
     logo = carregar_logo(diretorio)
-    tela_inicial = logo + '''\nInterface para o apt para facilitar a instalação de programas
+    tela_inicial = logo + '''\nInterface para facilitar a instalação de programas
 em distribuições baseadas no Ubuntu.
 
 Desenvolvido por Paulo C. Silva Jr
