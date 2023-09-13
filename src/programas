@@ -333,12 +333,11 @@ package::apt::smartmontools
 #ncdu(Disk Usage)
 package::apt::ncdu
 
-#cargo(instalador de dependências/programas do Rust)
+#cargo(Instalador de dependências/programas do Rust)
 package::apt::cargo
 
 #tokei(Estatísticas sobre o seu código)
 package::tokei
 dependency::cargo
-install::cargo install tokei
-remove::cargo uninstall tokei
+install::src/scripts/tokei.sh
 
