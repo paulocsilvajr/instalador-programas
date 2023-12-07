@@ -269,7 +269,7 @@ package::golang1.18
 install::src/scripts/golang1.18.sh
 
 #Golang(Linguagem GO) APT
-package::apt::golang
+package::apt::golang-go
 
 #Gsmartcontrol(verificar estado de hd)
 package::apt::gsmartcontrol
